@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./job_finder/.env
+    ports:
+      - "5432:5432"
+  backend:
+    build: job_finder
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: always
+    volumes:
+      - ./job_finder:/app/backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - job_finder/.env
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
