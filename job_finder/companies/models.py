@@ -17,3 +17,14 @@ class Company(BaseModel):
 
     def __str__(self):
         return f"{self.pk}: {self.title}"
+
+
+class CompanyManager(models.Model):
+    user = models.OneToOneField("users.User", on_delete=models.CASCADE, primary_key=True)
+    company = models.ForeignKey(
+        Company, related_name="managers", on_delete=models.CASCADE
+    )
+    is_general = models.BooleanField(_("Is general"), default=False)
+
+    def __str__(self):
+        return f"{self.pk}: {self.user.email}, {self.company.title}"

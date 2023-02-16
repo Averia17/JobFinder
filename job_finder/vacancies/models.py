@@ -24,7 +24,7 @@ class Vacancy(BaseModel):
         "companies.Company", related_name="vacancies", on_delete=models.CASCADE
     )
     manager = models.ForeignKey(
-        "users.CompanyManager",
+        "companies.CompanyManager",
         related_name="vacancies",
         on_delete=models.SET_NULL,
         null=True,

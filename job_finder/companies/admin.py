@@ -1,6 +1,5 @@
 from django.contrib import admin
-from companies.models import Company
-from users.models import CompanyManager
+from companies.models import Company, CompanyManager
 from django import forms
 
 
@@ -36,4 +35,25 @@ class CompanyAdmin(admin.ModelAdmin):
             },
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
+    ]
+
+
+@admin.register(CompanyManager)
+class CompanyManager(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "company",
+    ]
+    readonly_fields = ["is_general"]
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    "user",
+                    "company"
+                ]
+            },
+        ),
+        ("Constant", {"fields": ["is_general"]}),
     ]

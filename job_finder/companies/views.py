@@ -2,9 +2,8 @@ from rest_framework.mixins import RetrieveModelMixin, CreateModelMixin, UpdateMo
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
-from companies.models import Company
+from companies.models import Company, CompanyManager
 from companies.serializers import CompanySerializer
-from users.models import CompanyManager
 
 
 class CompanyViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
