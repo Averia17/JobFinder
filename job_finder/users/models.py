@@ -55,8 +55,12 @@ class User(AbstractBaseUser, BaseModel):
         return self.is_staff and self.is_active
 
 
-class CompanyManager(User):
+class CompanyManager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     company = models.ForeignKey(
         "companies.Company", related_name="managers", on_delete=models.CASCADE
     )
     is_general = models.BooleanField(_("Is general"), default=False)
+
+    def __str__(self):
+        return f"{self.pk}: {self.user.email}, {self.company.title}"

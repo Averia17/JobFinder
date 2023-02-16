@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from users.models import User
+from users.models import User, CompanyManager
 
 
 @admin.register(User)
@@ -28,3 +28,5 @@ class UserAdmin(admin.ModelAdmin):
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
     ]
+
+admin.site.register(CompanyManager)
