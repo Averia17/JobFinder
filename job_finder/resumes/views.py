@@ -17,3 +17,9 @@ class ResumeViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
+
+    def get_queryset(self):
+        queryset = Resume.objects.none()
+        if not self.request.user.is_anonymous:
+            queryset = super().get_queryset().filter(user=self.request.user)
+        return queryset
