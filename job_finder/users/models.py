@@ -53,6 +53,3 @@ class User(AbstractBaseUser, BaseModel):
 
     def has_perm(self, perm_list, obj=None):
         return self.is_staff and self.is_active
-
-
-

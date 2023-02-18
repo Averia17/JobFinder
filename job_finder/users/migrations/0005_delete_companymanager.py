@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vacancies', '0002_alter_vacancy_manager'),
-        ('users', '0004_remove_companymanager_user_ptr_companymanager_user'),
+        ("vacancies", "0002_alter_vacancy_manager"),
+        ("users", "0004_remove_companymanager_user_ptr_companymanager_user"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='CompanyManager',
+            name="CompanyManager",
         ),
     ]

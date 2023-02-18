@@ -6,17 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('responses', '0001_initial'),
+        ("responses", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vacancyresponse',
-            name='status',
-            field=models.CharField(choices=[('REJECT', 'Reject'), ('INVITE', 'Invite'), ('VIEWED', 'Viewed'), ('NOT_VIEWED', 'Not Viewed')], default='NOT_VIEWED', max_length=10, verbose_name='Status'),
+            model_name="vacancyresponse",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("REJECT", "Reject"),
+                    ("INVITE", "Invite"),
+                    ("VIEWED", "Viewed"),
+                    ("NOT_VIEWED", "Not Viewed"),
+                ],
+                default="NOT_VIEWED",
+                max_length=10,
+                verbose_name="Status",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='vacancyresponse',
-            constraint=models.UniqueConstraint(fields=('vacancy', 'user'), name='uq_vacancy_user'),
+            model_name="vacancyresponse",
+            constraint=models.UniqueConstraint(
+                fields=("vacancy", "user"), name="uq_vacancy_user"
+            ),
         ),
     ]

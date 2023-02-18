@@ -17,7 +17,10 @@ class Vacancy(BaseModel):
         _("Years of experience"), max_length=4, choices=EXPERIENCE_OPTIONS, default="0"
     )
     employment_type = models.CharField(
-        _("Employment type"), max_length=10, choices=EMPLOYMENT_TYPE, default="FULL-TIME"
+        _("Employment type"),
+        max_length=10,
+        choices=EMPLOYMENT_TYPE,
+        default="FULL-TIME",
     )
     is_active = models.BooleanField(_("Is active"), default=True)
     company = models.ForeignKey(

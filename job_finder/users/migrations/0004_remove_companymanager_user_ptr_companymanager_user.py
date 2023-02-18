@@ -8,18 +8,24 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0003_user_name_companymanager'),
+        ("users", "0003_user_name_companymanager"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='companymanager',
-            name='user_ptr',
+            model_name="companymanager",
+            name="user_ptr",
         ),
         migrations.AddField(
-            model_name='companymanager',
-            name='user',
-            field=models.OneToOneField(default=None, on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL),
+            model_name="companymanager",
+            name="user",
+            field=models.OneToOneField(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                primary_key=True,
+                serialize=False,
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
     ]

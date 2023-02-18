@@ -6,4 +6,4 @@ from responses.models import VacancyResponse
 class VacancyResponseSerializer(ModelSerializer):
     class Meta:
         model = VacancyResponse
-        fields = ("user", "vacancy", "status")
+        fields = ("id", "user", "vacancy", "status")

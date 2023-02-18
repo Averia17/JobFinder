@@ -28,6 +28,3 @@ class UserAdmin(admin.ModelAdmin):
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
     ]
-
-
-

@@ -13,7 +13,10 @@ class VacancyResponse(BaseModel):
         "users.User", related_name="responses", on_delete=models.CASCADE
     )
     status = models.CharField(
-        _("Status"), max_length=10, choices=VACANCY_RESPONSE_STATUS, default="NOT_VIEWED"
+        _("Status"),
+        max_length=10,
+        choices=VACANCY_RESPONSE_STATUS,
+        default="NOT_VIEWED",
     )
 
     class Meta:

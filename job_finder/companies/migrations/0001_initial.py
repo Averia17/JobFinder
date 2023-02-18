@@ -7,22 +7,42 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Company',
+            name="Company",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
-                ('title', models.CharField(max_length=256, verbose_name='Title')),
-                ('address', models.CharField(blank=True, max_length=256, null=True, verbose_name='Address')),
-                ('description', models.CharField(blank=True, max_length=1024, null=True, verbose_name='Description')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated", models.DateTimeField(auto_now=True, db_index=True)),
+                ("title", models.CharField(max_length=256, verbose_name="Title")),
+                (
+                    "address",
+                    models.CharField(
+                        blank=True, max_length=256, null=True, verbose_name="Address"
+                    ),
+                ),
+                (
+                    "description",
+                    models.CharField(
+                        blank=True,
+                        max_length=1024,
+                        null=True,
+                        verbose_name="Description",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Companies',
+                "verbose_name_plural": "Companies",
             },
         ),
     ]

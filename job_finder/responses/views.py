@@ -5,6 +5,8 @@ from responses.models import VacancyResponse
 from responses.serializers import VacancyResponseSerializer
 
 
-class VacancyResponseViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, GenericViewSet):
+class VacancyResponseViewSet(
+    CreateModelMixin, DestroyModelMixin, ListModelMixin, GenericViewSet
+):
     queryset = VacancyResponse.objects.all()
     serializer_class = VacancyResponseSerializer

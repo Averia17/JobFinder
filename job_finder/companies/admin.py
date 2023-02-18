@@ -48,12 +48,7 @@ class CompanyManager(admin.ModelAdmin):
     fieldsets = [
         (
             None,
-            {
-                "fields": [
-                    "user",
-                    "company"
-                ]
-            },
+            {"fields": ["user", "company"]},
         ),
         ("Constant", {"fields": ["is_general"]}),
     ]

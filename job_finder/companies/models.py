@@ -20,7 +20,9 @@ class Company(BaseModel):
 
 
 class CompanyManager(models.Model):
-    user = models.OneToOneField("users.User", on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        "users.User", on_delete=models.CASCADE, primary_key=True
+    )
     company = models.ForeignKey(
         Company, related_name="managers", on_delete=models.CASCADE
     )

@@ -8,26 +8,48 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('companies', '0001_initial'),
-        ('users', '0002_user_phone'),
+        ("companies", "0001_initial"),
+        ("users", "0002_user_phone"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='name',
-            field=models.CharField(blank=True, max_length=256, null=True, verbose_name='Full name'),
+            model_name="user",
+            name="name",
+            field=models.CharField(
+                blank=True, max_length=256, null=True, verbose_name="Full name"
+            ),
         ),
         migrations.CreateModel(
-            name='CompanyManager',
+            name="CompanyManager",
             fields=[
-                ('user_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('is_general', models.BooleanField(default=False, verbose_name='Is general')),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='managers', to='companies.company')),
+                (
+                    "user_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "is_general",
+                    models.BooleanField(default=False, verbose_name="Is general"),
+                ),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="managers",
+                        to="companies.company",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('users.user',),
+            bases=("users.user",),
         ),
     ]

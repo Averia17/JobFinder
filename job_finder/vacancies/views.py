@@ -1,3 +1,4 @@
+from django.db.models import OuterRef, Subquery
 from rest_framework.viewsets import ModelViewSet
 
 from vacancies.models import Vacancy
@@ -17,3 +18,10 @@ class VacancyViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
+
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_anonymous:
+            response_subquery = user.responses.filter(id=OuterRef('id')).exists()
+            return super().get_queryset().annotate(is_responsed=Subquery(response_subquery))
+        return super().get_queryset()
