@@ -14,6 +14,7 @@ class ResumeAdmin(admin.ModelAdmin):
                 "fields": [
                     "title",
                     "city",
+                    "user",
                     "position",
                     "experience",
                     "salary",

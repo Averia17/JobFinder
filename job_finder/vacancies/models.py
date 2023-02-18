@@ -44,7 +44,7 @@ class Vacancy(BaseModel):
     def clean(self):
         if self.min_salary and self.max_salary and self.min_salary > self.max_salary:
             raise ValidationError("Min salary cannot be bigger than max salary")
-        if not self.company.managers.all().contains(self.manager):
+        if self.manager and not self.company.managers.all().contains(self.manager):
             raise ValidationError("Manager must be from vacancy company")
 
     def save(

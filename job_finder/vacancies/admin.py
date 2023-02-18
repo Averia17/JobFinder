@@ -15,6 +15,7 @@ class VacancyAdmin(admin.ModelAdmin):
                 "fields": [
                     "title",
                     "company",
+                    "manager",
                     "is_active",
                     "min_salary",
                     "max_salary",
