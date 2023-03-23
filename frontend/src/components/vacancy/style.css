@@ -1,0 +1,31 @@
+.vacancy-container {
+    display: flex;
+    flex-direction: column;
+    width: 45vmax;
+    -webkit-box-shadow: 0 0 10px #e6e6ff;
+    box-shadow: 0 0 10px #e6e6ff;
+    font-size: 1vmax;
+    padding: 1vmax 2vmax;
+    border-radius: 0.5vmax;
+
+}
+
+h2 {
+    line-height: 1vmax;
+}
+
+.salary {
+    margin: 0.5vmax 0;
+}
+
+button {
+    margin: 0.5vmax 0;
+    padding: 0.5vmax 1vmax;
+    border-radius: 0.5vmax;
+    background: #0000e6;
+    width: fit-content;
+}
+
+.respond-button__disabled {
+    background: #e6e6ff;
+}

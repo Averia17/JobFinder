@@ -1,0 +1,15 @@
+.vacancies-page-container {
+    display: flex;
+    margin: 0 5vmax;
+}
+
+.filters {
+    display: flex;
+    width: 20vmax;
+}
+
+.vacancies-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1vmax;
+}

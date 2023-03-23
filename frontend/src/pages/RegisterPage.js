@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
+import RegisterForm from "../components/register-form/RegisterForm";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -8,24 +9,41 @@ const RegisterPage = () => {
     const [userData, setUserData] = useState({
         email: '',
         password: '',
+        isEmployee: false,
         confirmPassword: ''
-    })
-
-    const handleChangeData = (e) => {
-        setUserData({
-            ...userData,
-            [e.currentTarget.name]: e.currentTarget.value
-        })
-    }
-
+    });
+    const [companyData, setCompanyData] = useState({
+        title: undefined
+    });
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post('/api/users/', userData).then(() => {
-            navigate('/login', {state: {
-                email: userData.email,
-                password: userData.password
-            }})
+        e.preventDefault();
+        let {email, password} = userData;
+        axios.post('/api/users/', {email, password}).then(() => {
+            if (!userData.isEmployee) {
+                navigate('/login', {
+                    state: {
+                        email: userData.email,
+                        password: userData.password
+                    }
+                })
+            } else {
+                axios.post('/login/', userData).then(({data}) => {
+                    localStorage.setItem('access_token', data.access);
+                    localStorage.setItem('refresh_token', data.refresh);
+                }).then(() => {
+                    const accessToken = localStorage.getItem('access_token');
+                    axios.post('/api/companies/', companyData,
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`
+                            }
+                        }).then(({data}) => {
+                            navigate(`/companies/${data.id}`);
+                    })
+                })
+            }
+
         })
         // .catch(({response}) => {
         //     let error = response.data;
@@ -49,30 +67,16 @@ const RegisterPage = () => {
 
             <div className="authorization-container">
                 <p className="form-header">Sign Up</p>
-                <form method="post"
-                      onSubmit={handleSubmit}
-                      className="authorization-form"
-                >
-                    <input type="email"
-                           name="email"
-                           onChange={handleChangeData}
-                           placeholder="Email Address"
-                    />
-                    <input type="password"
-                           name="password"
-                           onChange={handleChangeData}
-                           placeholder="Enter password"
-                    />
-                    <input type="password"
-                           name="confirmPassword"
-                           onChange={handleChangeData}
-                           placeholder="Re-enter password"
-                    />
-                    <input type="submit" className="submit-button"/>
-                    <p className="form-footer">
-                        Already have an account? <Link to={{pathname: '/login/'}}>Log in</Link>
-                    </p>
-                </form>
+                <RegisterForm className='authorization-form'
+                              userData={userData}
+                              setUserData={setUserData}
+                              companyData={companyData}
+                              setCompanyData={setCompanyData}
+                              onSubmit={handleSubmit}>
+                </RegisterForm>
+                <p className="form-footer">
+                    Already have an account? <Link to={{pathname: '/login/'}}>Log in</Link>
+                </p>
             </div>
         </div>
 };
