@@ -14,7 +14,6 @@ const ResponsesPage = () => {
         })
             .then(({data}) => setResponses(data))
     }, [])
-
     return (
         <div>
             {

@@ -7,33 +7,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('resumes', '0001_initial'),
+        ("resumes", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='resume',
-            name='city',
-            field=models.CharField(max_length=64, null=True, verbose_name='City'),
+            model_name="resume",
+            name="city",
+            field=models.CharField(max_length=64, null=True, verbose_name="City"),
         ),
         migrations.AlterField(
-            model_name='resume',
-            name='description',
-            field=models.CharField(max_length=1024, null=True, verbose_name='Description'),
+            model_name="resume",
+            name="description",
+            field=models.CharField(
+                max_length=1024, null=True, verbose_name="Description"
+            ),
         ),
         migrations.AlterField(
-            model_name='resume',
-            name='languages',
-            field=models.JSONField(default=list, null=True, verbose_name='Languages'),
+            model_name="resume",
+            name="languages",
+            field=models.JSONField(default=list, null=True, verbose_name="Languages"),
         ),
         migrations.AlterField(
-            model_name='resume',
-            name='position',
-            field=models.CharField(max_length=64, null=True, verbose_name='Position'),
+            model_name="resume",
+            name="position",
+            field=models.CharField(max_length=64, null=True, verbose_name="Position"),
         ),
         migrations.AlterField(
-            model_name='resume',
-            name='skills',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=16), null=True, size=None),
+            model_name="resume",
+            name="skills",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(max_length=16), null=True, size=None
+            ),
         ),
     ]

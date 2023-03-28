@@ -1,6 +1,8 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+
+from celery.schedules import crontab
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
     "resumes",
     "responses",
     "vacancies",
+    "response_messages",
 ]
 
 MIDDLEWARE = [
@@ -141,6 +144,24 @@ LOGGING = {
         }
     },
 }
+
+
+CELERY_BROKER_URL = "pyamqp://rabbitmq:5672"
+CELERY_RESULT_BACKEND = "rpc://rabbitmq:5672"
+
+# CELERY_BEAT_SCHEDULE = {
+#     "check_expire_order": {
+#         "task": "job_finder.tasks.test_task",
+#         "schedule": crontab(minute="*/10"),
+#     },
+# }
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_USE_TLS = True
+EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 if DEBUG:
     import socket

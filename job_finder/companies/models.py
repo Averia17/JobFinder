@@ -10,6 +10,9 @@ class Company(BaseModel):
     description = models.CharField(
         _("Description"), max_length=1024, null=True, blank=True
     )
+    director = models.OneToOneField(
+        "users.User", on_delete=models.CASCADE, primary_key=False
+    )
 
     class Meta:
         app_label = "companies"
@@ -26,7 +29,6 @@ class CompanyManager(models.Model):
     company = models.ForeignKey(
         Company, related_name="managers", on_delete=models.CASCADE
     )
-    is_general = models.BooleanField(_("Is general"), default=False)
 
     def __str__(self):
         return f"{self.pk}: {self.user.email}, {self.company.title}"

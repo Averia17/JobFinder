@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('resumes', '0003_alter_resume_city_alter_resume_description_and_more'),
+        ("resumes", "0003_alter_resume_city_alter_resume_description_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='resume',
-            name='languages',
-            field=models.JSONField(default=dict, null=True, verbose_name='Languages'),
+            model_name="resume",
+            name="languages",
+            field=models.JSONField(default=dict, null=True, verbose_name="Languages"),
         ),
     ]

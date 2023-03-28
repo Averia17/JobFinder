@@ -4,11 +4,19 @@ from .models import Vacancy
 
 
 class VacancySerializer(ModelSerializer):
-    is_responded = BooleanField(required=False)
+    is_responded = BooleanField(required=False, read_only=True)
 
     class Meta:
         model = Vacancy
-        fields = ("id", "title", "min_salary", "max_salary", "company", "is_active", "is_responded")
+        fields = (
+            "id",
+            "title",
+            "min_salary",
+            "max_salary",
+            "company",
+            "is_active",
+            "is_responded",
+        )
 
 
 class VacancyDetailSerializer(VacancySerializer):

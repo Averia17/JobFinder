@@ -31,6 +31,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     "title",
                     "address",
                     "description",
+                    "director"
                 ]
             },
         ),
@@ -44,11 +45,9 @@ class CompanyManager(admin.ModelAdmin):
         "user",
         "company",
     ]
-    readonly_fields = ["is_general"]
     fieldsets = [
         (
             None,
             {"fields": ["user", "company"]},
         ),
-        ("Constant", {"fields": ["is_general"]}),
     ]

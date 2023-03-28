@@ -25,6 +25,7 @@ class VacancyResponse(BaseModel):
         constraints = [
             models.UniqueConstraint(fields=["vacancy", "user"], name="uq_vacancy_user")
         ]
+        ordering = ["-created"]
 
     def __str__(self):
         return f"{self.pk}"

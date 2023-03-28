@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   db:
+    container_name: "db"
     image: postgres
     restart: always
     volumes:
@@ -22,6 +23,20 @@ services:
       - job_finder/.env
     depends_on:
       - db
-
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbitmq
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+    restart: on-failure
+  celery:
+    build: ./job_finder
+    command: celery -A job_finder worker -B
+    volumes:
+      - ./job_finder:/app/backend
+    depends_on:
+      - rabbitmq
+      - backend
 volumes:
   postgres_data:

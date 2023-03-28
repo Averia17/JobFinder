@@ -12,7 +12,9 @@ class Resume(BaseModel):
     )
     city = models.CharField(_("City"), max_length=64)
     position = models.CharField(_("Position"), max_length=64, null=True, blank=True)
-    description = models.CharField(_("Description"), max_length=1024, null=True, blank=True)
+    description = models.CharField(
+        _("Description"), max_length=1024, null=True, blank=True
+    )
     experience = models.CharField(
         _("Experience"), max_length=256, null=True, blank=True
     )

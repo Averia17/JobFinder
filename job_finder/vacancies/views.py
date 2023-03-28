@@ -27,10 +27,11 @@ class VacancyViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        queryset = super().get_queryset()
+        if self.action == "list":
+            queryset = queryset.filter(is_active=True)
         if not user.is_anonymous:
-            response_subquery = user.responses.filter(vacancy_id=OuterRef('id'))
-            return super().get_queryset().annotate(is_responded=Exists(response_subquery))
-        return super().get_queryset()
-
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+            return queryset.annotate(
+                is_responded=Exists(user.responses.filter(vacancy_id=OuterRef("id")))
+            )
+        return queryset

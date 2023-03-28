@@ -23,10 +23,20 @@ class UserRegisterSerializer(ModelSerializer):
         fields = ("id", "email", "password")
 
 
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "email", "phone", "name")
+        read_only_fields = ("email", )
+
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         token["user_id"] = user.id
-        token["role"] = user.id
+        if user.is_manager:
+            token["company"] = user.companymanager.company.id
+            token["is_director"] = hasattr(user, 'company')
+
         return token

@@ -17,3 +17,5 @@ VACANCY_RESPONSE_STATUS = (
     ("VIEWED", "Viewed"),
     ("NOT_VIEWED", "Not Viewed"),
 )
+
+RESPONSE_MESSAGE_SUBJECT = "Response on vacancy"

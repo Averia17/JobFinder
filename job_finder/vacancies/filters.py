@@ -4,7 +4,6 @@ from vacancies.models import Vacancy
 
 
 class VacancyFilter(filters.FilterSet):
-
     class Meta:
         model = Vacancy
         fields = ["min_salary", "max_salary", "experience_option"]
