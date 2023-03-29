@@ -21,6 +21,7 @@ class UserAdmin(admin.ModelAdmin):
                 "fields": [
                     "email",
                     "password",
+                    "name",
                     "is_active",
                     "last_login",
                 ]

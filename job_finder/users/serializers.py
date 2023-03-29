@@ -12,14 +12,13 @@ class UserRegisterSerializer(ModelSerializer):
     )
     password = serializers.CharField(min_length=8)
     name = serializers.CharField(max_length=256, required=False)
-    is_active = serializers.BooleanField(required=False)
+    is_active = serializers.BooleanField(default=True, required=False)
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            validated_data["email"],
-            validated_data["password"],
-            name=validated_data.get("name"),
-            is_active=validated_data.get("is_active"),
+            validated_data.pop("email"),
+            validated_data.pop("password"),
+            **validated_data,
         )
         return user
 
