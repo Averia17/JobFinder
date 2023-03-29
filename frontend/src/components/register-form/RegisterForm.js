@@ -16,9 +16,9 @@ const RegisterForm = ({onSubmit, userData, setUserData, companyData, setCompanyD
 
     return (
         <form method='post' onSubmit={onSubmit}>
-            <Input type='email' name='email' placeholder='Email' required handleChange={handleChangeData}/>
-            <Input type='password' name='password' placeholder='Password' required handleChange={handleChangeData}/>
-            <Input type='password' name='confirmPassword' placeholder='Re-enter password' required handleChange={handleChangeData}/>
+            <Input type='email' name='email' placeholder='Email' required onChange={handleChangeData}/>
+            <Input type='password' name='password' placeholder='Password' required onChange={handleChangeData}/>
+            <Input type='password' name='confirmPassword' placeholder='Re-enter password' required onChange={handleChangeData}/>
             <input type='checkbox' name='isEmployee' className='checkbox-field' onChange={handleChangeData}/>
             {
                 userData.isEmployee ?

@@ -4,8 +4,6 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 const CompanyForm = ({companyData, setCompanyData}) => {
-    const navigate = useNavigate();
-
     const handleChangeData = event => {
         let {value, name} = event.currentTarget;
         setCompanyData({
@@ -16,7 +14,7 @@ const CompanyForm = ({companyData, setCompanyData}) => {
 
     return (
         <>
-            <Input type='text' name='title' required placeholder='Company title' handleChange={handleChangeData}/>
+            <Input type='text' name='title' required placeholder='Company title' onChange={handleChangeData}/>
         </>
     );
 };

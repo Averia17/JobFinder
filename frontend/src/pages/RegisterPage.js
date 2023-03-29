@@ -19,32 +19,24 @@ const RegisterPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         let {email, password} = userData;
-        axios.post('/api/users/', {email, password}).then(() => {
-            if (!userData.isEmployee) {
+        if (!userData.isEmployee) {
+            axios.post('/api/users/', {email, password}).then(() => {
                 navigate('/login', {
                     state: {
                         email: userData.email,
                         password: userData.password
                     }
                 })
-            } else {
-                axios.post('/login/', userData).then(({data}) => {
-                    localStorage.setItem('access_token', data.access);
-                    localStorage.setItem('refresh_token', data.refresh);
-                }).then(() => {
-                    const accessToken = localStorage.getItem('access_token');
-                    axios.post('/api/companies/', companyData,
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        }).then(({data}) => {
-                            navigate(`/companies/${data.id}`);
-                    })
-                })
-            }
+            })
+        } else {
+            axios.post('/api/companies/', {email, password, ...companyData})
+                .then(({data}) => {
+                    navigate(`/companies/${data.id}`);
+            })
+        }
 
-        })
+
+
         // .catch(({response}) => {
         //     let error = response.data;
         //     if(error?.email) {
