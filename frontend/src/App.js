@@ -13,6 +13,7 @@ import VacancyPage from "./pages/vacancy/VacancyPage";
 import ResumesPage from "./pages/resumes/ResumesPage";
 import ResumeForm from "./components/resume-form/ResumeForm";
 import ResponsesPage from "./pages/responses/ResponsesPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 axios.defaults.baseURL = 'http://localhost:8000'
 
@@ -34,6 +35,7 @@ const App = () => {
           <Route path='/resumes' element={<ResumesPage/>}/>
           <Route path='/create-resume' element={<ResumeForm/>}/>
           <Route path='/responses' element={<ResponsesPage/>}/>
+          <Route path='/profile' element={<ProfilePage/>}/>
           <Route path='/' element={<MainPage/>}/>
         </Routes>
       </Router>
