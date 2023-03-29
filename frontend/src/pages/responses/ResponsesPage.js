@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Response from "../../components/response/Response";
+import ChatModal from "../../components/chat-modal/ChatModal";
 
 const ResponsesPage = () => {
     const [responses, setResponses] = useState([]);
@@ -14,6 +15,8 @@ const ResponsesPage = () => {
         })
             .then(({data}) => setResponses(data))
     }, [])
+
+
     return (
         <div>
             {
@@ -21,6 +24,7 @@ const ResponsesPage = () => {
                     <Response {...response}/>
                 ))
             }
+            <ChatModal/>
         </div>
     );
 };

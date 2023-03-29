@@ -1,0 +1,83 @@
+.chat__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: fixed;
+    bottom: 1vmax;
+    right: 1vmax;
+    width: 20vmax;
+    height: 25vmax;
+    border: 3px solid #0000e6;
+    border-radius: 15px;
+    background: #e6e6ff;
+}
+
+.chat__textField__container {
+    display: flex;
+    justify-content: flex-end;
+    width: 20vmax;
+    position: relative;
+    bottom: 0;
+    right: 0;
+}
+
+.chat__textField {
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 15px;
+    width: 20vmax;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-right: 1vmax;
+}
+
+.chat__button {
+    position: absolute;
+    background: transparent;
+    border: 1px solid #0000e6;
+    padding: 5px 10px;
+    border-radius: 5px;
+    bottom: 35%;
+    right: 5%;
+}
+
+.chat__messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat__message__container {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    background: #0000e6;
+    border-radius: 15px;
+    padding: 0.7vmax 1vmax;
+    width: fit-content;
+    min-width: 2.5vmax;
+    margin: 7px;
+    color: #e6e6ff;
+    gap: 0.3vmax;
+}
+
+.chat__message__container p {
+    margin: 0;
+}
+
+.myMessage {
+    align-self: flex-end;
+}
+
+.companionMessage {
+    align-self: flex-start;
+}
+
+.message__username {
+    font-size: 0.8rem;
+}
+
+.message__time {
+    align-self: flex-end;
+    font-size: 0.7rem;
+}

@@ -7,7 +7,6 @@
     font-size: 1vmax;
     padding: 1vmax 2vmax;
     border-radius: 0.5vmax;
-
 }
 
 h2 {
@@ -18,7 +17,7 @@ h2 {
     margin: 0.5vmax 0;
 }
 
-button {
+.vacancy-container button {
     margin: 0.5vmax 0;
     padding: 0.5vmax 1vmax;
     border-radius: 0.5vmax;
