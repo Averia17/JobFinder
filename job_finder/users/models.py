@@ -8,7 +8,7 @@ from core.models import BaseModel
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password):
+    def create_user(self, email, password, **kwargs):
         if not email:
             raise ValueError("The email must be set")
         if not password:
@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
+            **kwargs,
         )
 
         user.set_password(password)
@@ -33,10 +34,19 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, BaseModel):
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,13}$', message="Phone number must be entered in the format: '+375293332211'. Up to 13 digits allowed.")
+    phone_regex = RegexValidator(
+        regex=r"^\+?1?\d{9,13}$",
+        message="Phone number must be entered in the format: '+375293332211'. Up to 13 digits allowed.",
+    )
 
     email = models.EmailField(_("Email"), unique=True, max_length=256, blank=False)
-    phone = models.CharField(_("Phone number"), validators=[phone_regex], max_length=13, null=True, blank=True)
+    phone = models.CharField(
+        _("Phone number"),
+        validators=[phone_regex],
+        max_length=13,
+        null=True,
+        blank=True,
+    )
     name = models.CharField(_("Full name"), max_length=256, null=True, blank=True)
     is_staff = models.BooleanField(_("Is staff"), default=False)
     is_active = models.BooleanField(_("Is active"), default=True)
@@ -59,4 +69,4 @@ class User(AbstractBaseUser, BaseModel):
 
     @property
     def is_manager(self):
-        return hasattr(self, 'companymanager')
+        return hasattr(self, "companymanager")

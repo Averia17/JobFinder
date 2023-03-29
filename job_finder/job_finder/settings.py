@@ -10,6 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DEBUG", True)
 
+BASE_FRONTEND_URL = os.getenv("BASE_FRONTEND_URL", "http://localhost:3000")
+BASE_BACKEND_URL = os.getenv("BASE_BACKEND_URL", "http://localhost:8000")
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ["*"]
@@ -48,7 +51,7 @@ ROOT_URLCONF = "job_finder.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -162,6 +165,45 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "%(levelname)-6s %(name)-12s %(asctime)s %(message)s",
+        },
+        "file": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "console",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "formatter": "file",
+            "filename": "debug.log",
+        },
+        "celery": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "formatter": "console",
+            "filename": "celery.log",
+        },
+    },
+    "loggers": {
+        "": {"level": "DEBUG", "handlers": ["console", "file"]},
+        "celery": {
+            "level": "DEBUG",
+            "handlers": ["celery", "console"],
+            "propagate": False,
+        },
+    },
+}
+
 
 if DEBUG:
     import socket

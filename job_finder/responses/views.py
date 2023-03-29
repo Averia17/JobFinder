@@ -22,7 +22,11 @@ class VacancyResponseViewSet(
     def get_queryset(self):
         # TODO: general manager must see all vacancy responses
         if self.request.user.is_manager:
-            return super().get_queryset().filter(vacancy__in=self.request.user.companymanager.vacancies.all())
+            return (
+                super()
+                .get_queryset()
+                .filter(vacancy__in=self.request.user.companymanager.vacancies.all())
+            )
         return super().get_queryset().filter(user=self.request.user)
 
     @action(detail=True, methods=["GET", "POST"], serializer_class=MessageSerializer)
@@ -34,9 +38,9 @@ class VacancyResponseViewSet(
             serializer.is_valid(raise_exception=True)
             message = serializer.save()
             if request.user != vacancy_response.user:
-                send_user_email.delay(vacancy_response.user.email,
-                                      RESPONSE_MESSAGE_SUBJECT,
-                                      message.text)
+                send_user_email.delay(
+                    vacancy_response.user.email, RESPONSE_MESSAGE_SUBJECT, message.text
+                )
             return Response(
                 self.serializer_class(message).data,
                 status=status.HTTP_201_CREATED,

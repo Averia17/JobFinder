@@ -4,7 +4,7 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
-from companies.views import CompanyViewSet
+from companies.views import CompanyViewSet, CompanyManagerViewSet
 from responses.views import VacancyResponseViewSet
 from . import settings
 from resumes.views import ResumeViewSet
@@ -17,6 +17,7 @@ router.register("resumes", ResumeViewSet)
 router.register("vacancies", VacancyViewSet)
 router.register("companies", CompanyViewSet)
 router.register("responses", VacancyResponseViewSet)
+router.register("managers", CompanyManagerViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

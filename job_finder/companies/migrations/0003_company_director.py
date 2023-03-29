@@ -9,14 +9,18 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('companies', '0002_companymanager'),
+        ("companies", "0002_companymanager"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='company',
-            name='director',
-            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="company",
+            name="director",
+            field=models.OneToOneField(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
     ]

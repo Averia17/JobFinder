@@ -26,14 +26,7 @@ class CompanyAdmin(admin.ModelAdmin):
     fieldsets = [
         (
             None,
-            {
-                "fields": [
-                    "title",
-                    "address",
-                    "description",
-                    "director"
-                ]
-            },
+            {"fields": ["title", "address", "description", "director"]},
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
     ]
