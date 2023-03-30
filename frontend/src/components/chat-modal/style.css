@@ -69,12 +69,12 @@
 .myMessage {
     align-self: flex-end;
     background: #0000b3;
-    margin-left: 15px;
+    margin-left: 40px;
 }
 
 .companionMessage {
     align-self: flex-start;
-    margin-right: 15px;
+    margin-right: 40px;
 }
 
 .message__username {
