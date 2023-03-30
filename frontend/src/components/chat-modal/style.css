@@ -52,12 +52,12 @@
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
-    background: #0000e6;
+    background: #4d4dff;
     border-radius: 15px;
     padding: 0.7vmax 1vmax;
     width: fit-content;
-    min-width: 2.5vmax;
-    margin: 7px;
+    min-width: 5vmax;
+    margin: 7px 10px;
     color: #e6e6ff;
     gap: 0.3vmax;
 }
@@ -72,6 +72,7 @@
 
 .companionMessage {
     align-self: flex-start;
+    background: #0000b3;
 }
 
 .message__username {

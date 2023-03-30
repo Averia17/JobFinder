@@ -26,8 +26,6 @@ const ChatModal = () => {
         setResponseId(searchParams.get('responseId'));
     }, [])
 
-    console.log(responseId)
-
     const handleSendMessage = () => {
 
         axios.post(`/api/responses/${responseId}/messages/`, {text: message}, {
