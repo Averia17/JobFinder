@@ -68,11 +68,13 @@
 
 .myMessage {
     align-self: flex-end;
+    background: #0000b3;
+    margin-left: 15px;
 }
 
 .companionMessage {
     align-self: flex-start;
-    background: #0000b3;
+    margin-right: 15px;
 }
 
 .message__username {
