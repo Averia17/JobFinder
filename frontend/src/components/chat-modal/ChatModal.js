@@ -10,10 +10,9 @@ const ChatModal = () => {
     const accessToken = localStorage.getItem('access_token');
     const {user_id} = useGetInfoFromToken();
     const [searchParams] = useSearchParams();
-    const [responseId, setResponseId] = useState(undefined);
+    const [responseId, setResponseId] = useState(searchParams.get('responseId'));
     const [message, setMessage] = useState(undefined);
     const [messages, setMessages] = useState([]);
-    const [time, setTime] = useState(Date.now());
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'))
@@ -25,34 +24,43 @@ const ChatModal = () => {
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'));
-        axios.get(`/api/responses/${responseId}/messages/`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        }).then(({data}) => setMessages(data))
     }, [])
 
+    console.log(responseId)
+
     const handleSendMessage = () => {
+
         axios.post(`/api/responses/${responseId}/messages/`, {text: message}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then(() => setMessage(''))
-    }
-
-    useEffect(() => {
         axios.get(`/api/responses/${responseId}/messages/`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then(({data}) => setMessages(data))
-        const interval = setInterval(() => setTime(Date.now()), 5000);
-        return () => {
-            clearInterval(interval);
-        };
-    }, [time])
+    }
 
-    return searchParams.get('responseId') && (
+    useEffect(() => {
+        setResponseId(searchParams.get('responseId'));
+
+        axios.get(`/api/responses/${responseId}/messages/`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(({data}) => setMessages(data))
+        const interval = setInterval(() => {
+            axios.get(`/api/responses/${responseId}/messages/`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }).then(({data}) => setMessages(data))
+        }, 5000)
+        return () => clearInterval(interval)
+    }, [])
+
+    return (
         <div className='chat__container'>
             <div className='chat__messages'>
                 {

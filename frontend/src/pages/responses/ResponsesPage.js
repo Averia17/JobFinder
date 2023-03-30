@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Response from "../../components/response/Response";
 import ChatModal from "../../components/chat-modal/ChatModal";
+import {useSearchParams} from "react-router-dom";
 
 const ResponsesPage = () => {
     const [responses, setResponses] = useState([]);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         const accessToken = localStorage.getItem('access_token');
@@ -24,7 +26,7 @@ const ResponsesPage = () => {
                     <Response {...response}/>
                 ))
             }
-            <ChatModal/>
+            {searchParams.get('responseId') && <ChatModal/>}
         </div>
     );
 };
