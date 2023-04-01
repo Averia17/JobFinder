@@ -5,13 +5,12 @@ import {Link} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router";
 import axios from "axios";
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 
 const Header = () => {
     const navigate = useNavigate();
     const [isAuthorized, setIsAuthorized] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    // const isAdmin = false;
-    // const { isAdmin } = useSelector(state => state.admin);
+    const tokenInfo = useGetInfoFromToken();
 
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -32,7 +31,6 @@ const Header = () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setIsAuthorized(false)
-        setIsAdmin(false)
     }
 
     return (
@@ -43,16 +41,16 @@ const Header = () => {
             <div className='header-links'>
                 <div className='head'>
                     <div className='vacancies'><Link to={{pathname: '/vacancies'}}>Vacancies</Link></div>
+                    { isAuthorized && <div className='authentication'><Link to={{pathname: '/profile'}}>Profile</Link></div> }
                     {
                         isAuthorized ?
-                            (isAdmin ?
-                                    <div className='authentication'><Link to={{pathname: '/admin'}}>Admin Panel</Link>
+                            (tokenInfo?.company ?
+                                    <div className='authentication'><Link to={{pathname: '/company'}}>Company</Link>
                                     </div>
                                     :
                                     <>
                                         <div className='tours'><Link to={{pathname: '/resumes'}}>Resumes</Link></div>
                                         <div className='hotels'><Link to={{pathname: '/responses'}}>Responses</Link></div>
-                                        <div className='authentication'><Link to={{pathname: '/profile'}}>Profile</Link></div>
                                     </>
                             )
                             :

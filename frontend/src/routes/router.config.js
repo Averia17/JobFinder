@@ -16,6 +16,12 @@ export const routesElements = {
     createResume: '/create-resume',
 }
 
+export const commonAuthorizedRoutes = {
+    [routesElements.profile]: {
+        element: <ProfilePage/>,
+    },
+}
+
 export const employeeRoutes = {
     [routesElements.company]: {
         element: <MyCompanyPage/>,
@@ -23,9 +29,6 @@ export const employeeRoutes = {
 }
 
 export const authorizedUserRoutes = {
-    [routesElements.profile]: {
-        element: <ProfilePage/>,
-    },
     [routesElements.responses]: {
         element: <ResponsesPage/>,
     },
