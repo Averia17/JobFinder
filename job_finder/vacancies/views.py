@@ -44,8 +44,6 @@ class VacancyViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         queryset = super().get_queryset()
-        if self.action == "list":
-            queryset = queryset.filter(is_active=True)
         if not user.is_anonymous:
             return queryset.annotate(
                 is_responded=Exists(user.responses.filter(vacancy_id=OuterRef("id")))
