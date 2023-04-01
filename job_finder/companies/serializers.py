@@ -1,18 +1,36 @@
 import hashlib
 
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from companies.models import Company, CompanyManager
 from job_finder.settings import SECRET_KEY
 from users.serializers import UserRegisterSerializer
+from vacancies.serializers import VacancySerializer
 
 
 class CompanySerializer(ModelSerializer):
+    vacancies = SerializerMethodField()
+
     class Meta:
         model = Company
-        fields = ("id", "title", "address", "description", "director")
+        fields = ("id", "title", "address", "description", "director", "vacancies")
 
+    def get_vacancies(self, obj):
+        vacancies = obj.vacancies.all().select_related("company")
+        if "request" in self.context:
+            request = self.context["request"]
+            if request.user.is_manager:
+                vacancies = request.user.companymanager.vacancies.all().select_related("company")
+        return VacancySerializer(vacancies, many=True).data
+
+    def validate(self, attrs):
+        print(self.context)
+        if hasattr(self.context, "vacancies"):
+            print(self.context.get("vacancies"))
+            attrs["vacancies"] = self.context.get("vacancies")
+        return attrs
 
 class CompanyManagerSerializer(ModelSerializer):
     user = UserRegisterSerializer(write_only=True)

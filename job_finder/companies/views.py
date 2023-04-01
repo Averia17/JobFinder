@@ -69,7 +69,6 @@ class CompanyViewSet(
 class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
     queryset = CompanyManager.objects.all()
     serializer_class = CompanyManagerSerializer
-    # TODO: Check permission
     permission_classes = [IsOwnerOrReadOnly]
 
     @action(detail=False, methods=["POST"])
@@ -110,7 +109,7 @@ class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet)
                 "create_manager.html",
                 {
                     "link": f"{BASE_FRONTEND_URL}/register_manager/"
-                    f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
+                            f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
                     "name": manager.user.name,
                 },
             ),
