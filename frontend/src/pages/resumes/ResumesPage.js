@@ -4,11 +4,15 @@ import Resume from "../../components/resume/Resume";
 import {useNavigate} from "react-router";
 
 const ResumesPage = () => {
+    const accessToken = localStorage.getItem('access_token');
     const navigate = useNavigate();
     const [resumes, setResumes] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/resumes')
+        axios.get('/api/resumes', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }})
             .then(({data}) => setResumes(data));
     }, [])
 

@@ -12,7 +12,7 @@ class UserRegisterSerializer(ModelSerializer):
     )
     password = serializers.CharField(min_length=8)
     name = serializers.CharField(max_length=256, required=False)
-    is_active = serializers.BooleanField(default=True, required=False)
+    is_active = serializers.BooleanField(required=False)
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -41,6 +41,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["user_id"] = user.id
         if user.is_manager:
             token["company"] = user.companymanager.company.id
-            token["is_director"] = hasattr(user, "company")
-
+        if user.is_director:
+            token["is_director"] = True
+            token["company"] = user.company.id
         return token

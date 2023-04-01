@@ -20,7 +20,11 @@ from rest_framework.viewsets import GenericViewSet
 
 from companies.models import Company, CompanyManager
 from companies.permissions import IsOwnerOrReadOnly, UserInCompany
-from companies.serializers import CompanySerializer, PasswordSerializer, CompanyManagerSerializer
+from companies.serializers import (
+    CompanySerializer,
+    PasswordSerializer,
+    CompanyManagerSerializer,
+)
 from job_finder.settings import BASE_FRONTEND_URL, SECRET_KEY
 from users.models import User
 from users.serializers import UserRegisterSerializer
@@ -62,11 +66,10 @@ class CompanyViewSet(
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
-class CompanyManagerViewSet(
-    CreateModelMixin, DestroyModelMixin, GenericViewSet
-):
+class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
     queryset = CompanyManager.objects.all()
     serializer_class = CompanyManagerSerializer
+    # TODO: Check permission
     permission_classes = [IsOwnerOrReadOnly]
 
     @action(detail=False, methods=["POST"])
@@ -74,6 +77,10 @@ class CompanyManagerViewSet(
         serializer = PasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(User, email=request.data["email"])
+        if user.is_active:
+            return Response(
+                "You have already accepted the invitation", status=HTTP_400_BAD_REQUEST
+            )
         user.set_password(serializer.validated_data["new_password"])
         user.is_active = True
         user.save()
@@ -81,8 +88,16 @@ class CompanyManagerViewSet(
 
     def create(self, request, *args, **kwargs):
         # TODO: make transaction
-        request.data["user"].update(
-            {"password": make_password(BaseUserManager().make_random_password()), "is_active": False})
+        request.data.update(
+            {
+                "company": request.user.company.id,
+                "user": {
+                    **request.data["user"],
+                    "password": make_password(BaseUserManager().make_random_password()),
+                    "is_active": False,
+                },
+            }
+        )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         manager = serializer.save()
@@ -95,7 +110,8 @@ class CompanyManagerViewSet(
                 "create_manager.html",
                 {
                     "link": f"{BASE_FRONTEND_URL}/register_manager/"
-                            f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}"
+                    f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
+                    "name": manager.user.name,
                 },
             ),
         )

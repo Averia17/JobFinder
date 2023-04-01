@@ -13,18 +13,28 @@ from users.serializers import (
 )
 
 
-class UserViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class UserViewSet(
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
     serializer_class = UserRegisterSerializer
     queryset = User.objects.all()
 
     @action(
         detail=False,
-        methods=["GET"],
+        methods=["GET", "PATCH"],
         serializer_class=UserSerializer,
         permission_classes=[IsAuthenticated],
     )
     def my(self, request):
-        serializer = self.get_serializer(request.user)
+        if request.method == "GET":
+            serializer = self.get_serializer(request.user)
+        else:
+            serializer = self.get_serializer(request.user, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
         return Response(serializer.data)
 
 

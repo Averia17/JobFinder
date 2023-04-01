@@ -14,6 +14,10 @@ class Company(BaseModel):
         "users.User", on_delete=models.CASCADE, primary_key=False
     )
 
+    @property
+    def user(self):
+        return self.director
+
     class Meta:
         app_label = "companies"
         verbose_name_plural = "Companies"

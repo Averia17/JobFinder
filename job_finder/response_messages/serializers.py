@@ -19,3 +19,8 @@ class MessageSerializer(ModelSerializer):
     class Meta:
         model = Message
         fields = ("id", "user", "text", "vacancy_response", "created")
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result["user"] = {"id": instance.user.id, "name": instance.user.name}
+        return result

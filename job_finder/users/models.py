@@ -70,3 +70,7 @@ class User(AbstractBaseUser, BaseModel):
     @property
     def is_manager(self):
         return hasattr(self, "companymanager")
+
+    @property
+    def is_director(self):
+        return hasattr(self, "company")

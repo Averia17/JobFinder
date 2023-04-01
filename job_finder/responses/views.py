@@ -20,14 +20,15 @@ class VacancyResponseViewSet(
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # TODO: general manager must see all vacancy responses
+        # TODO: try to do more elegant
+        queryset = super().get_queryset()
         if self.request.user.is_manager:
             return (
-                super()
-                .get_queryset()
-                .filter(vacancy__in=self.request.user.companymanager.vacancies.all())
+                queryset.filter(vacancy__in=self.request.user.companymanager.vacancies.all())
             )
-        return super().get_queryset().filter(user=self.request.user)
+        if self.request.user.is_director:
+            return queryset.filter(vacancy__in=self.request.user.company.vacancies.all())
+        return queryset.filter(user=self.request.user)
 
     @action(detail=True, methods=["GET", "POST"], serializer_class=MessageSerializer)
     def messages(self, request, pk=None):

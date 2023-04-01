@@ -1,5 +1,6 @@
 from rest_framework.fields import BooleanField
 from rest_framework.serializers import ModelSerializer
+
 from .models import Vacancy
 
 
@@ -17,6 +18,11 @@ class VacancySerializer(ModelSerializer):
             "is_active",
             "is_responded",
         )
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result["company"] = {"id": instance.company.id, "title": instance.company.title}
+        return result
 
 
 class VacancyDetailSerializer(VacancySerializer):

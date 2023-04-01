@@ -22,7 +22,9 @@ class CompanyManagerSerializer(ModelSerializer):
         fields = ("company", "user")
 
     def create(self, validated_data):
-        validated_data["user"] = UserRegisterSerializer().create(validated_data.pop("user"))
+        validated_data["user"] = UserRegisterSerializer().create(
+            validated_data.pop("user")
+        )
         return super().create(validated_data)
 
 
