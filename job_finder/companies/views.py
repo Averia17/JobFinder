@@ -91,7 +91,7 @@ class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet)
             {
                 "company": request.user.company.id,
                 "user": {
-                    **request.data["user"],
+                    **request.data,
                     "password": make_password(BaseUserManager().make_random_password()),
                     "is_active": False,
                 },
