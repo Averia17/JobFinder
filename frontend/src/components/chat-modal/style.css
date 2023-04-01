@@ -29,7 +29,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    padding-right: 1vmax;
+    padding-right: 5vmax;
 }
 
 .chat__button {
@@ -57,6 +57,7 @@
     padding: 0.7vmax 1vmax;
     width: fit-content;
     min-width: 5vmax;
+    max-width: 14vmax;
     margin: 7px 10px;
     color: #e6e6ff;
     gap: 0.3vmax;
@@ -69,12 +70,10 @@
 .myMessage {
     align-self: flex-end;
     background: #0000b3;
-    margin-left: 40px;
 }
 
 .companionMessage {
     align-self: flex-start;
-    margin-right: 40px;
 }
 
 .message__username {
