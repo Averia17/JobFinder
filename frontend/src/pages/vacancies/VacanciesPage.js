@@ -2,17 +2,18 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Vacancy from "../../components/vacancy/Vacancy";
 import './styles.css'
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 
 const VacanciesPage = () => {
+    const tokenInfo = useGetInfoFromToken();
     const [vacancies, setVacancies] = useState([]);
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('access_token');
-        axios.get('/api/vacancies', accessToken ? {
+        axios.get('/api/vacancies?is_active=true', tokenInfo?.accessToken && {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
-        } : null)
+        })
             .then(({data}) => setVacancies(data));
     }, [])
 
@@ -22,7 +23,7 @@ const VacanciesPage = () => {
             <div className='vacancies-container'>
                 {
                     vacancies.map(vacancy => (
-                        <Vacancy {...vacancy}/>
+                        <Vacancy key={vacancy.id} {...vacancy}/>
                     ))
                 }
             </div>

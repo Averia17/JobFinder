@@ -31,13 +31,13 @@ const Vacancy = (props) => {
     }
 
     return (
-        <div onClick={linkToVacancyPage} key={id} className='vacancy-container'>
+        <div onClick={linkToVacancyPage} className='vacancy-container'>
             <h2>{title}</h2>
             {
                 props.min_salary || props.max_salary ?
                     renderSalaryIfExists() : null
             }
-            <div>{company}</div>
+            <div>{company?.title}</div>
             <button onClick={respondToVacancy}
                     className={props.is_responded ? 'respond-button__disabled' : 'respond-button'}
                     disabled={props.is_responded}>Respond</button>
