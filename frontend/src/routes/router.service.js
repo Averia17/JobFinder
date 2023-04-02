@@ -1,4 +1,3 @@
-import {authorizedUserRoutes} from "./router.config";
 import {Route} from "react-router";
 
 export const mapRoutes = routes => {
