@@ -8,7 +8,7 @@ from rest_framework.serializers import ModelSerializer
 
 from companies.models import Company, CompanyManager
 from job_finder.settings import SECRET_KEY
-from users.serializers import UserRegisterSerializer
+from users.serializers import UserRegisterSerializer, UserSerializer
 from vacancies.serializers import VacancySerializer
 
 
@@ -30,7 +30,7 @@ class CompanySerializer(ModelSerializer):
         return VacancySerializer(vacancies, many=True).data
 
 
-class CompanyManagerSerializer(ModelSerializer):
+class CompanyManagerCreateSerializer(ModelSerializer):
     user = UserRegisterSerializer(write_only=True)
 
     class Meta:
@@ -56,6 +56,14 @@ class CompanyManagerSerializer(ModelSerializer):
             validated_data.pop("user")
         )
         return super().create(validated_data)
+
+
+class CompanyManagerSerializer(ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = CompanyManager
+        fields = ("company", "user")
 
 
 class PasswordSerializer(serializers.Serializer):

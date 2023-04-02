@@ -2,8 +2,6 @@ import hashlib
 from collections import OrderedDict
 from urllib.parse import urlencode
 
-from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
@@ -11,19 +9,19 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     CreateModelMixin,
     UpdateModelMixin,
-    DestroyModelMixin,
+    DestroyModelMixin, ListModelMixin,
 )
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.viewsets import GenericViewSet
 
 from companies.models import Company, CompanyManager
-from companies.permissions import IsOwnerOrReadOnly, UserInCompany
+from companies.permissions import IsDirector, UserInCompany
 from companies.serializers import (
     CompanySerializer,
     PasswordSerializer,
-    CompanyManagerSerializer,
+    CompanyManagerCreateSerializer, CompanyManagerSerializer,
 )
 from job_finder.settings import BASE_FRONTEND_URL, SECRET_KEY
 from users.models import User
@@ -38,9 +36,9 @@ class CompanyViewSet(
     serializer_class = CompanySerializer
 
     permission_to_method = {
-        "update": [IsAuthenticated, IsOwnerOrReadOnly],
-        "partial_update": [IsAuthenticated, IsOwnerOrReadOnly],
-        "retrieve": [IsAuthenticated, UserInCompany],
+        "update": [IsDirector],
+        "partial_update": [IsDirector],
+        "retrieve": [UserInCompany],
     }
 
     def get_permissions(self):
@@ -66,14 +64,23 @@ class CompanyViewSet(
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
-class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
+class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, GenericViewSet):
     queryset = CompanyManager.objects.all()
+    permission_classes = [IsDirector]
     serializer_class = CompanyManagerSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    serializer_classes = {
+        "create": CompanyManagerCreateSerializer,
+    }
 
-    @action(detail=False, methods=["POST"])
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, self.serializer_class)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(company=self.request.user.company)
+
+    @action(detail=False, methods=["POST"], serializer_class=PasswordSerializer)
     def accept_invite(self, request):
-        serializer = PasswordSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(User, email=request.data["email"])
         if user.is_active:
@@ -99,7 +106,7 @@ class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet)
                 "create_manager.html",
                 {
                     "link": f"{BASE_FRONTEND_URL}/register_manager/"
-                    f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
+                            f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
                     "name": manager.user.name,
                 },
             ),
