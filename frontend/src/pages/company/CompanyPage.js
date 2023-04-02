@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import axios from "axios";
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 
 const CompanyPage = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [companyInfo, setCompanyInfo] = useState({});
-    const accessToken = localStorage.getItem('access_token');
+    const tokenInfo = useGetInfoFromToken();
 
     useEffect(() => {
         axios.get(`/api/companies/${id}`, {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
         })
             .then(({data}) => setCompanyInfo(data));

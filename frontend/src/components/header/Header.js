@@ -62,9 +62,9 @@ const Header = () => {
                         <div className='authentication' onClick={handleLogout}>Logout</div>
                         :
                         <div className='authentication'>
-                            <Link to={{pathname: '/login/'}}>Log in</Link>
+                            <Link to={{pathname: '/login'}}>Log in</Link>
                             &nbsp;or&nbsp;
-                            <Link to={{pathname: '/register/'}}>Sign up</Link>
+                            <Link to={{pathname: '/register'}}>Sign up</Link>
                         </div>
                 }
             </div>

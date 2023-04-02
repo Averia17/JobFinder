@@ -12,6 +12,7 @@ import {mapRoutes} from "./router.service";
 
 const Router = () => {
     const tokenInfo = useGetInfoFromToken();
+    console.log(tokenInfo)
     return (
         <>
             <BrowserRouter>
@@ -23,7 +24,15 @@ const Router = () => {
                     <Route path='/resumes' element={<ResumesPage/>}/>
                     <Route path='/' element={<MainPage/>}/>
                     { tokenInfo?.user_id ? mapRoutes(commonAuthorizedRoutes): null }
-                    { !tokenInfo?.user_id ? mapRoutes(unauthorizedUserRoutes) : null }
+                    { !tokenInfo?.user_id ? Object.keys(unauthorizedUserRoutes).map((key) => {
+                        return (
+                            <Route
+                                key={key}
+                                path={key}
+                                element={unauthorizedUserRoutes[key].element}
+                            />
+                        );
+                    }) : null }
                     { tokenInfo?.user_id && (!tokenInfo?.company) ? mapRoutes(authorizedUserRoutes) : null }
                     { tokenInfo?.company ? mapRoutes(employeeRoutes): null }
                 </Routes>

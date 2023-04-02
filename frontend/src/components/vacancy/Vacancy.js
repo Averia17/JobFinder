@@ -4,7 +4,7 @@ import axios from "axios";
 import './style.css'
 
 const Vacancy = (props) => {
-    const {id, title, company} = props;
+    const { id, title, company } = props;
     const navigate = useNavigate();
 
     const renderSalaryIfExists = () => {
