@@ -23,7 +23,7 @@ const ResponsesPage = () => {
         <div>
             {
                 responses.map(response => (
-                    <Response {...response}/>
+                    <Response key={response.id} {...response}/>
                 ))
             }
             {searchParams.get('responseId') && <ChatModal/>}
