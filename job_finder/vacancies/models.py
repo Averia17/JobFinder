@@ -29,9 +29,7 @@ class Vacancy(BaseModel):
     manager = models.ForeignKey(
         "companies.CompanyManager",
         related_name="vacancies",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete=models.PROTECT,
     )
 
     class Meta:
