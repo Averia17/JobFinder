@@ -11,11 +11,4 @@ EMPLOYMENT_TYPE = (
     ("FULL-TIME", "Full-time"),
 )
 
-VACANCY_RESPONSE_STATUS = (
-    ("REJECT", "Reject"),
-    ("INVITE", "Invite"),
-    ("VIEWED", "Viewed"),
-    ("NOT_VIEWED", "Not Viewed"),
-)
-
 RESPONSE_MESSAGE_SUBJECT = "Response on vacancy"

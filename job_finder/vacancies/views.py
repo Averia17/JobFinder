@@ -1,13 +1,12 @@
 from django.db.models import OuterRef, Exists
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from companies.permissions import IsManagerOrDirector
 from vacancies.filters import VacancyFilter
 from vacancies.models import Vacancy
-from vacancies.permissions import ManagerOwnerOrDirector
+from vacancies.permissions import IsOwnerManagerOrDirector
 from vacancies.serializers import VacancyDetailSerializer, VacancySerializer
 
 
@@ -25,9 +24,9 @@ class VacancyViewSet(ModelViewSet):
     filterset_class = VacancyFilter
 
     permission_to_method = {
-        "update": [IsAuthenticated, ManagerOwnerOrDirector],
-        "partial_update": [IsAuthenticated, ManagerOwnerOrDirector],
-        "create": [IsAuthenticated, IsManagerOrDirector],
+        "update": [IsOwnerManagerOrDirector],
+        "partial_update": [IsOwnerManagerOrDirector],
+        "create": [IsManagerOrDirector],
     }
 
     def get_permissions(self):

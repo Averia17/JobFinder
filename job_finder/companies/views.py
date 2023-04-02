@@ -87,16 +87,6 @@ class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet)
 
     def create(self, request, *args, **kwargs):
         # TODO: make transaction
-        request.data.update(
-            {
-                "company": request.user.company.id,
-                "user": {
-                    **request.data,
-                    "password": make_password(BaseUserManager().make_random_password()),
-                    "is_active": False,
-                },
-            }
-        )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         manager = serializer.save()
@@ -109,7 +99,7 @@ class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet)
                 "create_manager.html",
                 {
                     "link": f"{BASE_FRONTEND_URL}/register_manager/"
-                            f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
+                    f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
                     "name": manager.user.name,
                 },
             ),

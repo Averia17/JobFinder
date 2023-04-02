@@ -1,11 +1,18 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.constants import VACANCY_RESPONSE_STATUS
 from core.models import BaseModel
 
 
 class VacancyResponse(BaseModel):
+    viewed = "VIEWED"
+    not_viewed = "NOT_VIEWED"
+    VACANCY_RESPONSE_STATUS = (
+        ("REJECT", "Reject"),
+        ("INVITE", "Invite"),
+        (viewed, "Viewed"),
+        (not_viewed, "Not Viewed"),
+    )
     vacancy = models.ForeignKey(
         "vacancies.Vacancy", related_name="responses", on_delete=models.CASCADE
     )

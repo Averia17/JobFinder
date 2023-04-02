@@ -1,6 +1,7 @@
 from rest_framework.fields import BooleanField
 from rest_framework.serializers import ModelSerializer
 
+from responses.serializers import VacancyResponseSerializer, VacancyResponseReadSerializer
 from .models import Vacancy
 
 
@@ -32,3 +33,11 @@ class VacancyDetailSerializer(VacancySerializer):
             "experience_option",
             "employment_type",
         )
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        user = self.context["request"].user
+        if (user.is_manager and instance.manager.user == user) or (
+                user.is_director and instance.company == user.company):
+            res["responses"] = VacancyResponseReadSerializer(instance.responses.all(), many=True).data
+        return res

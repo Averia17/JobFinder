@@ -13,7 +13,7 @@ class UserAdmin(admin.ModelAdmin):
     ]
     list_filter = ["last_login", "is_staff"]
     search_fields = ["email"]
-    readonly_fields = ["last_login", "created", "updated"]
+    readonly_fields = ["is_staff", "last_login", "created", "updated"]
     fieldsets = [
         (
             None,
@@ -23,6 +23,7 @@ class UserAdmin(admin.ModelAdmin):
                     "password",
                     "name",
                     "is_active",
+                    "is_staff",
                     "last_login",
                 ]
             },

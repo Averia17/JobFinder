@@ -1,5 +1,7 @@
 import hashlib
 
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
@@ -22,15 +24,11 @@ class CompanySerializer(ModelSerializer):
         if "request" in self.context:
             request = self.context["request"]
             if request.user.is_manager:
-                vacancies = request.user.companymanager.vacancies.all().select_related("company")
+                vacancies = request.user.companymanager.vacancies.all().select_related(
+                    "company"
+                )
         return VacancySerializer(vacancies, many=True).data
 
-    def validate(self, attrs):
-        print(self.context)
-        if hasattr(self.context, "vacancies"):
-            print(self.context.get("vacancies"))
-            attrs["vacancies"] = self.context.get("vacancies")
-        return attrs
 
 class CompanyManagerSerializer(ModelSerializer):
     user = UserRegisterSerializer(write_only=True)
@@ -38,6 +36,20 @@ class CompanyManagerSerializer(ModelSerializer):
     class Meta:
         model = CompanyManager
         fields = ("company", "user")
+
+    def to_internal_value(self, data):
+        data.update(
+            {
+                "company": self.context["request"].user.company.id,
+                "user": {
+                    "email": data.get("email"),
+                    "name": data.get("name"),
+                    "password": make_password(BaseUserManager().make_random_password()),
+                    "is_active": False,
+                },
+            }
+        )
+        return super().to_internal_value(data)
 
     def create(self, validated_data):
         validated_data["user"] = UserRegisterSerializer().create(
