@@ -38,11 +38,12 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/login/', userData).then(response => {
-            localStorage.setItem('access_token', response.data.access);
-            localStorage.setItem('refresh_token', response.data.refresh);
+        axios.post('/login/', userData).then(({ data }) => {
+            localStorage.setItem('access_token', data.access);
+            localStorage.setItem('refresh_token', data.refresh);
         }).then(() => {
             navigate("/");
+            window.location.reload();
         })
     }
     //

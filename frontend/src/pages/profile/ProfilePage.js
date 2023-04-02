@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import axios from "axios";
 
 import './style.css'
@@ -14,10 +13,9 @@ const ProfilePage = ({props}) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then(({data}) => setUserInfo(data))
-    }, [])
+    }, [accessToken])
 
     const { id } = userInfo;
-    console.log(Object.entries(userInfo))
 
     return (
         <div key={ id } className='profile__container'>

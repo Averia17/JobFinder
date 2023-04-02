@@ -31,6 +31,7 @@ const Header = () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setIsAuthorized(false)
+        window.location.reload();
     }
 
     return (
