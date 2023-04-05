@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import axios from "axios";
-import {Input} from "@mui/material";
-import Vacancy from "../../components/vacancy/Vacancy";
+import VacanciesTab from "../../components/tabs/vacancies-tab/VacanciesTab";
+import ManagersTab from "../../components/tabs/managers-tab/ManagersTab";
+import Navbar from "../../components/pages/my-company/navbar/Navbar";
+import './style.css'
 
 const MyCompanyPage = () => {
     const { company, accessToken } = useGetInfoFromToken();
     const [companyInfo, setCompanyInfo] = useState({});
-    const [managerInfo, setManagerInfo] = useState({ name: undefined, email: undefined });
-    const [resultMessage, setResultMessage] = useState(undefined);
 
     useEffect(() => {
         axios.get(`/api/companies/${company}`, {
@@ -18,39 +18,23 @@ const MyCompanyPage = () => {
 
     const { id, title, vacancies } = companyInfo;
 
-    const handleChangeManagerInfo = event => {
-        setManagerInfo({
-            ...managerInfo,
-            [event.target.name]: event.target.value
-        })
+    const tabs = {
+        vacancies: <VacanciesTab vacancies={vacancies}/>,
+        managers: <ManagersTab/>,
     }
 
-    const handleSubmitAddManager = event => {
-        event.preventDefault();
-        axios.post('/api/managers/', managerInfo, {
-            headers: { Authorization: `Bearer ${accessToken}`}
-        }).then(({ data }) => setResultMessage(data))
-            .catch(({ response }) => setResultMessage(response.data.user.email))
+    const [currentTab, setCurrentTab] = useState('vacancies');
+
+    const renderTab = () => {
+        let tab = Object.keys(tabs).find(key => key === currentTab);
+        return tabs[tab]
     }
 
     return (
-        <div key={id}>
+        <div key={id} className='myCompany__container'>
             <h1>{title}</h1>
-            <form onSubmit={handleSubmitAddManager}>
-                <label htmlFor="name">Name </label>
-                <Input type='text' name='name' onChange={handleChangeManagerInfo}/>
-                <label htmlFor="email">Email </label>
-                <Input type='email' name='email' onChange={handleChangeManagerInfo}/>
-                <Input type='submit'></Input>
-            </form>
-            <p>{resultMessage}</p>
-            <div>
-                {
-                    vacancies?.map(vacancy => (
-                        <Vacancy key={vacancy.id} {...vacancy}/>
-                    ))
-                }
-            </div>
+            <Navbar setCurrentTab={setCurrentTab}/>
+            { renderTab() }
         </div>
     );
 };

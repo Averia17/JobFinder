@@ -1,28 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import axios from "axios";
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 
 const VacancyPage = () => {
     const {id} = useParams();
+    const tokenInfo = useGetInfoFromToken();
     const [vacancyInfo, setVacancyInfo] = useState({});
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('access_token');
-        axios.get(`/api/vacancies/${id}`, accessToken ? {
+        axios.get(`/api/vacancies/${id}`, tokenInfo?.accessToken && {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
-        } : null)
+        })
             .then(({data}) => setVacancyInfo(data))
     }, []);
 
     const {title, company} = vacancyInfo;
 
     const respondToVacancy = () => {
-        const accessToken = localStorage.getItem('access_token');
         axios.post('/api/responses/', {vacancy: id}, {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
         })
     }
@@ -30,8 +30,9 @@ const VacancyPage = () => {
     return (
         <div>
             <h1>{title}</h1>
-            <h2>{company}</h2>
-            <button onClick={respondToVacancy} disabled={vacancyInfo?.is_responded}>Respond</button>
+            <h2>{company?.title}</h2>
+            { !tokenInfo?.company && <button onClick={respondToVacancy} disabled={vacancyInfo?.is_responded}>Respond</button> }
+
         </div>
     );
 };

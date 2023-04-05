@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Vacancy from "../../components/vacancy/Vacancy";
-import './styles.css'
+import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 
 const VacanciesPage = () => {

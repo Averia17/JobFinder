@@ -2,9 +2,11 @@ import React from 'react';
 import {useNavigate} from "react-router";
 import axios from "axios";
 import './style.css'
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 
 const Vacancy = (props) => {
     const { id, title, company } = props;
+    const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
 
     const renderSalaryIfExists = () => {
@@ -38,9 +40,12 @@ const Vacancy = (props) => {
                     renderSalaryIfExists() : null
             }
             <div>{company?.title}</div>
-            <button onClick={respondToVacancy}
-                    className={props.is_responded ? 'respond-button__disabled' : 'respond-button'}
-                    disabled={props.is_responded}>Respond</button>
+            {
+                !tokenInfo?.company && <button onClick={respondToVacancy}
+                                              className={props.is_responded ? 'respond-button__disabled' : 'respond-button'}
+                                              disabled={props.is_responded}>Respond</button>
+            }
+
         </div>
     );
 };

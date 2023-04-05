@@ -1,0 +1,40 @@
+.navbar__container {
+    display: flex;
+}
+
+
+.nav__block {
+    position: relative;
+}
+
+.nav__input {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.nav__input:checked + .nav__label {
+    color: whitesmoke;
+    background-color: #0000e6;
+}
+
+.nav__input:hover + .nav__label {
+    background: #e6e6ff;
+    color: #0000e6;
+}
+
+.nav__label {
+    display: inline-block;
+    text-align: center;
+    padding: 1vmax;
+    width: 10vmax;
+    font-size: 1.5vmax;
+    color: black;
+    background-color: transparent;
+    box-shadow: 0 0 10px #e6e6ff;
+}
