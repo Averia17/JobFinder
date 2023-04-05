@@ -7,14 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('companies', '0004_remove_companymanager_is_general'),
-        ('vacancies', '0002_alter_vacancy_manager'),
+        ("companies", "0004_remove_companymanager_is_general"),
+        ("vacancies", "0002_alter_vacancy_manager"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='vacancy',
-            name='manager',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='vacancies', to='companies.companymanager'),
+            model_name="vacancy",
+            name="manager",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="vacancies",
+                to="companies.companymanager",
+            ),
         ),
     ]

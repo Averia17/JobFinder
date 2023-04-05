@@ -10,9 +10,7 @@ class ResumeViewAdmin(admin.ModelAdmin):
     fieldsets = [
         (
             None,
-            {
-                "fields": ["user", "resume"]
-            },
+            {"fields": ["user", "resume"]},
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
     ]

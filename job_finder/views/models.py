@@ -29,5 +29,18 @@ class ResumeView(View):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'resume'], name='uq_user_resume')
+            models.UniqueConstraint(fields=["user", "resume"], name="uq_user_resume")
+        ]
+
+
+class VacancyView(View):
+    vacancy = models.ForeignKey(
+        "vacancies.Vacancy",
+        related_name="views",
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "vacancy"], name="uq_user_vacancy")
         ]

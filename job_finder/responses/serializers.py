@@ -28,7 +28,7 @@ class VacancyResponseSerializer(VacancyResponseReadSerializer):
 
     class Meta(VacancyResponseReadSerializer.Meta):
         model = VacancyResponse
-        fields = VacancyResponseReadSerializer.Meta.fields + ("vacancy", )
+        fields = VacancyResponseReadSerializer.Meta.fields + ("vacancy",)
 
     def to_representation(self, instance):
         res = super().to_representation(instance)

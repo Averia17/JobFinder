@@ -9,7 +9,8 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     CreateModelMixin,
     UpdateModelMixin,
-    DestroyModelMixin, ListModelMixin,
+    DestroyModelMixin,
+    ListModelMixin,
 )
 
 from rest_framework.response import Response
@@ -21,7 +22,8 @@ from companies.permissions import IsDirector, UserInCompany
 from companies.serializers import (
     CompanySerializer,
     PasswordSerializer,
-    CompanyManagerCreateSerializer, CompanyManagerSerializer,
+    CompanyManagerCreateSerializer,
+    CompanyManagerSerializer,
 )
 from job_finder.settings import BASE_FRONTEND_URL, SECRET_KEY
 from users.models import User
@@ -64,7 +66,9 @@ class CompanyViewSet(
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
-class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, GenericViewSet):
+class CompanyManagerViewSet(
+    CreateModelMixin, DestroyModelMixin, ListModelMixin, GenericViewSet
+):
     queryset = CompanyManager.objects.all()
     permission_classes = [IsDirector]
     serializer_class = CompanyManagerSerializer
@@ -106,7 +110,7 @@ class CompanyManagerViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
                 "create_manager.html",
                 {
                     "link": f"{BASE_FRONTEND_URL}/register_manager/"
-                            f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
+                    f"?{urlencode(OrderedDict(token=email_hash, email=manager.user.email))}",
                     "name": manager.user.name,
                 },
             ),

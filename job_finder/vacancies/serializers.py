@@ -1,6 +1,8 @@
-from rest_framework.fields import BooleanField
+from rest_framework.fields import BooleanField, CharField
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
+from companies.models import CompanyManager
 from responses.serializers import VacancyResponseReadSerializer
 from .models import Vacancy
 
@@ -27,14 +29,20 @@ class VacancySerializer(ModelSerializer):
 
 
 class VacancyDetailSerializer(VacancySerializer):
+    manager = PrimaryKeyRelatedField(
+        queryset=CompanyManager.objects.all(), write_only=True
+    )
+
     class Meta(VacancySerializer.Meta):
         fields = VacancySerializer.Meta.fields + (
             "description",
             "experience_option",
             "employment_type",
+            "manager",
         )
 
     def to_representation(self, instance):
+        self.fields["employment_type"] = CharField(source="get_employment_type_display")
         res = super().to_representation(instance)
         user = self.context["request"].user
         if (
