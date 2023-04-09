@@ -8,6 +8,7 @@ from vacancies.filters import VacancyFilter
 from vacancies.models import Vacancy
 from vacancies.permissions import IsOwnerManagerOrDirector
 from vacancies.serializers import VacancyDetailSerializer, VacancySerializer
+from views.serializers import VacancyViewSerializer
 
 
 class VacancyViewSet(ModelViewSet):
@@ -48,3 +49,11 @@ class VacancyViewSet(ModelViewSet):
                 is_responded=Exists(user.responses.filter(vacancy_id=OuterRef("id")))
             )
         return queryset
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        serializer = VacancyViewSerializer(
+            data={"vacancy": pk}, context={"request": request}
+        )
+        if serializer.is_valid():
+            serializer.save()
+        return super().retrieve(request, *args, **kwargs)

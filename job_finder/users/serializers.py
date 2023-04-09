@@ -39,9 +39,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token["user_id"] = user.id
-        if user.is_manager:
-            token["company"] = user.companymanager.company.id
-        if user.is_director:
-            token["is_director"] = True
+        if user.is_manager or user.is_director:
             token["company"] = user.company.id
+            token["is_director"] = user.is_director
         return token

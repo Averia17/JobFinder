@@ -6,7 +6,7 @@ class IsDirector(permissions.BasePermission):
         return (
             request.user
             and request.user.is_authenticated
-            and obj.director == request.user
+            and obj.company.director == request.user
         )
 
 

@@ -1,4 +1,4 @@
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from views.models import ResumeView, VacancyView

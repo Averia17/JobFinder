@@ -11,7 +11,10 @@ class Company(BaseModel):
         _("Description"), max_length=1024, null=True, blank=True
     )
     director = models.OneToOneField(
-        "users.User", on_delete=models.CASCADE, primary_key=False
+        "users.User",
+        on_delete=models.CASCADE,
+        primary_key=False,
+        related_name="director_company",
     )
 
     class Meta:

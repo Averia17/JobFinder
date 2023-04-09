@@ -73,4 +73,12 @@ class User(AbstractBaseUser, BaseModel):
 
     @property
     def is_director(self):
-        return hasattr(self, "company")
+        return hasattr(self, "director_company")
+
+    @property
+    def company(self):
+        if self.is_authenticated:
+            if self.is_director:
+                return self.director_company
+            elif self.is_manager:
+                return self.companymanager.company

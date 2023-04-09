@@ -41,16 +41,24 @@ class VacancyDetailSerializer(VacancySerializer):
             "manager",
         )
 
+    def to_internal_value(self, data):
+        user = self.context["request"].user
+        manager = user.companymanager if user.is_manager else data["manager"]
+        data.update({"company": user.company.id, "manager": manager})
+        return super().to_internal_value(data)
+
     def to_representation(self, instance):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
         res = super().to_representation(instance)
         user = self.context["request"].user
-        if (
-            user.is_authenticated
-            and (user.is_manager and instance.manager.user == user)
-            or (user.is_director and instance.company == user.company)
+        if user.is_authenticated and (
+            (user.is_manager and instance.manager.user == user)
+            or (instance.company.director == user)
         ):
             res["responses"] = VacancyResponseReadSerializer(
                 instance.responses.all(), many=True
             ).data
+            res["views"] = instance.views.all().values(
+                "id", "user__id", "user__name", "user__email"
+            )
         return res

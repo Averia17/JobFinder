@@ -5,6 +5,7 @@ from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
 from companies.views import CompanyViewSet, CompanyManagerViewSet
+from favorites.views import FavoriteVacanciesViewSet
 from responses.views import VacancyResponseViewSet
 from . import settings
 from resumes.views import ResumeViewSet
@@ -18,6 +19,7 @@ router.register("vacancies", VacancyViewSet)
 router.register("companies", CompanyViewSet)
 router.register("responses", VacancyResponseViewSet)
 router.register("managers", CompanyManagerViewSet)
+router.register("favorite_vacancies", FavoriteVacanciesViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
