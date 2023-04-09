@@ -7,14 +7,14 @@ import Navbar from "../../components/pages/my-company/navbar/Navbar";
 import './style.css'
 
 const MyCompanyPage = () => {
-    const { company, accessToken } = useGetInfoFromToken();
+    const tokenInfo = useGetInfoFromToken();
     const [companyInfo, setCompanyInfo] = useState({});
 
     useEffect(() => {
-        axios.get(`/api/companies/${company}`, {
-            headers: { Authorization: `Bearer ${accessToken}` }
+        axios.get(`/api/companies/${tokenInfo.company}`, {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}` }
         }).then(({ data }) => setCompanyInfo(data))
-    }, [company])
+    }, [tokenInfo.company])
 
     const { id, title, vacancies } = companyInfo;
 
@@ -34,7 +34,7 @@ const MyCompanyPage = () => {
         <div key={id} className='myCompany__container'>
             <h1>{title}</h1>
             <Navbar setCurrentTab={setCurrentTab}/>
-            { renderTab() }
+            { tokenInfo?.is_director ? renderTab() : <VacanciesTab vacancies={vacancies}/> }
         </div>
     );
 };

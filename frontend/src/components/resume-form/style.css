@@ -1,0 +1,9 @@
+.skill_container {
+    display: flex;
+    margin: 10px;
+    padding: 5px 10px;
+    border: 0.1em solid #0000b3;
+    background: #0000e6;
+    border-radius: 10px;
+    color: white;
+}
