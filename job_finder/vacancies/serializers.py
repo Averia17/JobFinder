@@ -41,6 +41,10 @@ class VacancyDetailSerializer(VacancySerializer):
             "manager",
         )
 
+    def to_internal_value(self, data):
+        data.update({"company": self.context["request"].user.company.id})
+        return super().to_internal_value(data)
+
     def to_representation(self, instance):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
         res = super().to_representation(instance)
