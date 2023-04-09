@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "responses",
     "vacancies",
     "response_messages",
+    "views",
 ]
 
 MIDDLEWARE = [

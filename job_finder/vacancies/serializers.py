@@ -45,10 +45,9 @@ class VacancyDetailSerializer(VacancySerializer):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
         res = super().to_representation(instance)
         user = self.context["request"].user
-        if (
-            user.is_authenticated
-            and (user.is_manager and instance.manager.user == user)
-            or (user.is_director and instance.company == user.company)
+        if user.is_authenticated and (
+            (user.is_manager and instance.manager.user == user)
+            or (instance.company.director == user)
         ):
             res["responses"] = VacancyResponseReadSerializer(
                 instance.responses.all(), many=True

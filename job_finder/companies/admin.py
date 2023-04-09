@@ -1,18 +1,5 @@
 from django.contrib import admin
 from companies.models import Company, CompanyManager
-from django import forms
-
-
-# class CompanyManagerForm(forms.ModelForm):
-#     class Meta:
-#         model = CompanyManager
-#         fields = ["is_general"]
-#
-#
-# class ManagersInline(admin.TabularInline):
-#     extra = 1
-#     form = CompanyManagerForm
-#     model = CompanyManager
 
 
 @admin.register(Company)
