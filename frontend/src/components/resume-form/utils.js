@@ -8,8 +8,13 @@ export const languageLevels = {
 }
 
 export const languages = [
-    { id: 12345, title: "Russian", },
-    { id: 56789, title: "English", },
-    { id: 98765, title: "French", },
-    { id: 54321, title: "Spain", },
+    { id: 10000, title: "Russian", },
+    { id: 10001, title: "English", },
+    { id: 10002, title: "Belarusian", },
+    { id: 10003, title: "French", },
+    { id: 10004, title: "Spanish", },
+    { id: 10005, title: "Italian", },
+    { id: 10006, title: "Chinese", },
+    { id: 10007, title: "Polish", },
+    { id: 10008, title: "Deutsch", },
 ]

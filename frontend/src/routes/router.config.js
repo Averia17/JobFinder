@@ -5,6 +5,7 @@ import ResumeForm from "../components/resume-form/ResumeForm";
 import ResumesPage from "../pages/resumes/ResumesPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import VacancyForm from "../components/pages/my-company/vacancy-form/VacancyForm";
 
 export const routesElements = {
     login: '/login',
@@ -14,6 +15,7 @@ export const routesElements = {
     responses: '/responses',
     resumes: '/resumes',
     createResume: '/create-resume',
+    createVacancy: '/create-vacancy',
 }
 
 export const commonAuthorizedRoutes = {
@@ -25,6 +27,12 @@ export const commonAuthorizedRoutes = {
 export const employeeRoutes = {
     [routesElements.company]: {
         element: <MyCompanyPage/>,
+    },
+}
+
+export const directorRoutes = {
+    [routesElements.createVacancy]: {
+        element: <VacancyForm/>,
     },
 }
 

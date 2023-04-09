@@ -3,6 +3,9 @@ import Tab from "../Tab";
 import {Input} from "@mui/material";
 import axios from "axios";
 import {useGetInfoFromToken} from "../../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import ManagerBlock from "./ManagerBlock";
+import './style.css'
+
 
 const ManagersTab = () => {
     const { accessToken } = useGetInfoFromToken();
@@ -43,10 +46,7 @@ const ManagersTab = () => {
             <div>
                 {
                     managers?.map(({ user }) => (
-                        <div key={user.id}>
-                            <p>{user.email}</p>
-                            <p>{user?.name && user?.name}</p>
-                        </div>
+                        <ManagerBlock {...user}/>
                     ))
                 }
             </div>

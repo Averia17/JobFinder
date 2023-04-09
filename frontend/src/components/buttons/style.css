@@ -1,0 +1,16 @@
+.button__container {
+    padding: 0.5vmax 1vmax;
+    background: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.primary {
+
+}
+
+.danger {
+    background: red;
+    color: white;
+    border: none;
+}
