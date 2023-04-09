@@ -3,11 +3,10 @@ from rest_framework import permissions
 
 class IsDirector(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return (
-            request.user
-            and request.user.is_authenticated
-            and obj.company.director == request.user
-        )
+        return obj.company.director == request.user
+
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.is_director
 
 
 class UserInCompany(permissions.BasePermission):
