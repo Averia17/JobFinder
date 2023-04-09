@@ -3,15 +3,6 @@ from django.db import models
 from core.models import BaseModel
 
 
-class View(BaseModel):
-    class Meta:
-        app_label = "views"
-        abstract = True
-
-    def __str__(self):
-        return f"{self.pk}: {self.user}"
-
-
 class ResumeView(BaseModel):
     resume = models.ForeignKey(
         "resumes.Resume",

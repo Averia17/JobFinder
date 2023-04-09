@@ -42,7 +42,9 @@ class VacancyDetailSerializer(VacancySerializer):
         )
 
     def to_internal_value(self, data):
-        data.update({"company": self.context["request"].user.company.id})
+        user = self.context["request"].user
+        manager = user.companymanager if user.is_manager else data["manager"]
+        data.update({"company": user.company.id, "manager": manager})
         return super().to_internal_value(data)
 
     def to_representation(self, instance):
@@ -56,4 +58,7 @@ class VacancyDetailSerializer(VacancySerializer):
             res["responses"] = VacancyResponseReadSerializer(
                 instance.responses.all(), many=True
             ).data
+            res["views"] = instance.views.all().values(
+                "id", "user__id", "user__name", "user__email"
+            )
         return res

@@ -41,9 +41,7 @@ class ResumeViewSet(ModelViewSet):
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         company_id = request.user.company.id if request.user.company else None
-        serializer = ResumeViewSerializer(
-            data={"resume": pk, "company": company_id}
-        )
+        serializer = ResumeViewSerializer(data={"resume": pk, "company": company_id})
         if serializer.is_valid():
             serializer.save()
         return super().retrieve(request, *args, **kwargs)
