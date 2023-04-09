@@ -13,19 +13,22 @@ const Header = () => {
     const tokenInfo = useGetInfoFromToken();
 
     useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        if (token) {
-            const decodedToken = jwt_decode(token);
-            if (decodedToken.exp * 1000 < new Date().getTime()) {
-                axios.post('/refresh-token/', localStorage.getItem("refresh_token"))
+        if (tokenInfo?.accessToken) {
+            if (tokenInfo.exp * 1000 < new Date().getTime()) {
+                console.log(tokenInfo.exp * 1000 < new Date().getTime())
+                axios.post('/refresh-token/', { refresh: localStorage.getItem("refresh_token") })
                     .then(({data}) => {
                         localStorage.setItem('access_token', data.access)
+                    })
+                    .catch(() => {
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('refresh_token');
                     })
             } else {
                 setIsAuthorized(true)
             }
         }
-    }, [localStorage.getItem("access_token")]);
+    }, [tokenInfo?.accessToken]);
 
     const handleLogout = () => {
         localStorage.removeItem("access_token");
