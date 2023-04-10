@@ -9,6 +9,7 @@ from .models import Vacancy
 
 class VacancySerializer(ModelSerializer):
     is_responded = BooleanField(required=False, read_only=True)
+    is_favorite = BooleanField(required=False, read_only=True)
 
     class Meta:
         model = Vacancy
@@ -20,6 +21,7 @@ class VacancySerializer(ModelSerializer):
             "company",
             "is_active",
             "is_responded",
+            "is_favorite"
         )
 
     def to_representation(self, instance):

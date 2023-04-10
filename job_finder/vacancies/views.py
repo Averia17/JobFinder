@@ -46,7 +46,8 @@ class VacancyViewSet(ModelViewSet):
         queryset = super().get_queryset()
         if not user.is_anonymous:
             return queryset.annotate(
-                is_responded=Exists(user.responses.filter(vacancy_id=OuterRef("id")))
+                is_responded=Exists(user.responses.filter(vacancy_id=OuterRef("id"))),
+                is_favorite=Exists(user.favorite_vacancies.filter(vacancy_id=OuterRef("id")))
             )
         return queryset
 
