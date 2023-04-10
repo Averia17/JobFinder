@@ -10,7 +10,6 @@ export const useParams = () => {
     const navigate = useNavigate();
     const [queryParams] = useSearchParams();
 
-
     const params = useMemo(() => {
         let responseId = queryParams.get(paramsNames.responseId) || undefined;
 

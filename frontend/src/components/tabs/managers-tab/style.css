@@ -1,0 +1,18 @@
+.manager__block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1vmax;
+    border: 1px solid black;
+    border-radius: 0.5vmax;
+    padding: 1vmax;
+}
+
+.managerName__container p {
+    margin: 0.5vmax;
+}
+
+.managerName__container {
+    display: flex;
+    flex-direction: column;
+}

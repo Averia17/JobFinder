@@ -5,10 +5,14 @@ import VacanciesTab from "../../components/tabs/vacancies-tab/VacanciesTab";
 import ManagersTab from "../../components/tabs/managers-tab/ManagersTab";
 import Navbar from "../../components/pages/my-company/navbar/Navbar";
 import './style.css'
+import ConfirmModal from "../../modal/ConfirmModal";
+import {useSearchParams} from "react-router-dom";
 
 const MyCompanyPage = () => {
     const tokenInfo = useGetInfoFromToken();
     const [companyInfo, setCompanyInfo] = useState({});
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [isModalVisible, setModalVisible] = useState(!!searchParams.get('manager'));
 
     useEffect(() => {
         axios.get(`/api/companies/${tokenInfo.company}`, {
@@ -30,11 +34,33 @@ const MyCompanyPage = () => {
         return tabs[tab]
     }
 
+    const handleClickHideModal = () => {
+        searchParams.delete('manager');
+        setSearchParams(searchParams)
+        setModalVisible(false);
+    }
+
+    useEffect(() => {
+        setModalVisible(!!searchParams.get('manager'))
+    }, [searchParams])
+
+    const handleConfirmDeleteManager = () => {
+        let managerId = searchParams.get('manager');
+        axios.delete(`/api/managers/${managerId}/`, {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}`}
+        }).then(() => {
+            searchParams.delete('manager');
+            setModalVisible(false);
+        })
+    }
+
     return (
         <div key={id} className='myCompany__container'>
             <h1>{title}</h1>
             <Navbar setCurrentTab={setCurrentTab}/>
             { tokenInfo?.is_director ? renderTab() : <VacanciesTab vacancies={vacancies}/> }
+            <ConfirmModal isActive={isModalVisible} handleClickHideModal={handleClickHideModal}
+                          handleConfirm={handleConfirmDeleteManager} title='Are you sure you want to delete this manager?'/>
         </div>
     );
 };

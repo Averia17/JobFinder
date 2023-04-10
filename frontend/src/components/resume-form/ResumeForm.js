@@ -15,18 +15,17 @@ const ResumeForm = () => {
     const [newLanguage, setNewLanguage] = useState({});
     const [languagesForms, setLanguagesForms] =
         useState([]);
-    const [skills, setSkills] = useState([])
-    const [skill, setSkill] = useState(undefined)
+    const [skills, setSkills] = useState([]);
+    const [skill, setSkill] = useState(undefined);
+    const [languagesIds, setLanguagesIds] = useState({});
 
     const handleSubmit = (event) => {
         event.preventDefault()
         setUserInfo({
             ...userInfo,
             skills: skills,
-            languages: newLanguage
+            languages: selectedLanguages
         })
-        console.log(userInfo)
-
         axios.post(`/api/resumes/`, {...userInfo}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -42,9 +41,15 @@ const ResumeForm = () => {
     }
 
     const handleClickAddLanguage = () => {
+        const languagesLength = languagesForms.length;
         setLanguageId((prev) => prev + 1)
         setLanguagesForms([...languagesForms,
-            <LanguageAdditionForm language={languages[languageId]} setNewLanguage={setNewLanguage}/>])
+            <LanguageAdditionForm id={languagesLength}
+                                  defaultLanguage={languages[languageId]}
+                                  languagesIds={languagesIds}
+                                  setLanguagesIds={setLanguagesIds}
+                                  setNewLanguage={setNewLanguage}/>]);
+        setLanguagesIds({...languagesIds, [languagesLength]: languages[languageId].title });
     }
 
     const renderLanguagesForms = () => {
@@ -58,14 +63,20 @@ const ResumeForm = () => {
         setLanguagesForms(newArray)
     }, [deleteLanguageId])
 
+    useEffect(() => {
+        setSelectedLanguages({...selectedLanguages, ...newLanguage})
+    }, [newLanguage])
+
+    console.log(languagesIds)
+
     const handleChangeSkill = (event) => {
-        setSkill(event.currentTarget.value)
+        setSkill(event.currentTarget.value);
     }
 
     const handleAddSkill = (event) => {
         event.preventDefault();
-        setSkills([...skills, skill])
-        setSkill('')
+        setSkills([...skills, skill]);
+        setSkill('');
     }
 
     return (
@@ -84,7 +95,7 @@ const ResumeForm = () => {
             </div>
             <div>
                 <label htmlFor='experience'>Experience</label>
-                <Input name='experience' type='number' onChange={handleChange} required/>
+                <Input name='experience' type='number' step='0.1' onChange={handleChange} required/>
             </div>
             <div>
                 <label htmlFor='description'>Description</label>
@@ -101,7 +112,7 @@ const ResumeForm = () => {
             <div>
                 <p>Languages</p>
                 {languagesForms.length > 0 && renderLanguagesForms()}
-                <button type='button' onClick={handleClickAddLanguage}>Add one more language</button>
+                {languageId <= languages.length - 1 && <button type='button' onClick={handleClickAddLanguage}>Add one more language</button>}
             </div>
             <div>
                 <p>Skills</p>
