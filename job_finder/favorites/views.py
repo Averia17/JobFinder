@@ -8,16 +8,15 @@ from favorites.models import FavoriteVacancies
 from favorites.serializers import FavoriteVacanciesSerializer
 
 
-class FavoriteVacanciesViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
+class FavoriteVacanciesViewSet(CreateModelMixin, GenericViewSet):
     queryset = FavoriteVacancies.objects.all().select_related("vacancy")
     serializer_class = FavoriteVacanciesSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user)
-
     def create(self, request, *args, **kwargs):
-        favorites = FavoriteVacancies.objects.filter(user=request.user, vacancy=request.data["vacancy"])
+        favorites = FavoriteVacancies.objects.filter(
+            user=request.user, vacancy=request.data["vacancy"]
+        )
         if favorites.exists():
             favorites.delete()
             return Response("Successfully removed", status=HTTP_200_OK)

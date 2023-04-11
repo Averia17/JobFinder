@@ -21,7 +21,7 @@ class VacancySerializer(ModelSerializer):
             "company",
             "is_active",
             "is_responded",
-            "is_favorite"
+            "is_favorite",
         )
 
     def to_representation(self, instance):

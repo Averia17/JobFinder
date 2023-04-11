@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     "vacancies",
     "response_messages",
     "views",
-    "favorites"
+    "favorites",
 ]
 
 MIDDLEWARE = [

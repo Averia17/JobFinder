@@ -6,7 +6,9 @@ class IsDirector(permissions.BasePermission):
         return obj.company.director == request.user
 
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.is_director
+        return (
+            request.user and request.user.is_authenticated and request.user.is_director
+        )
 
 
 class UserInCompany(permissions.BasePermission):
