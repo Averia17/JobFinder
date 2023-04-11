@@ -9,7 +9,13 @@
     border-radius: 0.5vmax;
 }
 
-h2 {
+.vacancy__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vacancy__header h2 {
     line-height: 1vmax;
 }
 
@@ -17,12 +23,15 @@ h2 {
     margin: 0.5vmax 0;
 }
 
-.vacancy-container button {
+.respond-button, .respond-button__disabled {
     margin: 0.5vmax 0;
     padding: 0.5vmax 1vmax;
     border-radius: 0.5vmax;
-    background: #0000e6;
     width: fit-content;
+}
+
+.respond-button {
+    background: #0000e6;
 }
 
 .respond-button__disabled {
