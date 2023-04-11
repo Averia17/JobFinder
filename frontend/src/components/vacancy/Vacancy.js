@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from "react-router";
 import axios from "axios";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import FavoriteButton from "../buttons/FavoriteButton";
+import Button from "../buttons/Button";
 
 const Vacancy = (props) => {
-    const { id, title, company } = props;
+    const { id, title, company, is_favorite } = props;
+    const [isVacancyFavorite, setVacancyFavorite] = useState(is_favorite);
     const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
 
@@ -32,20 +35,29 @@ const Vacancy = (props) => {
         })
     }
 
+    const handleClickChangeFavoriteStatus = (event) => {
+        event.stopPropagation();
+        axios.post('/api/favorite_vacancies/', { vacancy: id }, {
+            headers: { Authorization: `Bearer ${tokenInfo?.accessToken}` }
+        }).then(() => setVacancyFavorite(!isVacancyFavorite))
+    }
+
     return (
         <div onClick={linkToVacancyPage} className='vacancy-container'>
-            <h2>{title}</h2>
+            <div className='vacancy__header'>
+                <h2>{title}</h2>
+                {tokenInfo?.user_id && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
+            </div>
             {
                 props.min_salary || props.max_salary ?
                     renderSalaryIfExists() : null
             }
             <div>{company?.title}</div>
             {
-                !tokenInfo?.company && <button onClick={respondToVacancy}
+                !tokenInfo?.company && <Button onClick={respondToVacancy}
                                               className={props.is_responded ? 'respond-button__disabled' : 'respond-button'}
-                                              disabled={props.is_responded}>Respond</button>
+                                              disabled={props.is_responded}>Respond</Button>
             }
-
         </div>
     );
 };
