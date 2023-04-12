@@ -2,9 +2,12 @@ from django.db.models import OuterRef, Exists
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from companies.models import Company
 from companies.permissions import IsManagerOrDirector
+from core.constants import EXPERIENCE_OPTIONS, EMPLOYMENT_TYPE
 from vacancies.filters import VacancyFilter
 from vacancies.models import Vacancy
 from vacancies.permissions import IsOwnerManagerOrDirector
@@ -54,13 +57,6 @@ class VacancyViewSet(ModelViewSet):
             )
         return queryset
 
-    @action(detail=False, methods=["GET"])
-    def favorites(self, request, *args, **kwargs):
-        self.queryset = super().get_queryset().filter(
-            id__in=request.user.favorite_vacancies.values_list("vacancy", flat=True)
-        )
-        return super().list(request, *args, **kwargs)
-
     def retrieve(self, request, pk=None, *args, **kwargs):
         serializer = VacancyViewSerializer(
             data={"vacancy": pk}, context={"request": request}
@@ -68,3 +64,18 @@ class VacancyViewSet(ModelViewSet):
         if serializer.is_valid():
             serializer.save()
         return super().retrieve(request, *args, **kwargs)
+
+    @action(detail=False, methods=["GET"])
+    def favorites(self, request, *args, **kwargs):
+        self.queryset = super().get_queryset().filter(
+            id__in=request.user.favorite_vacancies.values_list("vacancy", flat=True)
+        )
+        return super().list(request, *args, **kwargs)
+
+    @action(detail=False, methods=["GET"])
+    def filters(self, request, *args, **kwargs):
+        return Response({
+            "experience_options": EXPERIENCE_OPTIONS,
+            "employment_type": EMPLOYMENT_TYPE,
+            "companies": Company.objects.exclude(vacancies=None).values("id", "title")
+        })

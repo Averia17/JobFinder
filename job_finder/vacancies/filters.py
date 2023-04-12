@@ -10,6 +10,7 @@ class VacancyFilter(filters.FilterSet):
             "min_salary",
             "max_salary",
             "experience_option",
+            "employment_type",
             "is_active",
             "company",
         ]
