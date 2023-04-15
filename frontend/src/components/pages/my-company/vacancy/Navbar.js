@@ -1,6 +1,5 @@
 import React from 'react';
 import NavBlock from "../../../nav-block/NavBlock";
-import './style.css'
 
 const Navbar = ({ setCurrentTab }) => {
 
@@ -10,9 +9,8 @@ const Navbar = ({ setCurrentTab }) => {
 
     return (
         <nav className='navbar__container'>
-            <NavBlock title='Vacancies' value='vacancies' onChange={handleChangeTab} checked/>
-            <NavBlock title='Managers' value='managers' onChange={handleChangeTab}/>
-            <NavBlock title='Info' value='info' onChange={handleChangeTab}/>
+            <NavBlock title='Responses' value='responses' onChange={handleChangeTab} checked/>
+            <NavBlock title='Views' value='views' onChange={handleChangeTab}/>
         </nav>
     );
 };

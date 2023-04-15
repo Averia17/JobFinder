@@ -1,0 +1,9 @@
+.responseBlock__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vmax 2vmax;
+    -webkit-box-shadow: 0 0 10px #e6e6ff;
+    box-shadow: 0 0 10px #e6e6ff;
+    gap: 1.5vmax;
+}

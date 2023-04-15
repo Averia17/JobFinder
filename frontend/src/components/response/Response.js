@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, useSearchParams} from "react-router-dom";
-import {useParams} from "../../hooks/useParams/useParams";
 import Button from "../buttons/Button";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import './style.css'
+import ImageButton from "../buttons/ImageButton";
+import messageIcon from '../../assets/message.png'
+import acceptIcon from '../../assets/accept-button.png'
+import cancelIcon from '../../assets/cancel-button.png'
+
 
 const Response = (props) => {
     const {id, status} = props;
@@ -12,20 +17,33 @@ const Response = (props) => {
     const handleClick = () => {
         searchParams.set('responseId', id);
         setSearchParams(searchParams);
+        props.setChatModalVisible(true);
+    }
+
+    const handleClickAccept = (event) => {
+        event.stopPropagation();
+        searchParams.set('responseId', id);
+        setSearchParams(searchParams);
+        props.setAcceptModalVisible(true);
+    }
+
+    const handleClickReject = (event) => {
+        event.stopPropagation();
+        searchParams.set('responseId', id);
+        setSearchParams(searchParams);
+        props.setRejectModalVisible(true);
     }
 
     return (
-        <div>
-            <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}>
-            <h1>{props?.vacancy?.title}</h1>
-            </Link>
+        <div className='responseBlock__container'>
+            <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h1>{props?.vacancy?.title}</h1></Link>
             {props?.user?.name || props?.user?.email && <p>{props?.user?.name} {props?.user?.email}</p>}
             <p>{status}</p>
-            <Button onClick={handleClick}>Send a message</Button>
-            {tokenInfo?.company && <div>
-                <Button type='success'>Accept</Button>
-                <Button type='danger'>Reject</Button>
-            </div>}
+            <ImageButton src={messageIcon} onClick={handleClick}/>
+            {tokenInfo?.company && <>
+                <ImageButton src={acceptIcon} onClick={handleClickAccept}>Accept</ImageButton>
+                <ImageButton src={cancelIcon} onClick={handleClickReject}>Reject</ImageButton>
+            </>}
         </div>
     );
 };

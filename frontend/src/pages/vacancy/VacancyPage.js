@@ -4,13 +4,45 @@ import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import {renderSalaryIfExists} from "../../components/vacancy/Vacancy";
 import FavoriteButton from "../../components/buttons/FavoriteButton";
-import Response from "../../components/response/Response";
+import ResponsesTab from "../../components/pages/my-company/vacancy/ResponsesTab";
+import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
+import Navbar from "../../components/pages/my-company/vacancy/Navbar";
+import './style.css'
+import AcceptModal from "../../modal/AcceptModal";
+import {useSearchParams} from "react-router-dom";
+import RejectModal from "../../modal/RejectModal";
+import ChatModal from "../../components/chat-modal/ChatModal";
 
 const VacancyPage = () => {
     const {id} = useParams();
     const tokenInfo = useGetInfoFromToken();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const responseId = searchParams.get('responseId');
     const [vacancyInfo, setVacancyInfo] = useState({});
     const [isVacancyFavorite, setVacancyFavorite] = useState(vacancyInfo.is_favorite);
+    const [isAcceptModalVisible, setAcceptModalVisible] = useState(false);
+    const [isRejectModalVisible, setRejectModalVisible] = useState(false);
+    const [isChatModalVisible, setChatModalVisible] = useState(false);
+    const [acceptMessage, setAcceptMessage] = useState(undefined);
+    const [rejectMessage, setRejectMessage] = useState(undefined);
+
+    const tabs = {
+        responses:
+            <ResponsesTab
+                setAcceptModalVisible={setAcceptModalVisible}
+                setRejectModalVisible={setRejectModalVisible}
+                setChatModalVisible={setChatModalVisible}
+                responses={vacancyInfo?.responses} />,
+        views: <ViewsTab views={vacancyInfo?.views} />,
+    }
+
+    const [currentTab, setCurrentTab] = useState('responses');
+
+    const renderTab = () => {
+        let tab = Object.keys(tabs).find(key => key === currentTab);
+        return tabs[tab];
+    }
+
 
     useEffect(() => {
         axios.get(`/api/vacancies/${id}`, tokenInfo?.accessToken && {
@@ -37,15 +69,50 @@ const VacancyPage = () => {
         }).then(() => setVacancyFavorite(!isVacancyFavorite))
     }
 
+    const handleClickHideAcceptModal = () => {
+        searchParams.delete('responseId');
+        setSearchParams(searchParams);
+        setAcceptModalVisible(false);
+    }
+
+    const handleClickHideRejectModal = () => {
+        searchParams.delete('responseId');
+        setSearchParams(searchParams);
+        setRejectModalVisible(false);
+    }
+
+    const handleConfirmAccept = () => {
+        axios.post(`/api/responses/${responseId}/messages/`, { text: acceptMessage }, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }
+        }).then(() => {
+            searchParams.delete('responseId');
+            setSearchParams(searchParams);
+            setAcceptModalVisible(false)
+        })
+    }
+
+    const handleConfirmReject = () => {
+        axios.post(`/api/responses/${responseId}/messages/`, { text: rejectMessage }, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }
+        }).then(() => {
+            searchParams.delete('responseId');
+            setSearchParams(searchParams);
+            setRejectMessage(false)
+        })
+    }
+
     return (
-        <div>
-            <div>
+        <div className='vacancyPage__container'>
+            <div className='vacancyPage__header'>
                 <h1>{title}</h1>
                 {tokenInfo?.user_id &&
                     <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
             </div>
             <h2>{company?.title}</h2>
-
             {!vacancyInfo.is_active && <b>
                 <div style={{color: "red"}}>Vacancy is not active</div>
             </b>}
@@ -61,9 +128,19 @@ const VacancyPage = () => {
             }
             {!tokenInfo?.company && <button onClick={respondToVacancy}
                                             disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Respond</button>}
-            {vacancyInfo?.responses?.map(response => (
-                <Response {...response}/>
-            ))}
+            {tokenInfo?.company && <Navbar setCurrentTab={setCurrentTab}/>}
+            {tokenInfo?.company ? renderTab() : null}
+            <AcceptModal
+                isActive={isAcceptModalVisible}
+                handleClickHideModal={handleClickHideAcceptModal}
+                handleConfirm={handleConfirmAccept}
+                setAcceptMessage={setAcceptMessage} />
+            <RejectModal
+                isActive={isRejectModalVisible}
+                handleClickHideModal={handleClickHideRejectModal}
+                handleConfirm={handleConfirmReject}
+                setRejectReason={setRejectMessage} />
+            {isChatModalVisible && <ChatModal setChatModalVisible={setChatModalVisible} />}
         </div>
     );
 };

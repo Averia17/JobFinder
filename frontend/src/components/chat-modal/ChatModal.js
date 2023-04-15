@@ -5,11 +5,13 @@ import {useSearchParams} from "react-router-dom";
 import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import dayjs from "dayjs";
+import ImageButton from "../buttons/ImageButton";
+import closeIcon from '../../assets/close.png'
 
-const ChatModal = () => {
+const ChatModal = ({ setChatModalVisible }) => {
     const accessToken = localStorage.getItem('access_token');
     const {user_id} = useGetInfoFromToken();
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [responseId, setResponseId] = useState(searchParams.get('responseId'));
     const [message, setMessage] = useState(undefined);
     const [messages, setMessages] = useState([]);
@@ -24,11 +26,10 @@ const ChatModal = () => {
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'));
-    }, [])
+    }, [searchParams])
 
     const handleSendMessage = () => {
-
-        axios.post(`/api/responses/${responseId}/messages/`, {text: message}, {
+        axios.post(`/api/responses/${responseId}/messages/`, { text: message }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -42,7 +43,6 @@ const ChatModal = () => {
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'));
-
         axios.get(`/api/responses/${responseId}/messages/`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -58,14 +58,24 @@ const ChatModal = () => {
         return () => clearInterval(interval)
     }, [])
 
+    const handleClickCloseChat = () => {
+        searchParams.delete('responseId');
+        setSearchParams(searchParams);
+        setResponseId(undefined);
+        setChatModalVisible(false);
+    }
+
     return (
         <div className='chat__container'>
+            <div className='closeButton__container'>
+                <ImageButton className='closeButton' src={closeIcon} onClick={handleClickCloseChat}/>
+            </div>
             <div className='chat__messages'>
                 {
                     messages.map(({user, text, created}) => {
                         let time = dayjs(created).format("HH:mm");
                         return <div
-                            className={`chat__message__container ${user_id === user ? 'myMessage' : 'companionMessage'}`}>
+                            className={`chat__message__container ${user_id === user.id ? 'myMessage' : 'companionMessage'}`}>
                             {/*<p className='message__username'>{user}</p>*/}
                             <p className='message__text'>{text}</p>
                             <p className='message__time'>{time}</p>
