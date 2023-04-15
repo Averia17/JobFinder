@@ -26,7 +26,10 @@ export const commonAuthorizedRoutes = {
     },
     [routesElements.favorites]: {
         element: <FavoritesPage/>,
-    } ,
+    },
+    [routesElements.resumes]: {
+        element: <ResumesPage/>,
+    },
 }
 
 export const employeeRoutes = {
@@ -47,9 +50,6 @@ export const authorizedUserRoutes = {
     },
     [routesElements.createResume]: {
         element: <ResumeForm/>,
-    },
-    [routesElements.resumes]: {
-        element: <ResumesPage/>,
     },
 }
 
