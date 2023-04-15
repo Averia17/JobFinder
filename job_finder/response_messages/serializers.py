@@ -1,3 +1,4 @@
+from rest_framework.exceptions import ValidationError
 from rest_framework.fields import CurrentUserDefault, DateTimeField, CharField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
@@ -19,6 +20,11 @@ class MessageSerializer(ModelSerializer):
     class Meta:
         model = Message
         fields = ("id", "user", "text", "vacancy_response", "created")
+
+    def validate(self, attrs):
+        if attrs["vacancy_response"].status == VacancyResponse.reject:
+            ValidationError("You cannot send messages after response reject")
+        return attrs
 
     def to_representation(self, instance):
         result = super().to_representation(instance)

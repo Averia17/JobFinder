@@ -7,8 +7,9 @@ from core.models import BaseModel
 class VacancyResponse(BaseModel):
     viewed = "VIEWED"
     not_viewed = "NOT_VIEWED"
+    reject = "REJECT"
     VACANCY_RESPONSE_STATUS = (
-        ("REJECT", "Reject"),
+        (reject, "Reject"),
         ("INVITE", "Invite"),
         (viewed, "Viewed"),
         (not_viewed, "Not Viewed"),

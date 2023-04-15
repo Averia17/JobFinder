@@ -58,11 +58,12 @@ class VacancyViewSet(ModelViewSet):
         return queryset
 
     def retrieve(self, request, pk=None, *args, **kwargs):
-        serializer = VacancyViewSerializer(
-            data={"vacancy": pk}, context={"request": request}
-        )
-        if serializer.is_valid():
-            serializer.save()
+        if request.user and request.user.is_authenticated:
+            serializer = VacancyViewSerializer(
+                data={"vacancy": pk}, context={"request": request}
+            )
+            if serializer.is_valid():
+                serializer.save()
         return super().retrieve(request, *args, **kwargs)
 
     @action(detail=False, methods=["GET"])

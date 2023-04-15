@@ -1,21 +1,14 @@
 from rest_framework import status, mixins
 from rest_framework.decorators import action
-from rest_framework.mixins import (
-    CreateModelMixin,
-    DestroyModelMixin,
-    ListModelMixin,
-    RetrieveModelMixin,
-)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.viewsets import GenericViewSet
 
 from companies.permissions import IsManagerOrDirector
-from core.constants import RESPONSE_MESSAGE_SUBJECT
 from response_messages.serializers import MessageSerializer
 from responses.models import VacancyResponse
 from responses.serializers import VacancyResponseSerializer
-from job_finder.tasks import send_user_email
+from responses.services import ResponseMessagesService
 
 
 class VacancyResponseViewSet(
@@ -45,28 +38,23 @@ class VacancyResponseViewSet(
     def get_queryset(self):
         # TODO: try to do more elegant
         queryset = super().get_queryset()
-        if self.request.user.is_manager:
-            return queryset.filter(
-                vacancy__in=self.request.user.companymanager.vacancies.all()
-            )
         if self.request.user.is_director:
             return queryset.filter(
                 vacancy__in=self.request.user.company.vacancies.all()
+            )
+        elif self.request.user.is_manager:
+            return queryset.filter(
+                vacancy__in=self.request.user.companymanager.vacancies.all()
             )
         return queryset.filter(user=self.request.user)
 
     @action(detail=True, methods=["GET", "POST"], serializer_class=MessageSerializer)
     def messages(self, request, pk=None):
         vacancy_response = self.get_object()
+        service = ResponseMessagesService(vacancy_response)
         if request.method == "POST":
             request.data.update({"vacancy_response": pk, "user": request.user.id})
-            serializer = self.serializer_class(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            message = serializer.save()
-            if request.user != vacancy_response.user:
-                send_user_email.delay(
-                    vacancy_response.user.email, RESPONSE_MESSAGE_SUBJECT, message.text
-                )
+            message = service.create_message(request.data)
             return Response(
                 self.serializer_class(message).data,
                 status=status.HTTP_201_CREATED,
