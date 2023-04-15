@@ -16,6 +16,7 @@ class Company(BaseModel):
         primary_key=False,
         related_name="director_company",
     )
+    is_active = models.BooleanField(_("Is active"), default=False)
 
     class Meta:
         app_label = "companies"

@@ -44,6 +44,8 @@ class Vacancy(BaseModel):
             raise ValidationError("Min salary cannot be bigger than max salary")
         if self.manager and not self.company.managers.all().contains(self.manager):
             raise ValidationError("Manager must be from vacancy company")
+        if not self.company.is_active:
+            raise ValidationError("Your company must be active, write to support to verify your company")
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None

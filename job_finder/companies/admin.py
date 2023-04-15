@@ -8,12 +8,15 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "title",
+        "is_active"
     ]
+    search_fields = ["title"]
+    list_filter = ["is_active"]
     readonly_fields = ["created", "updated"]
     fieldsets = [
         (
             None,
-            {"fields": ["title", "address", "description", "director"]},
+            {"fields": ["title", "address", "description", "director", "is_active"]},
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
     ]

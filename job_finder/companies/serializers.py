@@ -22,11 +22,9 @@ class CompanySerializer(ModelSerializer):
     def get_vacancies(self, obj):
         vacancies = obj.vacancies.all().select_related("company")
         if "request" in self.context:
-            request = self.context["request"]
-            if request.user.is_manager:
-                vacancies = request.user.companymanager.vacancies.all().select_related(
-                    "company"
-                )
+            user = self.context["request"].user
+            if user.is_authenticated and user.is_manager:
+                vacancies = user.companymanager.vacancies.all().select_related("company")
         return VacancySerializer(vacancies, many=True).data
 
 

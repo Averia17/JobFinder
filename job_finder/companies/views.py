@@ -2,6 +2,7 @@ import hashlib
 from collections import OrderedDict
 from urllib.parse import urlencode
 
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
@@ -51,6 +52,7 @@ class CompanyViewSet(
             )
         ]
 
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         user_data = {
             "email": request.data.pop("email", None),
@@ -62,7 +64,8 @@ class CompanyViewSet(
         request.data["director"] = director.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        company = serializer.save()
+        CompanyManager.objects.create(user=director, company=company)
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
