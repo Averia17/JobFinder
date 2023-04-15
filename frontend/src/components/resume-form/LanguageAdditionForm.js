@@ -1,31 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {languageLevels, languages} from "./utils";
+import Input from "../inputs/Input";
 
-const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ id, languagesIds, setLanguagesIds, defaultLanguage, setNewLanguage }) {
-    const [language, setLanguage] = useState(defaultLanguage.title);
+const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ language, selectedLanguages, setSelectedLanguages, languagesForms, setLanguagesForms, setNewLanguage }) {
     const [languageLevel, setLanguageLevel] = useState('A1');
     const result = { [language]: languageLevel }
 
     useEffect(() => {
         setNewLanguage(result);
-        setLanguagesIds({
-            ...languagesIds,
-            [id]: language,
-        })
     }, [language, languageLevel])
 
-    const selectedLanguages = Object.values(languagesIds);
+    const handleClickDeleteLanguage = () => {
+        let f = [...languagesForms].filter(({ props }) => (
+            props.language !== language
+        ))
+        const obj = {...selectedLanguages};
+        delete obj[`${language}`]
+        setLanguagesForms(f);
+        setSelectedLanguages(obj);
+    }
 
     return (
-        <div key={language.id}>
-            <select name='language' onChange={(event) => setLanguage(event.currentTarget.value)}
-                    defaultValue={defaultLanguage.title}>
-                {
-                    languages.map(({ id, title }) => {
-                        return <option value={title} disabled={selectedLanguages.indexOf(title) >= 0}>{title}</option>
-                    })
-                }
-            </select>
+        <div key={language}>
+            <Input type='text' value={language}/>
             <select name='languageLevel' onChange={(event) => setLanguageLevel(event.currentTarget.value)}
                     defaultValue='A1'>
                 {
@@ -34,7 +31,7 @@ const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ id, lan
                     ))
                 }
             </select>
-            {/*<button type='button' onClick={handleClickDeleteLanguage}>Delete</button>*/}
+            <button type='button' onClick={handleClickDeleteLanguage}>Delete</button>
         </div>
     );
 });
