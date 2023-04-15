@@ -9,7 +9,7 @@ from rest_framework.serializers import ModelSerializer
 from companies.models import Company, CompanyManager
 from job_finder.settings import SECRET_KEY
 from users.serializers import UserRegisterSerializer, UserSerializer
-from vacancies.serializers import VacancySerializer
+from vacancies.serializers import CompanyVacancySerializer
 
 
 class CompanySerializer(ModelSerializer):
@@ -20,12 +20,12 @@ class CompanySerializer(ModelSerializer):
         fields = ("id", "title", "address", "description", "director", "vacancies")
 
     def get_vacancies(self, obj):
-        vacancies = obj.vacancies.all().select_related("company")
+        vacancies = obj.vacancies.all()
         if "request" in self.context:
             user = self.context["request"].user
-            if user.is_authenticated and user.is_manager:
-                vacancies = user.companymanager.vacancies.all().select_related("company")
-        return VacancySerializer(vacancies, many=True).data
+            if user.is_manager:
+                vacancies = user.companymanager.vacancies.all()
+        return CompanyVacancySerializer(vacancies, many=True).data
 
 
 class CompanyManagerCreateSerializer(ModelSerializer):

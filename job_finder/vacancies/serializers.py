@@ -1,4 +1,5 @@
-from rest_framework.fields import BooleanField, CharField
+from django.db.models import Count
+from rest_framework.fields import BooleanField, CharField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
@@ -30,6 +31,18 @@ class VacancySerializer(ModelSerializer):
         return result
 
 
+class CompanyVacancySerializer(ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = ("id", "title", "manager")
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        user = instance.manager.user
+        res["manager"] = {"email": user.email, "name": user.name}
+        return res
+
+
 class VacancyDetailSerializer(VacancySerializer):
     manager = PrimaryKeyRelatedField(
         queryset=CompanyManager.objects.all(), write_only=True
@@ -53,14 +66,16 @@ class VacancyDetailSerializer(VacancySerializer):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
         res = super().to_representation(instance)
         user = self.context["request"].user
-        if user.is_authenticated and (
-            (user.is_manager and instance.manager.user == user)
-            or (instance.company.director == user)
-        ):
-            res["responses"] = VacancyResponseReadSerializer(
-                instance.responses.all(), many=True
-            ).data
-            res["views"] = instance.views.all().values(
-                "id", "user__id", "user__name", "user__email"
-            )
+        if user.is_authenticated:
+            if res["is_responded"]:
+                res["response"] = instance.responses.filter(user=user).first().id
+            if (user.is_manager and instance.manager.user == user) or (
+                instance.company.director == user
+            ):
+                res["responses"] = VacancyResponseReadSerializer(
+                    instance.responses.all(), many=True
+                ).data
+                res["views"] = instance.views.values(
+                    "user__id", "user__name", "user__email"
+                ).annotate(count=Count("user__id"))
         return res

@@ -6,21 +6,21 @@ import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFro
 import FavoriteButton from "../buttons/FavoriteButton";
 import Button from "../buttons/Button";
 
+export const renderSalaryIfExists = (min_salary, max_salary,) => {
+    if (min_salary && max_salary) {
+        return <div className='salary'>{min_salary} - {max_salary}$</div>
+    } else if (min_salary && !max_salary) {
+        return <div className='salary'>from {min_salary}$</div>
+    } else if (!min_salary && max_salary) {
+        return <div className='salary'>to {max_salary}$</div>
+    }
+}
+
 const Vacancy = (props) => {
-    const { id, title, company, is_favorite } = props;
+    const {id, title, company, is_favorite} = props;
     const [isVacancyFavorite, setVacancyFavorite] = useState(is_favorite);
     const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
-
-    const renderSalaryIfExists = () => {
-        if (props.min_salary && props.max_salary) {
-            return <div className='salary'>{props.min_salary} - {props.max_salary}$</div>
-        } else if (props.min_salary && !props.max_salary) {
-            return <div className='salary'>from {props.min_salary}$</div>
-        } else if (!props.min_salary && props.max_salary) {
-            return <div className='salary'>to {props.max_salary}$</div>
-        }
-    }
 
     const linkToVacancyPage = () => {
         navigate(`/vacancies/${id}`);
@@ -37,8 +37,8 @@ const Vacancy = (props) => {
 
     const handleClickChangeFavoriteStatus = (event) => {
         event.stopPropagation();
-        axios.post('/api/favorite_vacancies/', { vacancy: id }, {
-            headers: { Authorization: `Bearer ${tokenInfo?.accessToken}` }
+        axios.post('/api/favorite_vacancies/', {vacancy: id}, {
+            headers: {Authorization: `Bearer ${tokenInfo?.accessToken}`}
         }).then(() => setVacancyFavorite(!isVacancyFavorite))
     }
 
@@ -46,17 +46,19 @@ const Vacancy = (props) => {
         <div onClick={linkToVacancyPage} className='vacancy-container'>
             <div className='vacancy__header'>
                 <h2>{title}</h2>
-                {tokenInfo?.user_id && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
+                {!tokenInfo?.company && tokenInfo?.user_id &&
+                    <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
             </div>
             {
                 props.min_salary || props.max_salary ?
-                    renderSalaryIfExists() : null
+                    renderSalaryIfExists(props.min_salary, props.max_salary) : null
             }
-            <div>{company?.title}</div>
+            {!tokenInfo?.company && <div>{company?.title}</div>}
+            {tokenInfo?.company && <div>{props?.manager.email} {props?.manager?.name}</div>}
             {
                 !tokenInfo?.company && <Button onClick={respondToVacancy}
-                                              className={props.is_responded ? 'respond-button__disabled' : 'respond-button'}
-                                              disabled={props.is_responded}>Respond</Button>
+                                               className={props.is_responded || !props.is_active? 'respond-button__disabled' : 'respond-button'}
+                                               disabled={props.is_responded}>Respond</Button>
             }
         </div>
     );

@@ -67,15 +67,23 @@ class VacancyViewSet(ModelViewSet):
 
     @action(detail=False, methods=["GET"])
     def favorites(self, request, *args, **kwargs):
-        self.queryset = super().get_queryset().filter(
-            id__in=request.user.favorite_vacancies.values_list("vacancy", flat=True)
+        self.queryset = (
+            super()
+            .get_queryset()
+            .filter(
+                id__in=request.user.favorite_vacancies.values_list("vacancy", flat=True)
+            )
         )
         return super().list(request, *args, **kwargs)
 
     @action(detail=False, methods=["GET"])
     def filters(self, request, *args, **kwargs):
-        return Response({
-            "experience_options": EXPERIENCE_OPTIONS,
-            "employment_type": EMPLOYMENT_TYPE,
-            "companies": Company.objects.exclude(vacancies=None).values("id", "title")
-        })
+        return Response(
+            {
+                "experience_options": EXPERIENCE_OPTIONS,
+                "employment_type": EMPLOYMENT_TYPE,
+                "companies": Company.objects.exclude(vacancies=None).values(
+                    "id", "title"
+                ),
+            }
+        )

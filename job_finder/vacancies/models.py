@@ -10,7 +10,7 @@ class Vacancy(BaseModel):
     title = models.CharField(_("Title"), max_length=256, blank=False)
     min_salary = models.PositiveIntegerField(_("Min salary"), null=True, blank=True)
     max_salary = models.PositiveIntegerField(_("Max salary"), null=True, blank=True)
-    description = models.CharField(
+    description = models.TextField(
         _("Description"), max_length=2048, null=True, blank=True
     )
     experience_option = models.CharField(
@@ -45,7 +45,9 @@ class Vacancy(BaseModel):
         if self.manager and not self.company.managers.all().contains(self.manager):
             raise ValidationError("Manager must be from vacancy company")
         if not self.company.is_active:
-            raise ValidationError("Your company must be active, write to support to verify your company")
+            raise ValidationError(
+                "Your company must be active, write to support to verify your company"
+            )
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
