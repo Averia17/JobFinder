@@ -11,6 +11,7 @@ const Navbar = ({ setCurrentTab }) => {
         <nav className='navbar__container'>
             <NavBlock title='Vacancies' value='vacancies' onChange={handleChangeTab} checked/>
             <NavBlock title='Managers' value='managers' onChange={handleChangeTab}/>
+            <NavBlock title='Info' value='info' onChange={handleChangeTab}/>
         </nav>
     );
 };

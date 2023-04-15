@@ -7,12 +7,15 @@ import Navbar from "../../components/pages/my-company/navbar/Navbar";
 import './style.css'
 import ConfirmModal from "../../modal/ConfirmModal";
 import {useSearchParams} from "react-router-dom";
+import InfoTab from "../../components/tabs/info-tab/InfoTab";
+import VacancyModal from "../../components/pages/my-company/vacancy-form/VacancyModal";
 
 const MyCompanyPage = () => {
     const tokenInfo = useGetInfoFromToken();
     const [companyInfo, setCompanyInfo] = useState({});
     const [searchParams, setSearchParams] = useSearchParams();
-    const [isModalVisible, setModalVisible] = useState(!!searchParams.get('manager'));
+    const [isDeleteModalVisible, setDeleteModalVisible] = useState(!!searchParams.get('manager'));
+    const [isVacancyModalVisible, setVacancyModalVisible] = useState(false);
 
     useEffect(() => {
         axios.get(`/api/companies/${tokenInfo.company}`, {
@@ -23,8 +26,9 @@ const MyCompanyPage = () => {
     const { id, title, vacancies } = companyInfo;
 
     const tabs = {
-        vacancies: <VacanciesTab vacancies={vacancies}/>,
+        vacancies: <VacanciesTab vacancies={vacancies} setModalVisible={setVacancyModalVisible}/>,
         managers: <ManagersTab/>,
+        info: <InfoTab company={companyInfo}/>,
     }
 
     const [currentTab, setCurrentTab] = useState('vacancies');
@@ -37,11 +41,15 @@ const MyCompanyPage = () => {
     const handleClickHideModal = () => {
         searchParams.delete('manager');
         setSearchParams(searchParams)
-        setModalVisible(false);
+        setDeleteModalVisible(false);
+    }
+
+    const handleClickHideVacancyModal = () => {
+        setVacancyModalVisible(false)
     }
 
     useEffect(() => {
-        setModalVisible(!!searchParams.get('manager'))
+        setDeleteModalVisible(!!searchParams.get('manager'))
     }, [searchParams])
 
     const handleConfirmDeleteManager = () => {
@@ -50,7 +58,7 @@ const MyCompanyPage = () => {
             headers: { Authorization: `Bearer ${tokenInfo.accessToken}`}
         }).then(() => {
             searchParams.delete('manager');
-            setModalVisible(false);
+            setDeleteModalVisible(false);
         })
     }
 
@@ -58,9 +66,10 @@ const MyCompanyPage = () => {
         <div key={id} className='myCompany__container'>
             <h1>{title}</h1>
             <Navbar setCurrentTab={setCurrentTab}/>
-            { tokenInfo?.is_director ? renderTab() : <VacanciesTab vacancies={vacancies}/> }
-            <ConfirmModal isActive={isModalVisible} handleClickHideModal={handleClickHideModal}
+            { tokenInfo?.is_director ? renderTab() : <VacanciesTab vacancies={vacancies} setModalVisible={setVacancyModalVisible}/> }
+            <ConfirmModal isActive={isDeleteModalVisible} handleClickHideModal={handleClickHideModal}
                           handleConfirm={handleConfirmDeleteManager} title='Are you sure you want to delete this manager?'/>
+            <VacancyModal isActive={isVacancyModalVisible} handleClickHideModal={handleClickHideVacancyModal}/>
         </div>
     );
 };

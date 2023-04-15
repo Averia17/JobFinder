@@ -5,6 +5,7 @@ import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import FavoriteButton from "../buttons/FavoriteButton";
 import Button from "../buttons/Button";
+import {useSearchParams} from "react-router-dom";
 
 export const renderSalaryIfExists = (min_salary, max_salary,) => {
     if (min_salary && max_salary) {
@@ -21,6 +22,7 @@ const Vacancy = (props) => {
     const [isVacancyFavorite, setVacancyFavorite] = useState(is_favorite);
     const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const linkToVacancyPage = () => {
         navigate(`/vacancies/${id}`);
@@ -42,19 +44,25 @@ const Vacancy = (props) => {
         }).then(() => setVacancyFavorite(!isVacancyFavorite))
     }
 
+    const handleClickChangeVacancy = (event) => {
+        event.stopPropagation();
+        searchParams.set('vacancy', id);
+        setSearchParams(searchParams);
+        props.setModalVisible(true);
+    }
+
     return (
         <div onClick={linkToVacancyPage} className='vacancy-container'>
             <div className='vacancy__header'>
                 <h2>{title}</h2>
                 {!tokenInfo?.company && tokenInfo?.user_id &&
                     <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
+                {(tokenInfo?.company || tokenInfo?.is_director) && props.change &&
+                    <Button onClick={handleClickChangeVacancy}>Change</Button>}
             </div>
-            {
-                props.min_salary || props.max_salary ?
-                    renderSalaryIfExists(props.min_salary, props.max_salary) : null
-            }
+            {props.min_salary || props.max_salary ? renderSalaryIfExists(props.min_salary, props.max_salary) : null}
             {!tokenInfo?.company && <div>{company?.title}</div>}
-            {tokenInfo?.company && <div>{props?.manager.email} {props?.manager?.name}</div>}
+            {tokenInfo?.company && <div>{props?.manager?.email} {props?.manager?.name}</div>}
             {
                 !tokenInfo?.company && <Button onClick={respondToVacancy}
                                                className={props.is_responded || !props.is_active? 'respond-button__disabled' : 'respond-button'}

@@ -15,6 +15,12 @@
     border: none;
 }
 
+.success {
+    background: green;
+    color: white;
+    border: none;
+}
+
 .favoriteButton__container {
     background: transparent;
     border: none;

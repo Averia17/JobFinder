@@ -1,0 +1,11 @@
+.infoTab__container {
+    display: flex;
+    flex-direction: column;
+}
+.infoTab__container > div {
+    margin: 1vmax;
+}
+
+.infoTab__container > div > input[type="text"] {
+    margin: 0 10px;
+}

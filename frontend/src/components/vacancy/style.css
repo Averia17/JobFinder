@@ -7,6 +7,7 @@
     font-size: 1vmax;
     padding: 1vmax 2vmax;
     border-radius: 0.5vmax;
+    cursor: pointer;
 }
 
 .vacancy__header {

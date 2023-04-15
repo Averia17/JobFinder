@@ -4,6 +4,7 @@ import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import {renderSalaryIfExists} from "../../components/vacancy/Vacancy";
 import FavoriteButton from "../../components/buttons/FavoriteButton";
+import Response from "../../components/response/Response";
 
 const VacancyPage = () => {
     const {id} = useParams();
@@ -60,7 +61,9 @@ const VacancyPage = () => {
             }
             {!tokenInfo?.company && <button onClick={respondToVacancy}
                                             disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Respond</button>}
-
+            {vacancyInfo?.responses?.map(response => (
+                <Response {...response}/>
+            ))}
         </div>
     );
 };
