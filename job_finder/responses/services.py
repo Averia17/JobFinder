@@ -14,10 +14,10 @@ class ResponseMessagesService:
         serializer.is_valid(raise_exception=True)
         message = serializer.save()
         if message.user != self.vacancy_response.user:
-            self.send_notification(message.text)
+            self._send_notification(message.text)
         return message
 
-    def send_notification(self, text):
+    def _send_notification(self, text):
         send_user_email.delay(
             self.vacancy_response.user.email, RESPONSE_MESSAGE_SUBJECT, text
         )

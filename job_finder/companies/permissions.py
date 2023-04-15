@@ -3,7 +3,10 @@ from rest_framework import permissions
 
 class IsDirector(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.company.director == request.user
+        company = obj
+        if hasattr(obj, "company"):
+            company = obj.company
+        return company.director == request.user
 
     def has_permission(self, request, view):
         return (
