@@ -55,13 +55,12 @@ const Vacancy = (props) => {
         <div onClick={linkToVacancyPage} className='vacancy-container'>
             <div className='vacancy__header'>
                 <h2>{title}</h2>
-                {!tokenInfo?.company && tokenInfo?.user_id &&
-                    <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
-                {(tokenInfo?.company || tokenInfo?.is_director) && props.change &&
+                {tokenInfo?.user_id && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
+                {(tokenInfo?.company || tokenInfo?.is_director) && props.companyMembersPermissions &&
                     <Button onClick={handleClickChangeVacancy}>Change</Button>}
             </div>
             {props.min_salary || props.max_salary ? renderSalaryIfExists(props.min_salary, props.max_salary) : null}
-            {!tokenInfo?.company && <div>{company?.title}</div>}
+            {!props?.companyMembersPermissions && <div>{company?.title}</div>}
             {tokenInfo?.company && <div>{props?.manager?.email} {props?.manager?.name}</div>}
             {
                 !tokenInfo?.company && <Button onClick={respondToVacancy}

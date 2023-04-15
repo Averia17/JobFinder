@@ -9,7 +9,7 @@ const VacanciesTab = ({ vacancies, setModalVisible }) => {
             <Button onClick={() => setModalVisible(true)}>New vacancy</Button>
             {
                 vacancies?.map(vacancy => (
-                    <Vacancy key={vacancy.id} {...vacancy} change setModalVisible={setModalVisible}/>
+                    <Vacancy key={vacancy.id} {...vacancy} companyMembersPermissions setModalVisible={setModalVisible}/>
                 ))
             }
         </Tab>
