@@ -4,6 +4,7 @@ import axios from "axios";
 import {useGetInfoFromToken} from "../../../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import {employmentTypes, experienceOptions} from "./utils";
 import {useSearchParams} from "react-router-dom";
+import {TextField} from "@mui/material";
 
 const VacancyForm = () => {
     const { accessToken } = useGetInfoFromToken();
@@ -59,6 +60,10 @@ const VacancyForm = () => {
             <div>
                 <label htmlFor='max_salary'>Max salary</label>
                 <Input name='max_salary' defaultValue={vacancy?.max_salary} type='number' onChange={handleChange}/>
+            </div>
+            <div>
+                <label htmlFor='description'>Description</label>
+                <TextField name='description' defaultValue={vacancy?.description} onChange={handleChange}/>
             </div>
             {!vacancyId && <div>
                 <p>Managers</p>
