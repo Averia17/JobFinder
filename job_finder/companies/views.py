@@ -37,7 +37,7 @@ class CompanyViewSet(
 ):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-
+    # TODO: make title read only
     permission_to_method = {
         "update": [IsDirector],
         "partial_update": [IsDirector],

@@ -1,6 +1,9 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from resumes.filters import ResumeFilter
 from resumes.models import Resume
 from resumes.permissions import IsOwnerOrHasCompany
 from resumes.serializers import ResumeSerializer, ResumeDetailSerializer
@@ -11,6 +14,9 @@ class ResumeViewSet(ModelViewSet):
     queryset = Resume.objects.all()
     serializer_class = ResumeSerializer
     permission_classes = [IsAuthenticated]
+    search_fields = ["title", "description"]
+    filter_backends = (DjangoFilterBackend, SearchFilter)
+    filterset_class = ResumeFilter
 
     serializer_classes = {
         "retrieve": ResumeDetailSerializer,

@@ -1,4 +1,4 @@
-from django_filters import rest_framework as filters, Filter
+from django_filters import rest_framework as filters
 
 from vacancies.models import Vacancy
 
