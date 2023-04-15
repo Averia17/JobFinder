@@ -55,7 +55,8 @@ const Vacancy = (props) => {
         <div onClick={linkToVacancyPage} className='vacancy-container'>
             <div className='vacancy__header'>
                 <h2>{title}</h2>
-                {tokenInfo?.user_id && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
+                {tokenInfo?.user_id && !props.companyMembersPermissions
+                    && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
                 {(tokenInfo?.company || tokenInfo?.is_director) && props.companyMembersPermissions &&
                     <Button onClick={handleClickChangeVacancy}>Change</Button>}
             </div>
