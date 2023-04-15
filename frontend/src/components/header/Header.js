@@ -45,7 +45,12 @@ const Header = () => {
             <div className='header-links'>
                 <div className='head'>
                     <div className='vacancies'><Link to={{pathname: '/vacancies'}}>Vacancies</Link></div>
-                    { isAuthorized && <div className='authentication'><Link to={{pathname: '/profile'}}>Profile</Link></div> }
+                    { isAuthorized &&
+                        <>
+                            <div className='authentication'><Link to={{pathname: '/profile'}}>Profile</Link></div>
+                            <div className='authentication'><Link to={{pathname: '/favorites'}}>Favorites</Link></div>
+                        </>
+                    }
                     {
                         isAuthorized ?
                             (tokenInfo?.company ?
