@@ -10,14 +10,13 @@ const ResumeForm = () => {
     const {accessToken} = useGetInfoFromToken();
     const [userInfo, setUserInfo] = useState({});
     const [selectedLanguages, setSelectedLanguages] = useState({});
-    const [deleteLanguageId, setDeleteLanguageId] = useState(0);
-    const [languageId, setLanguageId] = useState(0);
-    const [newLanguage, setNewLanguage] = useState({});
-    const [languagesForms, setLanguagesForms] =
-        useState([]);
+    const [languagesForms, setLanguagesForms] = useState([]);
     const [skills, setSkills] = useState([]);
     const [skill, setSkill] = useState(undefined);
-    const [languagesIds, setLanguagesIds] = useState({});
+
+    const [availableLanguages, setAvailableLanguages] = useState([...languages]);
+    const [language, setLanguage] = useState(availableLanguages[0]?.title);
+    const [newLanguage, setNewLanguage] = useState({});
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -42,32 +41,35 @@ const ResumeForm = () => {
 
     const handleClickAddLanguage = () => {
         const languagesLength = languagesForms.length;
-        setLanguageId((prev) => prev + 1)
         setLanguagesForms([...languagesForms,
             <LanguageAdditionForm id={languagesLength}
-                                  defaultLanguage={languages[languageId]}
-                                  languagesIds={languagesIds}
-                                  setLanguagesIds={setLanguagesIds}
+                                  language={language}
+                                  languagesForms={languagesForms}
+                                  setLanguagesForms={setLanguagesForms}
+                                  selectedLanguages={selectedLanguages}
+                                  setSelectedLanguages={setSelectedLanguages}
                                   setNewLanguage={setNewLanguage}/>]);
-        setLanguagesIds({...languagesIds, [languagesLength]: languages[languageId].title });
     }
 
     const renderLanguagesForms = () => {
-        return languagesForms.map(languageForm => (
-            languageForm
-        ))
+        return languagesForms.map(languageForm => languageForm)
     }
-
-    useEffect(() => {
-        let newArray = languagesForms.slice(deleteLanguageId, 1);
-        setLanguagesForms(newArray)
-    }, [deleteLanguageId])
 
     useEffect(() => {
         setSelectedLanguages({...selectedLanguages, ...newLanguage})
     }, [newLanguage])
 
-    console.log(languagesIds)
+    useEffect(() => {
+        setAvailableLanguages([...languages].filter(language => {
+            if (!(Object.keys(selectedLanguages).find(value => value === language.title))) {
+                return language
+            }
+        }))
+    },[selectedLanguages])
+
+    useEffect(() => {
+        if (availableLanguages.length > 0) setLanguage(availableLanguages[0].title)
+    }, [availableLanguages])
 
     const handleChangeSkill = (event) => {
         setSkill(event.currentTarget.value);
@@ -111,8 +113,15 @@ const ResumeForm = () => {
             </div>
             <div>
                 <p>Languages</p>
+                {availableLanguages.length > 0 && <select name='language' value={availableLanguages[0]?.title} onChange={(event) => setLanguage(event.currentTarget.value)}>
+                    {
+                        availableLanguages.map(({ id, title }) => {
+                            return <option key={id} value={title}>{title}</option>
+                        })
+                    }
+                </select>}
                 {languagesForms.length > 0 && renderLanguagesForms()}
-                {languageId <= languages.length - 1 && <button type='button' onClick={handleClickAddLanguage}>Add one more language</button>}
+                {availableLanguages.length > 0 && <button type='button' onClick={handleClickAddLanguage}>Add language</button>}
             </div>
             <div>
                 <p>Skills</p>
