@@ -36,7 +36,7 @@ const VacancyForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (vacancyId) {
-            axios.patch(`/api/vacancies/`, {...vacancy}, {
+            axios.patch(`/api/vacancies/${vacancyId}/`, {...vacancy}, {
                 headers: { Authorization: `Bearer ${accessToken}`}
             }).then()
         } else {
