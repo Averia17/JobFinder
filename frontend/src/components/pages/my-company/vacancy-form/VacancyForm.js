@@ -54,11 +54,11 @@ const VacancyForm = () => {
             </div>
             <div>
                 <label htmlFor='min_salary'>Min salary</label>
-                <Input name='min_salary' defaultValue={vacancy?.min_salary} type='number' onChange={handleChange} required/>
+                <Input name='min_salary' defaultValue={vacancy?.min_salary} type='number' onChange={handleChange}/>
             </div>
             <div>
                 <label htmlFor='max_salary'>Max salary</label>
-                <Input name='max_salary' defaultValue={vacancy?.max_salary} type='number' onChange={handleChange} required/>
+                <Input name='max_salary' defaultValue={vacancy?.max_salary} type='number' onChange={handleChange}/>
             </div>
             {!vacancyId && <div>
                 <p>Managers</p>
@@ -70,7 +70,7 @@ const VacancyForm = () => {
             </div>}
             <div>
                 <p>Is vacancy active?</p>
-                <input name='is_active' defaultValue={vacancy?.max_salary} className='booleanField' type='checkbox' onChange={handleChange} required/>
+                <input name='is_active' defaultValue={vacancy?.is_active} className='booleanField' type='checkbox' onChange={handleChange} required/>
             </div>
             <div>
                 <p>Required experience</p>
