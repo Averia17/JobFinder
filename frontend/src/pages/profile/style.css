@@ -13,3 +13,16 @@
 .profile__field h4:first-letter {
     text-transform: uppercase;
 }
+
+.submit__button {
+    width: 120px;
+    margin: 10px 0;
+    background: #0000e6;
+    color: #f8f6f6;
+    padding: 5px 0;
+    border-radius: 5px;
+}
+.profile__input {
+    padding: 2px 3px;
+    width: 150px;
+}

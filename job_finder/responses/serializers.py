@@ -33,5 +33,6 @@ class VacancyResponseSerializer(VacancyResponseReadSerializer):
 
     def to_representation(self, instance):
         res = super().to_representation(instance)
-        res["vacancy"] = {"id": instance.vacancy.id, "title": instance.vacancy.title}
+        vacancy = instance.vacancy
+        res["vacancy"] = {"id": vacancy.id, "title": vacancy.title, "company": vacancy.company.title}
         return res

@@ -4,6 +4,7 @@ import Resume from "../../components/resume/Resume";
 import {useNavigate} from "react-router";
 import {useSearchParams} from "react-router-dom";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import "./style.css"
 
 const ResumesPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -25,9 +26,9 @@ const ResumesPage = () => {
     }
 
     return (
-        <div>
+        <div className="resumes__container">
             { !tokenInfo?.company &&
-                <button onClick={linkToCreateResumeForm}>Create resume</button>
+                <button className="submit__button" onClick={linkToCreateResumeForm}>Create resume</button>
             }
             {
                 resumes.map(resume => (

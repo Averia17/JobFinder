@@ -8,3 +8,7 @@
     gap: 1.5vmax;
     cursor: pointer;
 }
+.responseBlock__container p {
+    font-size: 1.1em;
+
+}

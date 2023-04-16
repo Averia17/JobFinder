@@ -2,12 +2,14 @@ import hashlib
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.db.models import Exists, Q, Count
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from companies.models import Company, CompanyManager
 from job_finder.settings import SECRET_KEY
+from responses.models import VacancyResponse
 from users.serializers import UserRegisterSerializer, UserSerializer
 from vacancies.serializers import CompanyVacancySerializer
 
@@ -20,11 +22,13 @@ class CompanySerializer(ModelSerializer):
         fields = "__all__"
 
     def get_vacancies(self, obj):
-        vacancies = obj.vacancies.all()
+        vacancies = obj.vacancies
         if "request" in self.context:
             user = self.context["request"].user
             if user.is_manager:
-                vacancies = user.companymanager.vacancies.all()
+                vacancies = user.companymanager.vacancies
+        vacancies = vacancies.annotate(count_new_responses=Count(
+            "responses", filter=Q(responses__status=VacancyResponse.not_viewed)))
         return CompanyVacancySerializer(vacancies, many=True).data
 
 

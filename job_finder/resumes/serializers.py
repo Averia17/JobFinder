@@ -9,7 +9,7 @@ from users.models import User
 class ResumeSerializer(ModelSerializer):
     class Meta:
         model = Resume
-        fields = ("id", "title", "city", "position", "experience", "salary")
+        fields = ("id", "title", "city", "experience", "salary")
 
 
 class ResumeDetailSerializer(ResumeSerializer):

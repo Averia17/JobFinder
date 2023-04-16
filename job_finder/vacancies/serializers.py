@@ -1,5 +1,5 @@
 from django.db.models import Count
-from rest_framework.fields import BooleanField, CharField, SerializerMethodField
+from rest_framework.fields import BooleanField, CharField, SerializerMethodField, IntegerField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
@@ -32,9 +32,11 @@ class VacancySerializer(ModelSerializer):
 
 
 class CompanyVacancySerializer(ModelSerializer):
+    count_new_responses = IntegerField(required=False)
+
     class Meta:
         model = Vacancy
-        fields = ("id", "title", "manager")
+        fields = ("id", "title", "manager", "count_new_responses")
 
     def to_representation(self, instance):
         res = super().to_representation(instance)

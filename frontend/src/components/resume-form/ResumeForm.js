@@ -65,7 +65,7 @@ const ResumeForm = () => {
                 return language
             }
         }))
-    },[selectedLanguages])
+    }, [selectedLanguages])
 
     useEffect(() => {
         if (availableLanguages.length > 0) setLanguage(availableLanguages[0].title)
@@ -77,72 +77,85 @@ const ResumeForm = () => {
 
     const handleAddSkill = (event) => {
         event.preventDefault();
-        setSkills([...skills, skill]);
-        setSkill('');
+        if(skill.length) {
+            setSkills([...skills, skill]);
+            setSkill('');
+        }
     }
 
     return (
-        <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column"}}>
-            <div>
-                <label htmlFor='title'>Resume title</label>
-                <Input name='title' type='text' onChange={handleChange} required/>
-            </div>
-            <div>
-                <label htmlFor='city'>City</label>
-                <Input name='city' type='text' onChange={handleChange} required/>
-            </div>
-            <div>
-                <label htmlFor='position'>Position</label>
-                <Input name='position' type='text' onChange={handleChange} required/>
-            </div>
-            <div>
-                <label htmlFor='experience'>Experience</label>
-                <Input name='experience' type='number' step='0.1' onChange={handleChange} required/>
-            </div>
-            <div>
-                <label htmlFor='description'>Description</label>
-                <Input name='description' type='text' onChange={handleChange} required/>
-            </div>
-            <div>
-                <label htmlFor='education'>Education</label>
-                <Input name='education' type='text' onChange={handleChange} required/>
-            </div>
-            <div>
-                <label htmlFor='salary'>Salary expectations</label>
-                <Input name='salary' type='number' onChange={handleChange} required/>
-            </div>
-            <div>
-                <p>Languages</p>
-                {availableLanguages.length > 0 && <select name='language' value={availableLanguages[0]?.title} onChange={(event) => setLanguage(event.currentTarget.value)}>
-                    {
-                        availableLanguages.map(({ id, title }) => {
-                            return <option key={id} value={title}>{title}</option>
-                        })
-                    }
-                </select>}
-                {languagesForms.length > 0 && renderLanguagesForms()}
-                {availableLanguages.length > 0 && <button type='button' onClick={handleClickAddLanguage}>Add language</button>}
-            </div>
-            <div>
-                <p>Skills</p>
-                <div>
-                    <Input type='text' value={skill} onChange={handleChangeSkill}></Input>
-                    <button onClick={handleAddSkill} type='button'>Add</button>
-                </div>
+        <div style={{width: "100%"}}>
+            <form onSubmit={handleSubmit}>
+                <div className="resume__form__container">
+                    <div className="column-1">
+                        <div>
+                            <label htmlFor='title'>Resume title</label>
+                            <Input name='title' type='text' onChange={handleChange} required/>
+                        </div>
+                        <div>
+                            <label htmlFor='city'>City</label>
+                            <Input name='city' type='text' onChange={handleChange} required/>
+                        </div>
+                        <div>
+                            <label htmlFor='position'>Position</label>
+                            <Input name='position' type='text' onChange={handleChange} required/>
+                        </div>
+                        <div>
+                            <label htmlFor='experience'>Experience</label>
+                            <Input name='experience' type='number' step='0.1' onChange={handleChange} required/>
+                        </div>
+                        <div>
+                            <label htmlFor='description'>Description</label>
+                            <Input name='description' type='text' onChange={handleChange} required/>
+                        </div>
+                        <div>
+                            <label htmlFor='education'>Education</label>
+                            <Input name='education' type='text' onChange={handleChange} required/>
+                        </div>
+                        <div>
+                            <label htmlFor='salary'>Salary expectations</label>
+                            <Input name='salary' type='number' onChange={handleChange} required/>
+                        </div>
+                    </div>
+                    <div className="column-2">
+                        <div>
+                            <div>Languages</div>
+                            {availableLanguages.length > 0 &&
+                                <select name='language' value={availableLanguages[0]?.title}
+                                        onChange={(event) => setLanguage(event.currentTarget.value)}>
+                                    {
+                                        availableLanguages.map(({id, title}) => {
+                                            return <option key={id} value={title}>{title}</option>
+                                        })
+                                    }
+                                </select>}
+                            {languagesForms.length > 0 && renderLanguagesForms()}
+                            {availableLanguages.length > 0 &&
+                                <button type='button' onClick={handleClickAddLanguage}>Add language</button>}
+                        </div>
+                        <div>
+                            <div>Skills</div>
+                            <div>
+                                <Input type='text' value={skill} onChange={handleChangeSkill}></Input>
+                                <button onClick={handleAddSkill} type='button'>Add</button>
+                            </div>
 
-                <div style={{display: 'flex'}}>
-                    {
-                        skills.map(skill => (
-                            <SkillBlock skill={skill}/>
-                        ))
-                    }
-                </div>
+                            <div style={{display: 'flex'}}>
+                                {
+                                    skills.map(skill => (
+                                        <SkillBlock skill={skill}/>
+                                    ))
+                                }
+                            </div>
 
-            </div>
-            <div>
-                <input type='submit'/>
-            </div>
-        </form>
+                        </div>
+                    </div>
+                </div>
+                <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                    <input className="create-resume__button" type='submit'/>
+                </div>
+            </form>
+        </div>
     );
 };
 

@@ -44,7 +44,7 @@ const InfoTab = ({ setError, company }) => {
                 </div>
                 <div>
                     <label htmlFor='description'>Description</label>
-                    <TextField type='text' name='description' defaultValue={description} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                    <TextField multiline rows={2} maxRows={4} type='text' name='description' defaultValue={description} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
                     <label htmlFor='phone'>Phone</label>
@@ -62,7 +62,7 @@ const InfoTab = ({ setError, company }) => {
                     <label htmlFor='email'>Email</label>
                     <Input type='email' name='email' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
-                <div>{isUpdated && <input type='submit'/>}</div>
+                <div>{isUpdated && <input className="submit__button" type='submit'/>}</div>
             </form>
         </Tab>
     );

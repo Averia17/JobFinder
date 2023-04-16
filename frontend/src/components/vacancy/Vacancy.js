@@ -28,11 +28,16 @@ const Vacancy = (props) => {
         navigate(`/vacancies/${id}`);
     }
 
-    const respondToVacancy = () => {
+    const respondToVacancy = (event) => {
+        event.stopPropagation();
         const accessToken = localStorage.getItem('access_token');
         axios.post('/api/responses/', {vacancy: id}, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
+            }
+        }).catch(({response}) => {
+            if(response.status === 401) {
+               navigate('/login')
             }
         })
     }
@@ -53,6 +58,7 @@ const Vacancy = (props) => {
 
     return (
         <div onClick={linkToVacancyPage} className='vacancy-container'>
+            {props.companyMembersPermissions && props?.count_new_responses > 0 && <div className="count__new__notification">{props?.count_new_responses}</div>}
             <div className='vacancy__header'>
                 <h2>{title}</h2>
                 {tokenInfo?.user_id && !props.companyMembersPermissions

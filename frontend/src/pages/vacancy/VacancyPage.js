@@ -7,15 +7,17 @@ import FavoriteButton from "../../components/buttons/FavoriteButton";
 import ResponsesTab from "../../components/pages/my-company/vacancy/ResponsesTab";
 import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
 import Navbar from "../../components/pages/my-company/vacancy/Navbar";
-import './style.css'
+import './style.css';
 import AcceptModal from "../../components/modal/AcceptModal";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import RejectModal from "../../components/modal/RejectModal";
+
 import ChatModal from "../../components/chat-modal/ChatModal";
 import dayjs from "dayjs";
 
 const VacancyPage = () => {
     const {id} = useParams();
+    const navigate = useNavigate();
     const tokenInfo = useGetInfoFromToken();
     const [searchParams, setSearchParams] = useSearchParams();
     const responseId = searchParams.get('responseId');
@@ -60,6 +62,10 @@ const VacancyPage = () => {
         axios.post('/api/responses/', {vacancy: id}, {
             headers: {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
+            }
+        }).catch(({response}) => {
+            if(response.status === 401) {
+               navigate('/login')
             }
         })
     }

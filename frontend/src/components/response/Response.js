@@ -55,9 +55,10 @@ const Response = (props) => {
 
     return (
         <div className='responseBlock__container' onClick={handleLinkToResumes}>
-            <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h1>{props?.vacancy?.title}</h1></Link>
-            {props?.user?.name || props?.user?.email && <p>{props?.user?.name} {props?.user?.email}</p>}
-            <p>{status}</p>
+            <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h2>{props?.vacancy?.title}</h2></Link>
+            {!tokenInfo?.company && <p>{props?.vacancy?.company}</p>}
+            {(props?.user?.name || props?.user?.email) && tokenInfo?.company && <p>{props?.user?.name} {props?.user?.email}</p>}
+            <p style={{ color: `${status === "Reject" && "red" || status === "Invite" && "green"}`}}>{status}</p>
             <p>{props?.created && dayjs(props?.created).format("DD.MM.YYYY")}</p>
             <ImageButton src={messageIcon} onClick={handleClick}/>
             {tokenInfo?.company && <>
