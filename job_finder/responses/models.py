@@ -5,12 +5,13 @@ from core.models import BaseModel
 
 
 class VacancyResponse(BaseModel):
+    reject = "REJECT"
+    invite = "INVITE"
     viewed = "VIEWED"
     not_viewed = "NOT_VIEWED"
-    reject = "REJECT"
     VACANCY_RESPONSE_STATUS = (
         (reject, "Reject"),
-        ("INVITE", "Invite"),
+        (invite, "Invite"),
         (viewed, "Viewed"),
         (not_viewed, "Not Viewed"),
     )

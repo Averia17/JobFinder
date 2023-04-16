@@ -17,7 +17,7 @@ class CompanySerializer(ModelSerializer):
 
     class Meta:
         model = Company
-        fields = ("id", "title", "address", "description", "director", "vacancies")
+        fields = "__all__"
 
     def get_vacancies(self, obj):
         vacancies = obj.vacancies.all()

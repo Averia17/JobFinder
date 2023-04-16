@@ -85,7 +85,7 @@ class CompanyManagerViewSet(
     def get_queryset(self):
         return super().get_queryset().filter(company=self.request.user.company)
 
-    @action(detail=False, methods=["POST"], serializer_class=PasswordSerializer)
+    @action(detail=False, methods=["POST"], serializer_class=PasswordSerializer, permission_classes=[])
     def accept_invite(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

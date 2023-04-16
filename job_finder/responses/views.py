@@ -8,7 +8,7 @@ from companies.permissions import IsManagerOrDirector
 from response_messages.serializers import MessageSerializer
 from responses.models import VacancyResponse
 from responses.serializers import VacancyResponseSerializer
-from responses.services import ResponseMessagesService
+from responses.services import VacancyResponseService
 
 
 class VacancyResponseViewSet(
@@ -51,7 +51,7 @@ class VacancyResponseViewSet(
     @action(detail=True, methods=["GET", "POST"], serializer_class=MessageSerializer)
     def messages(self, request, pk=None):
         vacancy_response = self.get_object()
-        service = ResponseMessagesService(vacancy_response)
+        service = VacancyResponseService(vacancy_response)
         if request.method == "POST":
             request.data.update({"vacancy_response": pk, "user": request.user.id})
             message = service.create_message(request.data)
@@ -76,7 +76,7 @@ class VacancyResponseViewSet(
 
     def update(self, request, *args, **kwargs):
         vacancy_response = self.get_object()
-        vacancy_response.status = request.data.get("status")
-        vacancy_response.save()
+        service = VacancyResponseService(vacancy_response)
+        service.update_status(request.data.get("status"))
         serializer = self.get_serializer(vacancy_response)
         return Response(serializer.data)

@@ -10,9 +10,9 @@ const Filters = ({ filters, setFilters, setSearch, handleSearch }) => {
     useEffect(() => {
         axios.get('/api/vacancies/filters')
             .then(({ data }) => {
-                setExperienceOptions(data.experience_options);
+                setExperienceOptions(data.experience_option);
                 setEmploymentTypes(data.employment_type);
-                setCompanies(data.companies);
+                setCompanies(data.company);
             })
     }, [])
 
@@ -29,8 +29,9 @@ const Filters = ({ filters, setFilters, setSearch, handleSearch }) => {
                 <input type="search" onChange={e => setSearch(e.target.value)}/>
             </div>
             <div>
-                <label htmlFor='experience_options'>Experience</label>
-                <select name='experience_options' onChange={handleChangeFilters}>
+                <label htmlFor='experience_option'>Experience</label>
+                <select name='experience_option' onChange={handleChangeFilters}>
+                    <option></option>
                     {experienceOptions.map(experienceOption => (
                         <option value={experienceOption[0]}>{experienceOption[1]}</option>
                     ))}
@@ -39,14 +40,16 @@ const Filters = ({ filters, setFilters, setSearch, handleSearch }) => {
             <div>
                 <label htmlFor='employment_type'>Employment type</label>
                 <select name='employment_type' onChange={handleChangeFilters}>
+                    <option></option>
                     {employmentTypes.map(employmentType => (
                         <option value={employmentType[0]}>{employmentType[1]}</option>
                     ))}
                 </select>
             </div>
             <div>
-                <label htmlFor='companies'>Companies</label>
-                <select name='companies' onChange={handleChangeFilters}>
+                <label htmlFor='company'>Companies</label>
+                <select name='company' onChange={handleChangeFilters}>
+                    <option></option>
                     {companies.map(company => (
                         <option value={company.id}>{company.title}</option>
                     ))}

@@ -8,6 +8,8 @@ import messageIcon from '../../assets/message.png'
 import acceptIcon from '../../assets/accept-button.png'
 import cancelIcon from '../../assets/cancel-button.png'
 import {useNavigate} from "react-router";
+import dayjs from "dayjs";
+import axios from "axios";
 
 
 const Response = (props) => {
@@ -16,7 +18,8 @@ const Response = (props) => {
     const tokenInfo = useGetInfoFromToken();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const handleClick = () => {
+    const handleClick = (event) => {
+        event.stopPropagation();
         searchParams.set('responseId', id);
         setSearchParams(searchParams);
         props.setChatModalVisible(true);
@@ -37,7 +40,16 @@ const Response = (props) => {
     }
 
     const handleLinkToResumes = () => {
-        navigate(`/resumes?user=${props?.user?.id}`)
+        if (tokenInfo?.company) {
+            axios.get(`/api/responses/${id}/`, {
+                headers: {
+                    'Authorization': `Bearer ${tokenInfo?.accessToken}`
+                }
+            })
+            navigate(`/resumes?user=${props?.user?.id}`)
+        } else
+            navigate(`/vacancies/${props?.vacancy?.id}`)
+
     }
 
     return (
@@ -45,6 +57,7 @@ const Response = (props) => {
             <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h1>{props?.vacancy?.title}</h1></Link>
             {props?.user?.name || props?.user?.email && <p>{props?.user?.name} {props?.user?.email}</p>}
             <p>{status}</p>
+            <p>{props?.created && dayjs(props?.created).format("DD.MM.YYYY")}</p>
             <ImageButton src={messageIcon} onClick={handleClick}/>
             {tokenInfo?.company && <>
                 <ImageButton src={acceptIcon} onClick={handleClickAccept}>Accept</ImageButton>

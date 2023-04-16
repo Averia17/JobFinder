@@ -4,9 +4,10 @@ import Input from "../../inputs/Input";
 import {useGetInfoFromToken} from "../../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import axios from "axios";
 import './style.css'
+import {TextField} from "@mui/material";
 
 const InfoTab = ({ company }) => {
-    const { address, description, director } = company;
+    const { address, description, director, phone, email, employees_number, site } = company;
     const tokenInfo = useGetInfoFromToken();
     const [updatedCompanyInfo, setUpdatedCompanyInfo] = useState({});
     const [isUpdated, setUpdated] = useState(false);
@@ -34,16 +35,33 @@ const InfoTab = ({ company }) => {
             <form className='infoTab__container' onSubmit={handleSubmitUpdate}>
                 <div>
                     <label htmlFor='address'>Address</label>
-                    <Input type='text' name='address' value={address} onChange={handleChangeCompanyInfo} required disabled={!tokenInfo?.is_director}/>
+                    <Input type='text' name='address' defaultValue={address} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
                     <label htmlFor='director'>Director</label>
-                    <Input type='text' name='director' value={director} onChange={handleChangeCompanyInfo} disabled/>
+                    <Input type='text' name='director' defaultValue={director} onChange={handleChangeCompanyInfo} disabled/>
                 </div>
                 <div>
                     <label htmlFor='description'>Description</label>
-                    <Input type='text' name='description' value={description} onChange={handleChangeCompanyInfo} required disabled={!tokenInfo?.is_director}/>
+                    <TextField type='text' name='description' defaultValue={description} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
+                <div>
+                    <label htmlFor='phone'>Phone</label>
+                    <Input type='text' name='phone' defaultValue={phone} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                </div>
+                <div>
+                    <label htmlFor='site'>Site</label>
+                    <Input type='url' name='site' defaultValue={site} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                </div>
+                <div>
+                    <label htmlFor='employees_number'>Employees number</label>
+                    <Input type='number' name='employees_number' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                </div>
+                <div>
+                    <label htmlFor='email'>Email</label>
+                    <Input type='email' name='email' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                </div>
+
                 <div>{isUpdated && <input type='submit'/>}</div>
             </form>
         </Tab>

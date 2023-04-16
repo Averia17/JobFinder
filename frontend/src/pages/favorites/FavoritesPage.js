@@ -7,6 +7,7 @@ import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFro
 const FavoritesPage = () => {
     const tokenInfo = useGetInfoFromToken();
     const [vacancies, setVacancies] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios.get('/api/vacancies/favorites', {
@@ -14,17 +15,22 @@ const FavoritesPage = () => {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
         })
-            .then(({data}) => setVacancies(data));
+            .then(({data}) => {
+                setVacancies(data)
+                setLoading(false)
+            });
     }, [])
 
     return (
         <div className='vacancies-page-container'>
-            <div className='filters'>filters</div>
             <div className='vacancies-container'>
-                {
+                { !loading ?
+                    vacancies.length > 0 ?
                     vacancies.map(vacancy => (
                         <Vacancy key={vacancy.id} {...vacancy}/>
                     ))
+                    : <div> You don't have favorites vacancies</div>
+                    : <div> Loading...</div>
                 }
             </div>
         </div>

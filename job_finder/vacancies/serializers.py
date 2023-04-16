@@ -54,6 +54,8 @@ class VacancyDetailSerializer(VacancySerializer):
             "experience_option",
             "employment_type",
             "manager",
+            "created",
+            # "updated",
         )
 
     def to_internal_value(self, data):

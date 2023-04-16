@@ -81,9 +81,9 @@ class VacancyViewSet(ModelViewSet):
     def filters(self, request, *args, **kwargs):
         return Response(
             {
-                "experience_options": EXPERIENCE_OPTIONS,
+                "experience_option": EXPERIENCE_OPTIONS,
                 "employment_type": EMPLOYMENT_TYPE,
-                "companies": Company.objects.exclude(vacancies=None).values(
+                "company": Company.objects.exclude(vacancies=None).values(
                     "id", "title"
                 ),
             }

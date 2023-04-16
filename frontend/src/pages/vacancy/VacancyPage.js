@@ -12,6 +12,7 @@ import AcceptModal from "../../modal/AcceptModal";
 import {useSearchParams} from "react-router-dom";
 import RejectModal from "../../modal/RejectModal";
 import ChatModal from "../../components/chat-modal/ChatModal";
+import dayjs from "dayjs";
 
 const VacancyPage = () => {
     const {id} = useParams();
@@ -32,8 +33,8 @@ const VacancyPage = () => {
                 setAcceptModalVisible={setAcceptModalVisible}
                 setRejectModalVisible={setRejectModalVisible}
                 setChatModalVisible={setChatModalVisible}
-                responses={vacancyInfo?.responses} />,
-        views: <ViewsTab views={vacancyInfo?.views} />,
+                responses={vacancyInfo?.responses}/>,
+        views: <ViewsTab views={vacancyInfo?.views}/>,
     }
 
     const [currentTab, setCurrentTab] = useState('responses');
@@ -82,7 +83,7 @@ const VacancyPage = () => {
     }
 
     const handleConfirmAccept = () => {
-        axios.post(`/api/responses/${responseId}/messages/`, { text: acceptMessage }, {
+        axios.post(`/api/responses/${responseId}/messages/`, {text: acceptMessage}, {
             headers: {
                 Authorization: `Bearer ${tokenInfo?.accessToken}`
             }
@@ -90,19 +91,27 @@ const VacancyPage = () => {
             searchParams.delete('responseId');
             setSearchParams(searchParams);
             setAcceptModalVisible(false)
-        })
+        }).then(() => axios.patch(`/api/responses/${responseId}/`, {status: "INVITE"}, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }
+        }))
     }
 
     const handleConfirmReject = () => {
-        axios.post(`/api/responses/${responseId}/messages/`, { text: rejectMessage }, {
+        axios.post(`/api/responses/${responseId}/messages/`, {text: rejectMessage}, {
             headers: {
                 Authorization: `Bearer ${tokenInfo?.accessToken}`
             }
         }).then(() => {
             searchParams.delete('responseId');
             setSearchParams(searchParams);
-            setRejectMessage(false)
-        })
+            setRejectModalVisible(false)
+        }).then(() => axios.patch(`/api/responses/${responseId}/`, {status: "REJECT"}, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }
+        }))
     }
 
     return (
@@ -117,6 +126,7 @@ const VacancyPage = () => {
                 <div style={{color: "red"}}>Vacancy is not active</div>
             </b>}
             <div>{renderSalaryIfExists(vacancyInfo.min_salary, vacancyInfo.max_salary)}</div>
+            <p>Created {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
             <div>{vacancyInfo.employment_type}</div>
             <div>Required experience {vacancyInfo.experience_option} years</div>
             {vacancyInfo.description &&
@@ -134,13 +144,13 @@ const VacancyPage = () => {
                 isActive={isAcceptModalVisible}
                 handleClickHideModal={handleClickHideAcceptModal}
                 handleConfirm={handleConfirmAccept}
-                setAcceptMessage={setAcceptMessage} />
+                setAcceptMessage={setAcceptMessage}/>
             <RejectModal
                 isActive={isRejectModalVisible}
                 handleClickHideModal={handleClickHideRejectModal}
                 handleConfirm={handleConfirmReject}
-                setRejectReason={setRejectMessage} />
-            {isChatModalVisible && <ChatModal setChatModalVisible={setChatModalVisible} />}
+                setRejectReason={setRejectMessage}/>
+            {isChatModalVisible && <ChatModal setChatModalVisible={setChatModalVisible}/>}
         </div>
     );
 };

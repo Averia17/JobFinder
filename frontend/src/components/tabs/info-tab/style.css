@@ -6,6 +6,6 @@
     margin: 1vmax;
 }
 
-.infoTab__container > div > input[type="text"] {
+.infoTab__container > div > input {
     margin: 0 10px;
 }

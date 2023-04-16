@@ -29,7 +29,7 @@ const Router = () => {
                     <Route path='/vacancies/:id' element={<VacancyPage/>}/>
                     <Route path='/resumes' element={<ResumesPage/>}/>
                     <Route path='/register_manager' element={<RegisterManagerPage/>}/>
-                    <Route path='/' element={<MainPage/>}/>
+                    <Route path='/' element={<VacanciesPage/>}/>
                     { tokenInfo?.user_id && mapRoutes(commonAuthorizedRoutes) }
                     { !tokenInfo?.user_id && mapRoutes(unauthorizedUserRoutes) }
                     { tokenInfo?.user_id && (!tokenInfo?.company) && mapRoutes(authorizedUserRoutes) }
