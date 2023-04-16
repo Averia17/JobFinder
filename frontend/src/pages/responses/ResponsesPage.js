@@ -6,6 +6,8 @@ import {useSearchParams} from "react-router-dom";
 
 const ResponsesPage = () => {
     const [responses, setResponses] = useState([]);
+    const [isChatModalVisible, setChatModalVisible] = useState(false);
+    const [responseStatus, setResponseStatus] = useState(undefined);
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -23,10 +25,14 @@ const ResponsesPage = () => {
         <div>
             {
                 responses.map(response => (
-                    <Response key={response.id} {...response}/>
+                    <Response key={response.id} setResponseStatus={setResponseStatus} {...response} setChatModalVisible={setChatModalVisible} />
                 ))
             }
-            {searchParams.get('responseId') && <ChatModal/>}
+            {isChatModalVisible &&
+                <ChatModal
+                    setResponseStatus={setResponseStatus}
+                    responseStatus={responseStatus}
+                    setChatModalVisible={setChatModalVisible}/>}
         </div>
     );
 };

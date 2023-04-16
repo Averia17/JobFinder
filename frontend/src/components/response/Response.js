@@ -23,6 +23,7 @@ const Response = (props) => {
         searchParams.set('responseId', id);
         setSearchParams(searchParams);
         props.setChatModalVisible(true);
+        props.setResponseStatus(status);
     }
 
     const handleClickAccept = (event) => {

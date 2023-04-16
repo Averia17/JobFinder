@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import ImageButton from "../buttons/ImageButton";
 import closeIcon from '../../assets/close.png'
 
-const ChatModal = ({ setChatModalVisible }) => {
+const ChatModal = (props) => {
     const accessToken = localStorage.getItem('access_token');
     const {user_id} = useGetInfoFromToken();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -62,7 +62,8 @@ const ChatModal = ({ setChatModalVisible }) => {
         searchParams.delete('responseId');
         setSearchParams(searchParams);
         setResponseId(undefined);
-        setChatModalVisible(false);
+        props.setChatModalVisible(false);
+        props?.setResponseStatus(null);
     }
 
     return (
@@ -88,7 +89,7 @@ const ChatModal = ({ setChatModalVisible }) => {
                     onChange={handleChangeMessage}
                     value={message}
                     id="standard-textarea"
-                    placeholder="Write there"
+                    placeholder={props?.responseStatus === 'Reject' ? 'Employer rejected you' : "Write there"}
                     multiline
                     rows={2}
                     variant="filled"
@@ -96,8 +97,12 @@ const ChatModal = ({ setChatModalVisible }) => {
                             paddingRight: 50
                         } }}
                     className='chat__textField'
+                    disabled={props?.responseStatus === 'Reject'}
                 />
-                <button className='chat__button' onClick={handleSendMessage}>Send</button>
+                <button
+                    className='chat__button'
+                    disabled={props?.responseStatus === 'Reject'}
+                    onClick={handleSendMessage}>Send</button>
             </div>
         </div>
     );
