@@ -67,8 +67,8 @@ const MyCompanyPage = () => {
     return (
         <div key={id} className='myCompany__container'>
             <h1>{title}</h1>
-            <Navbar setCurrentTab={setCurrentTab}/>
-            { tokenInfo?.is_director ? renderTab() : <VacanciesTab vacancies={vacancies} setModalVisible={setVacancyModalVisible}/> }
+            <Navbar isDirector={tokenInfo?.is_director} setCurrentTab={setCurrentTab}/>
+            { tokenInfo?.company ? renderTab() : <VacanciesTab vacancies={vacancies} setModalVisible={setVacancyModalVisible}/> }
             <ConfirmModal isActive={isDeleteModalVisible} handleClickHideModal={handleClickHideModal}
                           handleConfirm={handleConfirmDeleteManager} title='Are you sure you want to delete this manager?'/>
             <VacancyModal isActive={isVacancyModalVisible} handleClickHideModal={handleClickHideVacancyModal}/>
