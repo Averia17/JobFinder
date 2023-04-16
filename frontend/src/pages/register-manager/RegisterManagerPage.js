@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Input from "../../components/inputs/Input";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 const RegisterManagerPage = () => {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ const RegisterManagerPage = () => {
     const token = searchParams.get('token');
     const email = searchParams.get('email');
     const [managerPasswords, setManagerPasswords] = useState({ password: undefined, confirmPassword: undefined });
+    const [signupError, setSignupError] = useState(undefined);
 
     const handleChangePasswords = event => {
         setManagerPasswords({
@@ -19,7 +21,12 @@ const RegisterManagerPage = () => {
 
     const handleSubmitRegisterManager = event => {
         event.preventDefault();
-        if (token && email && managerPasswords.password === managerPasswords.confirmPassword) {
+        const { password, confirmPassword } = managerPasswords;
+        if (password !== confirmPassword) {
+            setSignupError('Your passwords are not equal');
+            return;
+        }
+        if (token && email) {
             axios.post('/api/managers/accept_invite/', { token, email, new_password: managerPasswords.password })
                 .then(() => {
                     axios.post('/login/', { email, password: managerPasswords.password })
@@ -31,6 +38,9 @@ const RegisterManagerPage = () => {
                             navigate("/");
                             window.location.reload();
                         })
+                })
+                .catch(({ response }) => {
+                    setSignupError(`Password: ${response.data.password}`)
                 })
         }
     }
@@ -44,7 +54,7 @@ const RegisterManagerPage = () => {
                 <Input type='password' name='confirmPassword' onChange={handleChangePasswords} required/>
                 <input type='submit'/>
             </form>
-
+            {signupError && <ErrorAlert error={signupError} setError={setSignupError}/>}
         </div>
     );
 };

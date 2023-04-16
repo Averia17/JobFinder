@@ -4,12 +4,14 @@ import axios from "axios";
 import './style.css'
 import Input from "../../components/inputs/Input";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
-const ProfilePage = ({props}) => {
+const ProfilePage = () => {
     const tokenInfo = useGetInfoFromToken();
     const [userInfo, setUserInfo] = useState({});
     const [updatedProfileInfo, setUpdatedProfileInfo] = useState({});
     const [isUpdated, setUpdated] = useState(false);
+    const [phoneError, setPhoneError] = useState(undefined);
 
     const handleChangeProfileInfo = event => {
         setUpdatedProfileInfo({
@@ -23,6 +25,9 @@ const ProfilePage = ({props}) => {
         axios.patch(`/api/users/my/`, updatedProfileInfo, {
             headers: { Authorization: `Bearer ${tokenInfo.accessToken}` }
         }).then(() => setUpdated(false))
+          .catch(({ response }) => {
+              setPhoneError(response.data.phone);
+          })
     }
 
     useEffect(() => {
@@ -67,6 +72,7 @@ const ProfilePage = ({props}) => {
                 </div>
                 <div>{isUpdated && <input type='submit'/>}</div>
             </form>
+            {phoneError && <ErrorAlert error={phoneError} setError={setPhoneError}/>}
         </div>
     );
 };

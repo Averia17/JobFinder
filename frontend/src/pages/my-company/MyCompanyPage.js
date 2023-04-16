@@ -9,6 +9,7 @@ import ConfirmModal from "../../components/modal/ConfirmModal";
 import {useSearchParams} from "react-router-dom";
 import InfoTab from "../../components/tabs/info-tab/InfoTab";
 import VacancyModal from "../../components/pages/my-company/vacancy-form/VacancyModal";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 const MyCompanyPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -16,6 +17,7 @@ const MyCompanyPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isDeleteModalVisible, setDeleteModalVisible] = useState(!!searchParams.get('manager'));
     const [isVacancyModalVisible, setVacancyModalVisible] = useState(false);
+    const [companyError, setCompanyError] = useState(undefined);
 
     useEffect(() => {
         axios.get(`/api/companies/${tokenInfo.company}`, {
@@ -28,7 +30,7 @@ const MyCompanyPage = () => {
     const tabs = {
         vacancies: <VacanciesTab vacancies={vacancies} setModalVisible={setVacancyModalVisible}/>,
         managers: <ManagersTab/>,
-        info: <InfoTab company={companyInfo}/>,
+        info: <InfoTab setError={setCompanyError} company={companyInfo}/>,
     }
 
     const [currentTab, setCurrentTab] = useState('vacancies');
@@ -61,7 +63,7 @@ const MyCompanyPage = () => {
         }).then(() => {
             searchParams.delete('manager');
             setDeleteModalVisible(false);
-        })
+        }).catch(() => setCompanyError('Manager have vacancies, you cannot delete him'))
     }
 
     return (
@@ -72,6 +74,7 @@ const MyCompanyPage = () => {
             <ConfirmModal isActive={isDeleteModalVisible} handleClickHideModal={handleClickHideModal}
                           handleConfirm={handleConfirmDeleteManager} title='Are you sure you want to delete this manager?'/>
             <VacancyModal isActive={isVacancyModalVisible} handleClickHideModal={handleClickHideVacancyModal}/>
+            {companyError && <ErrorAlert error={companyError} setError={setCompanyError}/>}
         </div>
     );
 };

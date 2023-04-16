@@ -3,6 +3,7 @@ import {Navigate, useLocation} from "react-router-dom";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {useNavigate} from "react-router";
+import ErrorAlert from "../components/alerts/ErrorAlert";
 // import GoogleLogin from "react-google-login";
 // import {gapi} from "gapi-script";
 
@@ -14,6 +15,8 @@ const LoginPage = () => {
         email: '',
         password: '',
     })
+    const [loginError, setLoginError] = useState(undefined);
+
     useEffect(() => {
         if (location?.state?.email) {
             setUserData({email: location?.state?.email, password: location?.state?.password})
@@ -44,6 +47,8 @@ const LoginPage = () => {
         }).then(() => {
             navigate("/");
             window.location.reload();
+        }).catch(({ response }) => {
+            setLoginError(response.data.detail);
         })
     }
     //
@@ -89,7 +94,6 @@ const LoginPage = () => {
     //     return axios.post('/login/google/', data, {headers});
     // };
 
-
     return isAuthorized ?
         <Navigate to='/' replace/>
         :
@@ -132,6 +136,7 @@ const LoginPage = () => {
             {/*            null*/}
             {/*    }*/}
             {/*</div>*/}
+            {loginError && <ErrorAlert error={loginError} setError={setLoginError}/>}
         </div>
 };
 

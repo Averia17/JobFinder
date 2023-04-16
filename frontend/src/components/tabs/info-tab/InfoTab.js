@@ -6,7 +6,7 @@ import axios from "axios";
 import './style.css'
 import {TextField} from "@mui/material";
 
-const InfoTab = ({ company }) => {
+const InfoTab = ({ setError, company }) => {
     const { address, description, director, phone, email, employees_number, site } = company;
     const tokenInfo = useGetInfoFromToken();
     const [updatedCompanyInfo, setUpdatedCompanyInfo] = useState({});
@@ -24,6 +24,7 @@ const InfoTab = ({ company }) => {
         axios.patch(`/api/companies/${company.id}/`, updatedCompanyInfo, {
             headers: { Authorization: `Bearer ${tokenInfo.accessToken}` }
         }).then(() => setUpdated(false))
+            .catch(({ response }) => setError(response.data.phone))
     }
 
     useEffect(() => {
@@ -55,13 +56,12 @@ const InfoTab = ({ company }) => {
                 </div>
                 <div>
                     <label htmlFor='employees_number'>Employees number</label>
-                    <Input type='number' name='employees_number' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                    <Input type='number' name='employees_number' min='0' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
                     <label htmlFor='email'>Email</label>
                     <Input type='email' name='email' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
-
                 <div>{isUpdated && <input type='submit'/>}</div>
             </form>
         </Tab>

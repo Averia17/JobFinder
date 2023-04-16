@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
 import RegisterForm from "../components/register-form/RegisterForm";
+import ErrorAlert from "../components/alerts/ErrorAlert";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -15,10 +16,15 @@ const RegisterPage = () => {
     const [companyData, setCompanyData] = useState({
         title: undefined
     });
+    const [signupError, setSignupError] = useState(undefined);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let { email, password } = userData;
+        let { email, password, confirmPassword } = userData;
+        if (password !== confirmPassword) {
+            setSignupError('Your passwords are not equal');
+            return;
+        }
         if (!userData.isEmployee) {
             axios.post('/api/users/', {email, password}).then(() => {
                 navigate('/login', {
@@ -27,6 +33,11 @@ const RegisterPage = () => {
                         password: userData.password
                     }
                 })
+            }).catch(({ response }) => {
+                if (response.data.email)
+                    setSignupError(`Email: ${response.data.email}`)
+                else if(response.data.password)
+                    setSignupError(`Password: ${response.data.password}`)
             })
         } else {
             axios.post('/api/companies/', {email, password, ...companyData})
@@ -40,10 +51,13 @@ const RegisterPage = () => {
                             window.location.reload();
                         })
 
+            }).catch(({ response }) => {
+                if (response.data.email)
+                    setSignupError(`Email: ${response.data.email[0]}`)
+                else if(response.data.password)
+                    setSignupError(`Password: ${response.data.password}`)
             })
         }
-
-
 
         // .catch(({response}) => {
         //     let error = response.data;
@@ -64,7 +78,6 @@ const RegisterPage = () => {
         <Navigate to='/' replace/>
         :
         <div className="authorization-container-wrapper">
-
             <div className="authorization-container">
                 <p className="form-header">Sign Up</p>
                 <RegisterForm className='authorization-form'
@@ -78,6 +91,7 @@ const RegisterPage = () => {
                     Already have an account? <Link to={{pathname: '/login'}}>Log in</Link>
                 </p>
             </div>
+            {signupError && <ErrorAlert error={signupError} setError={setSignupError}/>}
         </div>
 };
 
