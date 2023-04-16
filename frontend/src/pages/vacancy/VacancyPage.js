@@ -8,9 +8,9 @@ import ResponsesTab from "../../components/pages/my-company/vacancy/ResponsesTab
 import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
 import Navbar from "../../components/pages/my-company/vacancy/Navbar";
 import './style.css'
-import AcceptModal from "../../modal/AcceptModal";
+import AcceptModal from "../../components/modal/AcceptModal";
 import {useSearchParams} from "react-router-dom";
-import RejectModal from "../../modal/RejectModal";
+import RejectModal from "../../components/modal/RejectModal";
 import ChatModal from "../../components/chat-modal/ChatModal";
 import dayjs from "dayjs";
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from "./Modal";
 import {TextField} from "@mui/material";
-import Button from "../components/buttons/Button";
+import Button from "../buttons/Button";
 
 const RejectModal = ({ isActive, handleClickHideModal, setRejectReason, handleConfirm }) => {
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from "./Modal";
-import Button from "../components/buttons/Button";
+import Button from "../buttons/Button";
 
 const ConfirmModal = ({ isActive, handleClickHideModal, title, handleConfirm }) => {
     return (

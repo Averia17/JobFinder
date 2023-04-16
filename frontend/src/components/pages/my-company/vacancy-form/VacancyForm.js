@@ -9,6 +9,7 @@ import {TextField} from "@mui/material";
 const VacancyForm = () => {
     const { accessToken } = useGetInfoFromToken();
     const [vacancy, setVacancy] = useState({});
+    const [defaultVacancy, setDefaultVacancy] = useState({});
     const [managers, setManagers] = useState([]);
     const [searchParams] = useSearchParams();
     const vacancyId = searchParams.get('vacancy');
@@ -16,7 +17,7 @@ const VacancyForm = () => {
     useEffect(() => {
         if (vacancyId) {
             axios.get(`/api/vacancies/${vacancyId}`)
-                .then(({ data }) => setVacancy(data))
+                .then(({ data }) => setDefaultVacancy(data))
         }
     }, [vacancyId])
 
@@ -51,19 +52,19 @@ const VacancyForm = () => {
         <form onSubmit={handleSubmit} style={{display:"flex", flexDirection: "column"}}>
             <div>
                 <label htmlFor='title'>Vacancy title</label>
-                <Input name='title' defaultValue={vacancy?.title} type='text' onChange={handleChange} required/>
+                <Input name='title' defaultValue={defaultVacancy?.title} type='text' onChange={handleChange} required/>
             </div>
             <div>
                 <label htmlFor='min_salary'>Min salary</label>
-                <Input name='min_salary' defaultValue={vacancy?.min_salary} type='number' onChange={handleChange}/>
+                <Input name='min_salary' defaultValue={defaultVacancy?.min_salary} type='number' onChange={handleChange}/>
             </div>
             <div>
                 <label htmlFor='max_salary'>Max salary</label>
-                <Input name='max_salary' defaultValue={vacancy?.max_salary} type='number' onChange={handleChange}/>
+                <Input name='max_salary' defaultValue={defaultVacancy?.max_salary} type='number' onChange={handleChange}/>
             </div>
             <div>
                 <label htmlFor='description'>Description</label>
-                <TextField name='description' defaultValue={vacancy?.description} onChange={handleChange}/>
+                <TextField name='description' defaultValue={defaultVacancy?.description} onChange={handleChange}/>
             </div>
             {!vacancyId && <div>
                 <p>Managers</p>
@@ -75,21 +76,21 @@ const VacancyForm = () => {
             </div>}
             <div>
                 <p>Is vacancy active?</p>
-                <input name='is_active' defaultValue={vacancy?.is_active} className='booleanField' type='checkbox' onChange={handleChange} required/>
+                <input name='is_active' defaultChecked={defaultVacancy?.is_active} className='booleanField' type='checkbox' onChange={handleChange} required/>
             </div>
             <div>
                 <p>Required experience</p>
                 <select name='experience_option' onChange={handleChange} required>
                     {experienceOptions.map((experience) => (
-                        <option selected={experience === vacancy?.experience_option} key={experience} value={experience}>{experience}</option>
+                        <option selected={experience === defaultVacancy?.experience_option} key={experience} value={experience}>{experience}</option>
                     ))}
                 </select>
             </div>
             <div>
                 <p>Employment type</p>
                 <select name='employment_type' onChange={handleChange} required>
-                    {employmentTypes.map((type) => (
-                        <option selected={type === vacancy?.employment_type?.toUpperCase()} key={type} value={type}>{type}</option>
+                    {employmentTypes.map((type, index) => (
+                        <option selected={type[1] === defaultVacancy?.employment_type} key={index} value={type[0]}>{type[1]}</option>
                     ))}
                 </select>
             </div>

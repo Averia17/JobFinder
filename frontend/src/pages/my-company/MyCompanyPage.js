@@ -5,7 +5,7 @@ import VacanciesTab from "../../components/tabs/vacancies-tab/VacanciesTab";
 import ManagersTab from "../../components/tabs/managers-tab/ManagersTab";
 import Navbar from "../../components/pages/my-company/navbar/Navbar";
 import './style.css'
-import ConfirmModal from "../../modal/ConfirmModal";
+import ConfirmModal from "../../components/modal/ConfirmModal";
 import {useSearchParams} from "react-router-dom";
 import InfoTab from "../../components/tabs/info-tab/InfoTab";
 import VacancyModal from "../../components/pages/my-company/vacancy-form/VacancyModal";
@@ -40,12 +40,14 @@ const MyCompanyPage = () => {
 
     const handleClickHideModal = () => {
         searchParams.delete('manager');
-        setSearchParams(searchParams)
+        setSearchParams(searchParams);
         setDeleteModalVisible(false);
     }
 
     const handleClickHideVacancyModal = () => {
-        setVacancyModalVisible(false)
+        searchParams.delete('vacancy');
+        setSearchParams(searchParams);
+        setVacancyModalVisible(false);
     }
 
     useEffect(() => {
