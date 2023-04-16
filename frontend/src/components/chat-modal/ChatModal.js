@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import './style.css'
 import {useSearchParams} from "react-router-dom";
@@ -14,7 +14,9 @@ const ChatModal = (props) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [responseId, setResponseId] = useState(searchParams.get('responseId'));
     const [message, setMessage] = useState(undefined);
+    const [isMessageSend, setMessageSend] = useState(false);
     const [messages, setMessages] = useState([]);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'))
@@ -33,13 +35,20 @@ const ChatModal = (props) => {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
-        }).then(() => setMessage(''))
+        }).then(() => {
+            setMessage('');
+            setMessageSend(true);
+        })
+        setMessageSend(false);
+    }
+
+    useEffect(() => {
         axios.get(`/api/responses/${responseId}/messages/`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then(({data}) => setMessages(data))
-    }
+    }, [isMessageSend])
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'));
@@ -56,7 +65,7 @@ const ChatModal = (props) => {
             }).then(({data}) => setMessages(data))
         }, 5000)
         return () => clearInterval(interval)
-    }, [])
+    }, [responseId])
 
     const handleClickCloseChat = () => {
         searchParams.delete('responseId');
@@ -65,6 +74,14 @@ const ChatModal = (props) => {
         props.setChatModalVisible(false);
         props?.setResponseStatus(null);
     }
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     return (
         <div className='chat__container'>
@@ -83,6 +100,7 @@ const ChatModal = (props) => {
                         </div>
                     })
                 }
+                <div ref={messagesEndRef} />
             </div>
             <div className='chat__textField__container'>
                 <TextField

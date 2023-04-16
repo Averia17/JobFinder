@@ -42,11 +42,17 @@
     right: 5%;
 }
 
+
 .chat__messages {
     display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
+    flex-flow: column nowrap;
+    overflow-y: auto;
     height: 100%;
+}
+
+.chat__messages::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
 }
 
 .chat__message__container {
