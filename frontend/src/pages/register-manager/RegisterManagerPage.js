@@ -3,13 +3,14 @@ import Input from "../../components/inputs/Input";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
+import './style.css'
 
 const RegisterManagerPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
     const email = searchParams.get('email');
-    const [managerPasswords, setManagerPasswords] = useState({ password: undefined, confirmPassword: undefined });
+    const [managerPasswords, setManagerPasswords] = useState({password: undefined, confirmPassword: undefined});
     const [signupError, setSignupError] = useState(undefined);
 
     const handleChangePasswords = event => {
@@ -21,16 +22,16 @@ const RegisterManagerPage = () => {
 
     const handleSubmitRegisterManager = event => {
         event.preventDefault();
-        const { password, confirmPassword } = managerPasswords;
+        const {password, confirmPassword} = managerPasswords;
         if (password !== confirmPassword) {
             setSignupError('Your passwords are not equal');
             return;
         }
         if (token && email) {
-            axios.post('/api/managers/accept_invite/', { token, email, new_password: managerPasswords.password })
+            axios.post('/api/managers/accept_invite/', {token, email, new_password: managerPasswords.password})
                 .then(() => {
-                    axios.post('/login/', { email, password: managerPasswords.password })
-                        .then(({ data }) => {
+                    axios.post('/login/', {email, password: managerPasswords.password})
+                        .then(({data}) => {
                             localStorage.setItem('access_token', data.access);
                             localStorage.setItem('refresh_token', data.refresh);
                         })
@@ -39,8 +40,11 @@ const RegisterManagerPage = () => {
                             window.location.reload();
                         })
                 })
-                .catch(({ response }) => {
-                    setSignupError(`Password: ${response.data.password}`)
+                .catch(({response}) => {
+                    let error = response.data;
+                    if (response.data.new_password)
+                        error = `Password: ${response.data.new_password}`
+                    setSignupError(error)
                 })
         }
     }
@@ -48,11 +52,15 @@ const RegisterManagerPage = () => {
     return (
         <div>
             <form onSubmit={handleSubmitRegisterManager}>
-                <label htmlFor='password'>Password</label>
-                <Input type='password' name='password' onChange={handleChangePasswords} required/>
-                <label htmlFor='confirmPassword'>Confirm password</label>
-                <Input type='password' name='confirmPassword' onChange={handleChangePasswords} required/>
-                <input type='submit'/>
+                <div className="register-manager__container">
+                    <label htmlFor='password'>Password</label>
+                    <Input type='password' name='password' onChange={handleChangePasswords} required/>
+                    <label htmlFor='confirmPassword'>Confirm password</label>
+                    <Input type='password' name='confirmPassword' onChange={handleChangePasswords} required/>
+                </div>
+                <div className="submit__button__container">
+                    <input className="submit__button" type='submit'/>
+                </div>
             </form>
             {signupError && <ErrorAlert error={signupError} setError={setSignupError}/>}
         </div>

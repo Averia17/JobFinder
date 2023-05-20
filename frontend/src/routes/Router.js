@@ -7,6 +7,8 @@ import {
     employeeRoutes,
     unauthorizedUserRoutes
 } from "./router.config";
+import React, { Component }  from 'react';
+
 import {useGetInfoFromToken} from "../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import Header from "../components/header/Header";
 import CompanyPage from "../pages/company/CompanyPage";
@@ -16,6 +18,7 @@ import ResumesPage from "../pages/resumes/ResumesPage";
 import MainPage from "../pages/MainPage";
 import {mapRoutes} from "./router.service";
 import RegisterManagerPage from "../pages/register-manager/RegisterManagerPage";
+import ResumePage from "../pages/resume/ResumePage";
 
 const Router = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -28,6 +31,7 @@ const Router = () => {
                     <Route path='/vacancies' element={<VacanciesPage/>}/>
                     <Route path='/vacancies/:id' element={<VacancyPage/>}/>
                     <Route path='/resumes' element={<ResumesPage/>}/>
+                    <Route path='/resumes/:id' element={<ResumePage/>}/>
                     <Route path='/register_manager' element={<RegisterManagerPage/>}/>
                     <Route path='/' element={<VacanciesPage/>}/>
                     { tokenInfo?.user_id && mapRoutes(commonAuthorizedRoutes) }

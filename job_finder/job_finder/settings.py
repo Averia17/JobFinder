@@ -115,7 +115,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
 }
 
 # TODO: check is it needs
@@ -126,6 +126,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
 }
 
 LOGGING = {
@@ -149,7 +150,6 @@ LOGGING = {
         }
     },
 }
-
 
 CELERY_BROKER_URL = "pyamqp://rabbitmq:5672"
 CELERY_RESULT_BACKEND = "rpc://rabbitmq:5672"
@@ -205,7 +205,6 @@ LOGGING = {
         },
     },
 }
-
 
 if DEBUG:
     import socket

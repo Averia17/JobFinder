@@ -5,12 +5,7 @@ from users.models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = [
-        "email",
-        "is_staff",
-        "is_active",
-        "last_login",
-    ]
+    list_display = ["email", "is_staff", "is_active", "last_login", "is_manager"]
     list_filter = ["last_login", "is_staff"]
     search_fields = ["email"]
     readonly_fields = ["is_staff", "last_login", "created", "updated"]

@@ -18,7 +18,12 @@ class VacancyResponseReadSerializer(ModelSerializer):
         self.fields["status"] = CharField(source="get_status_display")
         res = super().to_representation(instance)
         user = instance.user
-        res["user"] = {"id": user.id, "name": user.name, "email": user.email}
+        res["user"] = {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "resume": user.resume.id,
+        }
         return res
 
 
@@ -34,5 +39,9 @@ class VacancyResponseSerializer(VacancyResponseReadSerializer):
     def to_representation(self, instance):
         res = super().to_representation(instance)
         vacancy = instance.vacancy
-        res["vacancy"] = {"id": vacancy.id, "title": vacancy.title, "company": vacancy.company.title}
+        res["vacancy"] = {
+            "id": vacancy.id,
+            "title": vacancy.title,
+            "company": vacancy.company.title,
+        }
         return res

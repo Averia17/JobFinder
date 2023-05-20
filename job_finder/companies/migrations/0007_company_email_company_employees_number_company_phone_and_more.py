@@ -7,28 +7,43 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('companies', '0006_company_is_active'),
+        ("companies", "0006_company_is_active"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='company',
-            name='email',
-            field=models.EmailField(max_length=256, null=True, unique=True, verbose_name='Email'),
+            model_name="company",
+            name="email",
+            field=models.EmailField(
+                max_length=256, null=True, unique=True, verbose_name="Email"
+            ),
         ),
         migrations.AddField(
-            model_name='company',
-            name='employees_number',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Number of employees'),
+            model_name="company",
+            name="employees_number",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Number of employees"
+            ),
         ),
         migrations.AddField(
-            model_name='company',
-            name='phone',
-            field=models.CharField(blank=True, max_length=13, null=True, validators=[django.core.validators.RegexValidator(message="Phone number must be entered in the format: '+375293332211'. Up to 13 digits allowed.", regex='^\\+?1?\\d{9,13}$')], verbose_name='Phone number'),
+            model_name="company",
+            name="phone",
+            field=models.CharField(
+                blank=True,
+                max_length=13,
+                null=True,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="Phone number must be entered in the format: '+375293332211'. Up to 13 digits allowed.",
+                        regex="^\\+?1?\\d{9,13}$",
+                    )
+                ],
+                verbose_name="Phone number",
+            ),
         ),
         migrations.AddField(
-            model_name='company',
-            name='site',
+            model_name="company",
+            name="site",
             field=models.URLField(blank=True, null=True),
         ),
     ]

@@ -1,5 +1,10 @@
 from django.db.models import Count
-from rest_framework.fields import BooleanField, CharField, SerializerMethodField, IntegerField
+from rest_framework.fields import (
+    BooleanField,
+    CharField,
+    SerializerMethodField,
+    IntegerField,
+)
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
@@ -17,6 +22,7 @@ class VacancySerializer(ModelSerializer):
         fields = (
             "id",
             "title",
+            "city",
             "min_salary",
             "max_salary",
             "company",
@@ -47,7 +53,7 @@ class CompanyVacancySerializer(ModelSerializer):
 
 class VacancyDetailSerializer(VacancySerializer):
     manager = PrimaryKeyRelatedField(
-        queryset=CompanyManager.objects.all(), write_only=True
+        queryset=CompanyManager.objects.all(), write_only=True, required=True
     )
 
     class Meta(VacancySerializer.Meta):
@@ -71,7 +77,7 @@ class VacancyDetailSerializer(VacancySerializer):
         res = super().to_representation(instance)
         user = self.context["request"].user
         if user.is_authenticated:
-            if res["is_responded"]:
+            if res.get("is_responded"):
                 res["response"] = instance.responses.filter(user=user).first().id
             if (user.is_manager and instance.manager.user == user) or (
                 instance.company.director == user

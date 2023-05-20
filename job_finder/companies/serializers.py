@@ -15,6 +15,12 @@ from vacancies.serializers import CompanyVacancySerializer
 
 
 class CompanySerializer(ModelSerializer):
+    class Meta:
+        model = Company
+        exclude = ("director", )
+
+
+class CompanyPrivateSerializer(ModelSerializer):
     vacancies = SerializerMethodField()
 
     class Meta:
@@ -23,12 +29,15 @@ class CompanySerializer(ModelSerializer):
 
     def get_vacancies(self, obj):
         vacancies = obj.vacancies
-        if "request" in self.context:
-            user = self.context["request"].user
-            if user.is_manager:
-                vacancies = user.companymanager.vacancies
-        vacancies = vacancies.annotate(count_new_responses=Count(
-            "responses", filter=Q(responses__status=VacancyResponse.not_viewed)))
+        user = self.context["request"].user
+        if user and user.is_manager:
+            vacancies = user.companymanager.vacancies
+        print(vacancies)
+        vacancies = vacancies.annotate(
+            count_new_responses=Count(
+                "responses", filter=Q(responses__status=VacancyResponse.not_viewed)
+            )
+        )
         return CompanyVacancySerializer(vacancies, many=True).data
 
 

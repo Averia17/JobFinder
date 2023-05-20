@@ -5,14 +5,20 @@ import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFro
 import LanguageAdditionForm from "./LanguageAdditionForm";
 import {languages} from "./utils";
 import SkillBlock from "./SkillBlock";
+import {useNavigate} from "react-router";
+import ErrorAlert from "../alerts/ErrorAlert";
 
 const ResumeForm = () => {
     const {accessToken} = useGetInfoFromToken();
     const [userInfo, setUserInfo] = useState({});
+    const navigate = useNavigate();
     const [selectedLanguages, setSelectedLanguages] = useState({});
     const [languagesForms, setLanguagesForms] = useState([]);
+    const [file, setFile] = useState(undefined);
+    const [image, setImage] = useState(undefined);
     const [skills, setSkills] = useState([]);
     const [skill, setSkill] = useState(undefined);
+    const [resumeError, setResumeError] = useState(undefined);
 
     const [availableLanguages, setAvailableLanguages] = useState([...languages]);
     const [language, setLanguage] = useState(availableLanguages[0]?.title);
@@ -20,16 +26,27 @@ const ResumeForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        setUserInfo({
+        axios.post(`/api/resumes/`, {
             ...userInfo,
             skills: skills,
-            languages: selectedLanguages
-        })
-        axios.post(`/api/resumes/`, {...userInfo}, {
+            languages: selectedLanguages,
+            file: file,
+            image: image
+        }, {
             headers: {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "multipart/form-data"
             }
-        })
+        }).then(() => navigate('/resumes/my'))
+            .catch(({response}) => {
+                const error = response.data
+                let message = "Resume could not be saved";
+                if("user" in error)
+                    message = error["user"];
+                if(Array.isArray(error))
+                    message = error[0]
+                setResumeError(message)
+            })
     }
 
     const handleChange = event => {
@@ -38,7 +55,16 @@ const ResumeForm = () => {
             [event.currentTarget.name]: event.currentTarget.value,
         })
     }
-
+    const handleFileChange = event => {
+        if (event.target.files) {
+            setFile(event.target.files[0]);
+        }
+    };
+     const handleAvatarChange = event => {
+        if (event.target.files) {
+            setImage(event.target.files[0]);
+        }
+    };
     const handleClickAddLanguage = () => {
         const languagesLength = languagesForms.length;
         setLanguagesForms([...languagesForms,
@@ -77,7 +103,7 @@ const ResumeForm = () => {
 
     const handleAddSkill = (event) => {
         event.preventDefault();
-        if(skill.length) {
+        if (skill.length) {
             setSkills([...skills, skill]);
             setSkill('');
         }
@@ -98,23 +124,23 @@ const ResumeForm = () => {
                         </div>
                         <div>
                             <label htmlFor='position'>Position</label>
-                            <Input name='position' type='text' onChange={handleChange} required/>
+                            <Input name='position' type='text' onChange={handleChange}/>
                         </div>
                         <div>
                             <label htmlFor='experience'>Experience</label>
-                            <Input name='experience' type='number' step='0.1' onChange={handleChange} required/>
+                            <Input name='experience' type='number' step='0.1' onChange={handleChange}/>
                         </div>
                         <div>
                             <label htmlFor='description'>Description</label>
-                            <Input name='description' type='text' onChange={handleChange} required/>
+                            <Input name='description' type='text' onChange={handleChange}/>
                         </div>
                         <div>
                             <label htmlFor='education'>Education</label>
-                            <Input name='education' type='text' onChange={handleChange} required/>
+                            <Input name='education' type='text' onChange={handleChange}/>
                         </div>
                         <div>
                             <label htmlFor='salary'>Salary expectations</label>
-                            <Input name='salary' type='number' onChange={handleChange} required/>
+                            <Input name='salary' type='number' onChange={handleChange}/>
                         </div>
                     </div>
                     <div className="column-2">
@@ -149,12 +175,21 @@ const ResumeForm = () => {
                             </div>
 
                         </div>
+                         <div>
+                             <div>Upload Avatar</div>
+                            <input type="file" onChange={handleAvatarChange} content="Upload Avatar"/>
+                        </div>
+                        <div>
+                            <div>If you have your personal CV upload it</div>
+                            <input type="file" onChange={handleFileChange} content="Upload CV"/>
+                        </div>
                     </div>
                 </div>
                 <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                     <input className="create-resume__button" type='submit'/>
                 </div>
             </form>
+            {resumeError && <ErrorAlert error={resumeError} setError={setResumeError}/>}
         </div>
     );
 };

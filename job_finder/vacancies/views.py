@@ -6,13 +6,13 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from companies.models import Company
-from companies.permissions import IsManagerOrDirector
+from companies.permissions import IsManagerOrDirector, CompanyIsActive
 from core.constants import EXPERIENCE_OPTIONS, EMPLOYMENT_TYPE
 from vacancies.filters import VacancyFilter
 from vacancies.models import Vacancy
 from vacancies.permissions import IsOwnerManagerOrDirector
 from vacancies.serializers import VacancyDetailSerializer, VacancySerializer
-from views.serializers import VacancyViewSerializer
+from views.models import VacancyView
 
 
 class VacancyViewSet(ModelViewSet):
@@ -29,9 +29,9 @@ class VacancyViewSet(ModelViewSet):
     filterset_class = VacancyFilter
 
     permission_to_method = {
-        "update": [IsOwnerManagerOrDirector],
-        "partial_update": [IsOwnerManagerOrDirector],
-        "create": [IsManagerOrDirector],
+        "update": [IsOwnerManagerOrDirector, CompanyIsActive],
+        "partial_update": [IsOwnerManagerOrDirector, CompanyIsActive],
+        "create": [IsManagerOrDirector, CompanyIsActive],
     }
 
     def get_permissions(self):
@@ -58,12 +58,7 @@ class VacancyViewSet(ModelViewSet):
         return queryset
 
     def retrieve(self, request, pk=None, *args, **kwargs):
-        if request.user and request.user.is_authenticated:
-            serializer = VacancyViewSerializer(
-                data={"vacancy": pk}, context={"request": request}
-            )
-            if serializer.is_valid():
-                serializer.save()
+        request.user and request.user.is_authenticated and VacancyView.objects.create(vacancy_id=pk, user=request.user)
         return super().retrieve(request, *args, **kwargs)
 
     @action(detail=False, methods=["GET"])

@@ -16,7 +16,9 @@
     justify-content: space-between;
     align-items: center;
 }
-
+.vacancy__buttons {
+    display: flex;
+}
 .vacancy__header h2 {
     line-height: 1vmax;
 }

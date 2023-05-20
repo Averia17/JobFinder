@@ -20,16 +20,16 @@ const ResumesPage = () => {
             }})
             .then(({data}) => setResumes(data));
     }, [])
-
-    const linkToCreateResumeForm = () => {
-        navigate('/create-resume')
-    }
+    //
+    // const linkToCreateResumeForm = () => {
+    //     navigate('/create-resume')
+    // }
 
     return (
         <div className="resumes__container">
-            { !tokenInfo?.company &&
-                <button className="submit__button" onClick={linkToCreateResumeForm}>Create resume</button>
-            }
+            {/*{ !tokenInfo?.company &&*/}
+            {/*    <button className="submit__button" onClick={linkToCreateResumeForm}>Create resume</button>*/}
+            {/*}*/}
             {
                 resumes.map(resume => (
                     <Resume {...resume}/>

@@ -12,6 +12,7 @@ const InfoTab = ({ setError, company }) => {
     const [updatedCompanyInfo, setUpdatedCompanyInfo] = useState({});
     const [isUpdated, setUpdated] = useState(false);
 
+
     const handleChangeCompanyInfo = event => {
         setUpdatedCompanyInfo({
             ...updatedCompanyInfo,
@@ -24,7 +25,14 @@ const InfoTab = ({ setError, company }) => {
         axios.patch(`/api/companies/${company.id}/`, updatedCompanyInfo, {
             headers: { Authorization: `Bearer ${tokenInfo.accessToken}` }
         }).then(() => setUpdated(false))
-            .catch(({ response }) => setError(response.data.phone))
+            .catch(({ response }) => {
+                let error = response.data;
+                if ("phone" in response.data)
+                    error = response.data.phone
+                if ("detail" in response.data)
+                    error = response.data.detail
+                setError(error)
+            })
     }
 
     useEffect(() => {
@@ -60,7 +68,7 @@ const InfoTab = ({ setError, company }) => {
                 </div>
                 <div>
                     <label htmlFor='email'>Email</label>
-                    <Input type='email' name='email' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                    <Input type='email' name='email' defaultValue={email} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>{isUpdated && <input className="submit__button" type='submit'/>}</div>
             </form>

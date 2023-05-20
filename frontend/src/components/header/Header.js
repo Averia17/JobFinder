@@ -54,12 +54,15 @@ const Header = () => {
                     {
                         isAuthorized ?
                             (tokenInfo?.company ?
+                                    <>
+                                    <div className='authentication'><Link to={{pathname: '/resumes'}}>Resumes</Link></div>
                                     <div className='authentication'><Link to={{pathname: '/company'}}>Company</Link>
                                     </div>
+                                    </>
                                     :
                                     <>
-                                        <div className='tours'><Link to={{pathname: '/resumes'}}>Resumes</Link></div>
-                                        <div className='hotels'><Link to={{pathname: '/responses'}}>Responses</Link></div>
+                                        <div className='authentication'><Link to={{pathname: '/resumes/my'}}>Resumes</Link></div>
+                                        <div className='authentication'><Link to={{pathname: '/responses'}}>Responses</Link></div>
                                     </>
                             )
                             :

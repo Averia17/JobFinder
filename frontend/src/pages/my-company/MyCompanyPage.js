@@ -20,7 +20,7 @@ const MyCompanyPage = () => {
     const [companyError, setCompanyError] = useState(undefined);
 
     useEffect(() => {
-        axios.get(`/api/companies/${tokenInfo.company}`, {
+        axios.get(`/api/companies/my`, {
             headers: { Authorization: `Bearer ${tokenInfo.accessToken}` }
         }).then(({ data }) => setCompanyInfo(data))
     }, [tokenInfo.company])
@@ -66,8 +66,23 @@ const MyCompanyPage = () => {
         }).catch(() => setCompanyError('Manager have vacancies, you cannot delete him'))
     }
 
+    const handleLogoChange = event => {
+        if (event.target.files) {
+            axios.patch(`/api/companies/${companyInfo.id}/`, {
+            image: event.target.files[0]
+        }, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo.accessToken}`,
+                "Content-Type": "multipart/form-data"}
+        }).then(({data}) => {
+                setCompanyInfo({...companyInfo, image: data.image});
+            })
+        }
+    };
     return (
         <div key={id} className='myCompany__container'>
+            {companyInfo?.image && <div className="logo__container"><img src={companyInfo?.image} alt=""/></div>}
+            {tokenInfo?.is_director && <div><input type="file" onChange={handleLogoChange} content="Update Logo"/></div>}
             <h1>{title}</h1>
             <Navbar isDirector={tokenInfo?.is_director} setCurrentTab={setCurrentTab}/>
             { tokenInfo?.company && renderTab()}

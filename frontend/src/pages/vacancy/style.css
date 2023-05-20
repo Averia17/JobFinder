@@ -11,3 +11,6 @@
     align-items: center;
     gap: 1vmax;
 }
+.company__link:hover {
+    color: #2aabd2;
+}

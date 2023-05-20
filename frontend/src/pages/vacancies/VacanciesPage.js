@@ -33,8 +33,8 @@ const VacanciesPage = () => {
         })
             .then(({data}) => {
                 setVacancies(data)
-                setLoading(false)
             });
+        setLoading(false)
     }, [])
 
     const handleSearch = (e) => {
@@ -47,8 +47,8 @@ const VacanciesPage = () => {
         })
             .then(({data}) => {
                 setVacancies(data)
-                setLoading(false)
             });
+        setLoading(false)
     }
 
     return (

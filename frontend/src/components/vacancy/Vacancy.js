@@ -6,6 +6,7 @@ import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFro
 import FavoriteButton from "../buttons/FavoriteButton";
 import Button from "../buttons/Button";
 import {useSearchParams} from "react-router-dom";
+import ErrorAlert from "../alerts/ErrorAlert";
 
 export const renderSalaryIfExists = (min_salary, max_salary,) => {
     if (min_salary && max_salary) {
@@ -23,11 +24,18 @@ const Vacancy = (props) => {
     const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
+    const [error, setError] = useState(undefined);
 
     const linkToVacancyPage = () => {
         navigate(`/vacancies/${id}`);
     }
 
+    const handleClickDeleteVacancy = (event, id) => {
+        event.stopPropagation()
+        axios.delete(`/api/vacancies/${id}/`, {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}`}
+        }).then(()=> window.location.reload()).catch(() => setError('Error deleting vacancy'))
+    }
     const respondToVacancy = (event) => {
         event.stopPropagation();
         const accessToken = localStorage.getItem('access_token');
@@ -64,7 +72,11 @@ const Vacancy = (props) => {
                 {tokenInfo?.user_id && !props.companyMembersPermissions
                     && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
                 {(tokenInfo?.company || tokenInfo?.is_director) && props.companyMembersPermissions &&
-                    <Button onClick={handleClickChangeVacancy}>Change</Button>}
+                    <div className="vacancy__buttons">
+                    <Button onClick={handleClickChangeVacancy}>Change</Button>
+                    <Button onClick={(event) => {handleClickDeleteVacancy(event, id)}} type='danger'>Delete</Button>
+
+                    </div>}
             </div>
             {props.min_salary || props.max_salary ? renderSalaryIfExists(props.min_salary, props.max_salary) : null}
             {!props?.companyMembersPermissions && <div>{company?.title}</div>}
@@ -74,6 +86,7 @@ const Vacancy = (props) => {
                                                className={props.is_responded || !props.is_active? 'respond-button__disabled' : 'respond-button'}
                                                disabled={props.is_responded}>Respond</Button>
             }
+            {error && <ErrorAlert error={error} setError={setError}/>}
         </div>
     );
 };

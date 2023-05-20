@@ -19,7 +19,9 @@ const RegisterForm = ({onSubmit, userData, setUserData, companyData, setCompanyD
             <Input type='email' name='email' placeholder='Email' required onChange={handleChangeData}/>
             <Input type='password' name='password' placeholder='Password' required onChange={handleChangeData}/>
             <Input type='password' name='confirmPassword' placeholder='Re-enter password' required onChange={handleChangeData}/>
+            <div>Do you want create a company?</div>
             <input type='checkbox' name='isEmployee' className='checkbox-field' onChange={handleChangeData}/>
+            <br/>
             {
                 userData.isEmployee ?
                     <CompanyForm companyData={companyData} setCompanyData={setCompanyData}/>

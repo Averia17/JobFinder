@@ -3,22 +3,26 @@ import axios from "axios";
 import Vacancy from "../../components/vacancy/Vacancy";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import Resume from "../../components/resume/Resume";
 
 const FavoritesPage = () => {
     const tokenInfo = useGetInfoFromToken();
     const [vacancies, setVacancies] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    let url = "vacancies"
+    if(tokenInfo?.company)
+        url = "resumes"
     useEffect(() => {
-        axios.get('/api/vacancies/favorites', {
+
+        axios.get(`/api/${url}/favorites`, {
             headers: {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
         })
             .then(({data}) => {
                 setVacancies(data)
-                setLoading(false)
             });
+        setLoading(false)
     }, [])
 
     return (
@@ -26,10 +30,12 @@ const FavoritesPage = () => {
             <div className='vacancies-container'>
                 { !loading ?
                     vacancies.length > 0 ?
-                    vacancies.map(vacancy => (
-                        <Vacancy key={vacancy.id} {...vacancy}/>
-                    ))
-                    : <div> You don't have favorites vacancies</div>
+                    vacancies.map(vacancy => (<>{
+                        tokenInfo?.company ?
+                        <Resume key={vacancy.id} {...vacancy}/>
+                        :<Vacancy key={vacancy.id} {...vacancy}/>
+                    }</>))
+                    : <div> You don't have favorites {url}</div>
                     : <div> Loading...</div>
                 }
             </div>

@@ -1,0 +1,24 @@
+.register-manager__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+.register-manager__container div {
+    display: flex;
+}
+.submit__button__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.submit__button {
+    width: 120px;
+    background: #0000e6;
+    color: #f8f6f6;
+    padding: 5px 0;
+    border-radius: 5px;
+    text-align: center;
+}

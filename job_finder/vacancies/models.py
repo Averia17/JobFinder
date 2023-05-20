@@ -10,6 +10,7 @@ class Vacancy(BaseModel):
     title = models.CharField(_("Title"), max_length=256, blank=False)
     min_salary = models.PositiveIntegerField(_("Min salary"), null=True, blank=True)
     max_salary = models.PositiveIntegerField(_("Max salary"), null=True, blank=True)
+    city = models.CharField(_("City"), max_length=64)
     description = models.TextField(
         _("Description"), max_length=2048, null=True, blank=True
     )

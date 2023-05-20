@@ -22,6 +22,8 @@ class ResumeAdmin(admin.ModelAdmin):
                     "education",
                     "languages",
                     "skills",
+                    "file",
+                    "image"
                 ]
             },
         ),

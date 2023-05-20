@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import VacancyForm from "../components/pages/my-company/vacancy-form/VacancyForm";
 import FavoritesPage from "../pages/favorites/FavoritesPage";
+import ResumePage from "../pages/resume/ResumePage";
 
 export const routesElements = {
     login: '/login',
@@ -18,6 +19,7 @@ export const routesElements = {
     resumes: '/resumes',
     createResume: '/create-resume',
     createVacancy: '/create-vacancy',
+    resume: '/resumes/:id'
 }
 
 export const commonAuthorizedRoutes = {
@@ -27,14 +29,14 @@ export const commonAuthorizedRoutes = {
     [routesElements.favorites]: {
         element: <FavoritesPage/>,
     },
-    [routesElements.resumes]: {
-        element: <ResumesPage/>,
-    },
 }
 
 export const employeeRoutes = {
     [routesElements.company]: {
         element: <MyCompanyPage/>,
+    },
+    [routesElements.resumes]: {
+        element: <ResumesPage/>,
     },
 }
 
@@ -50,6 +52,9 @@ export const authorizedUserRoutes = {
     },
     [routesElements.createResume]: {
         element: <ResumeForm/>,
+    },
+    [routesElements.resume]: {
+        element: <ResumePage/>,
     },
 }
 

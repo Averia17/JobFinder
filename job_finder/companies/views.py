@@ -19,12 +19,12 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_2
 from rest_framework.viewsets import GenericViewSet
 
 from companies.models import Company, CompanyManager
-from companies.permissions import IsDirector, UserInCompany
+from companies.permissions import IsDirector, UserInCompany, CompanyIsActive
 from companies.serializers import (
     CompanySerializer,
     PasswordSerializer,
     CompanyManagerCreateSerializer,
-    CompanyManagerSerializer,
+    CompanyManagerSerializer, CompanyPrivateSerializer,
 )
 from job_finder.settings import BASE_FRONTEND_URL, SECRET_KEY
 from users.models import User
@@ -39,9 +39,9 @@ class CompanyViewSet(
     serializer_class = CompanySerializer
     # TODO: make title read only
     permission_to_method = {
-        "update": [IsDirector],
-        "partial_update": [IsDirector],
-        "retrieve": [UserInCompany],
+        "update": [IsDirector, CompanyIsActive],
+        "partial_update": [IsDirector, CompanyIsActive],
+        "my": [UserInCompany],
     }
 
     def get_permissions(self):
@@ -51,6 +51,11 @@ class CompanyViewSet(
                 self.action, self.permission_classes
             )
         ]
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "my"]:
+            self.serializer_class = CompanyPrivateSerializer
+        return self.serializer_class
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
@@ -68,12 +73,18 @@ class CompanyViewSet(
         CompanyManager.objects.create(user=director, company=company)
         return Response(serializer.data, status=HTTP_201_CREATED)
 
+    @action(detail=False, methods=["GET"])
+    def my(self, request):
+        resume = get_object_or_404(Company, id=request.user.company.id)
+        serializer = self.get_serializer(resume)
+        return Response(serializer.data)
+
 
 class CompanyManagerViewSet(
     CreateModelMixin, DestroyModelMixin, ListModelMixin, GenericViewSet
 ):
     queryset = CompanyManager.objects.all()
-    permission_classes = [IsDirector]
+    permission_classes = [IsDirector, CompanyIsActive]
     serializer_class = CompanyManagerSerializer
     serializer_classes = {
         "create": CompanyManagerCreateSerializer,
@@ -85,7 +96,12 @@ class CompanyManagerViewSet(
     def get_queryset(self):
         return super().get_queryset().filter(company=self.request.user.company)
 
-    @action(detail=False, methods=["POST"], serializer_class=PasswordSerializer, permission_classes=[])
+    @action(
+        detail=False,
+        methods=["POST"],
+        serializer_class=PasswordSerializer,
+        permission_classes=[],
+    )
     def accept_invite(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

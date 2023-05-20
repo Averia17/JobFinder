@@ -1,3 +1,22 @@
+.company__container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    /*align-items: center;*/
+}
+.logo__container img{
+    width: 180px;
+    height: 180px;
+}
+.company__info__item {
+    font-size: 1.05em;
+    display: flex;
+    margin-bottom: 10px;
+}
+.company__info__item__title {
+    margin-right: 25px;
+}
+
 .myCompany__container {
     display: flex;
     flex-direction: column;

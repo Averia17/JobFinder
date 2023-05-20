@@ -1,0 +1,47 @@
+.submit__button {
+    width: 120px;
+    margin: 10px 0;
+    background: #0000e6;
+    color: #f8f6f6;
+    padding: 5px 0;
+    border-radius: 5px;
+}
+.resumes__container {
+    margin: 10px 80px;
+
+}
+.open-cv__link {
+    padding: 3px 5px;
+    background: #0000e6;
+    color: #f8f6f6;
+    border-radius: 5px;
+}
+.open-cv__link__container {
+    display: flex;
+    justify-content: center;
+}
+.react-pdf__Page__canvas {
+    margin: 0 auto;
+    width: 70% !important;
+    height: 100% !important;
+}
+.react-pdf__Page__annotations {
+    display: none;
+}
+.avatar__container img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+}
+.resume__header {
+    display: flex;
+}
+.resume__logo {
+    margin-right: 100px;
+}
+.resume__view {
+    display: flex;
+}
+.resume__company__link:hover {
+    color: #2aabd2;
+}

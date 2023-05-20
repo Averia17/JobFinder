@@ -9,7 +9,7 @@ import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
 import Navbar from "../../components/pages/my-company/vacancy/Navbar";
 import './style.css';
 import AcceptModal from "../../components/modal/AcceptModal";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import RejectModal from "../../components/modal/RejectModal";
 
 import ChatModal from "../../components/chat-modal/ChatModal";
@@ -127,7 +127,7 @@ const VacancyPage = () => {
                 {tokenInfo?.user_id &&
                     <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
             </div>
-            <h2>{company?.title}</h2>
+            <h2><Link className="company__link" to={`/companies/${company?.id}`}>{company?.title}</Link></h2>
             {!vacancyInfo.is_active && <b>
                 <div style={{color: "red"}}>Vacancy is not active</div>
             </b>}
