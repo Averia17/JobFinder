@@ -9,9 +9,9 @@ const Navbar = ({ isDirector, setCurrentTab }) => {
 
     return (
         <nav className='navbar__container'>
-            <NavBlock title='Vacancies' value='vacancies' onChange={handleChangeTab} checked/>
-            {isDirector && <NavBlock title='Managers' value='managers' onChange={handleChangeTab}/>}
-            <NavBlock title='Info' value='info' onChange={handleChangeTab}/>
+            <NavBlock title='Вакансии' value='vacancies' onChange={handleChangeTab} checked/>
+            {isDirector && <NavBlock title='Менеджеры' value='managers' onChange={handleChangeTab}/>}
+            <NavBlock title='Информация' value='info' onChange={handleChangeTab}/>
         </nav>
     );
 };

@@ -36,6 +36,7 @@ class Vacancy(BaseModel):
     class Meta:
         app_label = "vacancies"
         verbose_name_plural = "Vacancies"
+        ordering = ["-updated"]
 
     def __str__(self):
         return f"{self.pk}: {self.title}"

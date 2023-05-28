@@ -59,6 +59,7 @@ class VacancyResponseViewSet(
                 self.serializer_class(message).data,
                 status=status.HTTP_201_CREATED,
             )
+        service.set_messages_viewed_status(self.request.user)
         return Response(
             self.serializer_class(vacancy_response.messages.all(), many=True).data
         )

@@ -1,14 +1,14 @@
 EXPERIENCE_OPTIONS = (
-    ("0", "0"),
-    ("1-3", "1-3"),
-    ("3-5", "3-5"),
-    ("5+", "5+"),
+    ("0", "0 лет"),
+    ("1-3", "1-3 года"),
+    ("3-5", "3-5 лет"),
+    ("5+", "5+ лет"),
 )
 
 EMPLOYMENT_TYPE = (
-    ("INTERNSHIP", "Internship"),
-    ("PART-TIME", "Part-time"),
-    ("FULL-TIME", "Full-time"),
+    ("INTERNSHIP", "Стажировка"),
+    ("PART-TIME", "Частичная занятость"),
+    ("FULL-TIME", "Полная занятость"),
 )
 
 RESPONSE_MESSAGE_SUBJECT = "Response on vacancy"

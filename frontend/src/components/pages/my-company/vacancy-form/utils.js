@@ -1,16 +1,16 @@
 export const employmentTypes = [
     [
         "INTERNSHIP",
-        "Internship"
+        "Стажировка"
     ],
     [
         "PART-TIME",
-        "Part-time"
+        "Частичная занятость"
     ],
     [
         "FULL-TIME",
-        "Full-time"
+        "Полная занятость"
     ]
 ]
 
-export const experienceOptions = ["0", "1-3", "3-5", "5+"]
+export const experienceOptions = [["0", "0 лет"], ["1-3", "1-3 года"], ["3-5", "3-5 лет"], ["5+", "5+ лет"]]

@@ -63,11 +63,11 @@ const ProfilePage = () => {
             </div>
             <form onSubmit={handleSubmitUpdate}>
                 <div className='profile__field'>
-                    <h4><label htmlFor='phone'>Phone</label></h4>
+                    <h4><label htmlFor='phone'>Номер телефона</label></h4>
                     <Input className="profile__input" placeholder="+375293332211" type='text' name='phone' defaultValue={userInfo?.phone} onChange={handleChangeProfileInfo}/>
                 </div>
                 <div  className='profile__field'>
-                    <h4><label htmlFor='name'>Name</label></h4>
+                    <h4><label htmlFor='name'>Имя</label></h4>
                     <Input className="profile__input" type='text' name='name' defaultValue={userInfo?.name} onChange={handleChangeProfileInfo} />
                 </div>
                 <div>{isUpdated && <input className="submit__button" type='submit'/>}</div>

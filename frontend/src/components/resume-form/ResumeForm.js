@@ -16,7 +16,7 @@ const ResumeForm = () => {
     const [languagesForms, setLanguagesForms] = useState([]);
     const [file, setFile] = useState(undefined);
     const [image, setImage] = useState(undefined);
-    const [skills, setSkills] = useState([]);
+    const [selectedSkills, setSelectedSkills] = useState([]);
     const [skill, setSkill] = useState(undefined);
     const [resumeError, setResumeError] = useState(undefined);
 
@@ -24,15 +24,21 @@ const ResumeForm = () => {
     const [language, setLanguage] = useState(availableLanguages[0]?.title);
     const [newLanguage, setNewLanguage] = useState({});
 
+
     const handleSubmit = (event) => {
-        event.preventDefault()
-        axios.post(`/api/resumes/`, {
-            ...userInfo,
-            skills: skills,
-            languages: selectedLanguages,
-            file: file,
-            image: image
-        }, {
+        event.preventDefault();
+        let formData =  new FormData();
+        for ( let key in userInfo ) {
+            formData.append(key, userInfo[key]);
+        }
+        formData.append("skills", selectedSkills)
+        if(file)
+            formData.append("file", file)
+        if(image)
+            formData.append("image", image)
+        formData.append("langauges", JSON.stringify(selectedLanguages))
+
+        axios.post(`/api/resumes/`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "multipart/form-data"
@@ -41,7 +47,7 @@ const ResumeForm = () => {
             .catch(({response}) => {
                 const error = response.data
                 let message = "Resume could not be saved";
-                if("user" in error)
+                if(typeof error === 'object'  && "user" in error)
                     message = error["user"];
                 if(Array.isArray(error))
                     message = error[0]
@@ -104,7 +110,7 @@ const ResumeForm = () => {
     const handleAddSkill = (event) => {
         event.preventDefault();
         if (skill.length) {
-            setSkills([...skills, skill]);
+            setSelectedSkills([...selectedSkills, skill]);
             setSkill('');
         }
     }
@@ -115,37 +121,37 @@ const ResumeForm = () => {
                 <div className="resume__form__container">
                     <div className="column-1">
                         <div>
-                            <label htmlFor='title'>Resume title</label>
+                            <label htmlFor='title'>Название резюме</label>
                             <Input name='title' type='text' onChange={handleChange} required/>
                         </div>
                         <div>
-                            <label htmlFor='city'>City</label>
+                            <label htmlFor='city'>Город</label>
                             <Input name='city' type='text' onChange={handleChange} required/>
                         </div>
                         <div>
-                            <label htmlFor='position'>Position</label>
+                            <label htmlFor='position'>Позиция</label>
                             <Input name='position' type='text' onChange={handleChange}/>
                         </div>
                         <div>
-                            <label htmlFor='experience'>Experience</label>
+                            <label htmlFor='experience'>Опыт работы</label>
                             <Input name='experience' type='number' step='0.1' onChange={handleChange}/>
                         </div>
                         <div>
-                            <label htmlFor='description'>Description</label>
+                            <label htmlFor='description'>Описание</label>
                             <Input name='description' type='text' onChange={handleChange}/>
                         </div>
                         <div>
-                            <label htmlFor='education'>Education</label>
+                            <label htmlFor='education'>Образование</label>
                             <Input name='education' type='text' onChange={handleChange}/>
                         </div>
                         <div>
-                            <label htmlFor='salary'>Salary expectations</label>
+                            <label htmlFor='salary'>Ожидаемая зарплата</label>
                             <Input name='salary' type='number' onChange={handleChange}/>
                         </div>
                     </div>
                     <div className="column-2">
                         <div>
-                            <div>Languages</div>
+                            <div>Знание языков</div>
                             {availableLanguages.length > 0 &&
                                 <select name='language' value={availableLanguages[0]?.title}
                                         onChange={(event) => setLanguage(event.currentTarget.value)}>
@@ -157,10 +163,10 @@ const ResumeForm = () => {
                                 </select>}
                             {languagesForms.length > 0 && renderLanguagesForms()}
                             {availableLanguages.length > 0 &&
-                                <button type='button' onClick={handleClickAddLanguage}>Add language</button>}
+                                <button type='button' onClick={handleClickAddLanguage}>Добавить язык</button>}
                         </div>
                         <div>
-                            <div>Skills</div>
+                            <div>Навыки</div>
                             <div>
                                 <Input type='text' value={skill} onChange={handleChangeSkill}></Input>
                                 <button onClick={handleAddSkill} type='button'>Add</button>
@@ -168,7 +174,7 @@ const ResumeForm = () => {
 
                             <div style={{display: 'flex'}}>
                                 {
-                                    skills.map(skill => (
+                                    selectedSkills?.map(skill => (
                                         <SkillBlock skill={skill}/>
                                     ))
                                 }
@@ -176,11 +182,11 @@ const ResumeForm = () => {
 
                         </div>
                          <div>
-                             <div>Upload Avatar</div>
+                             <div>Загрузить аватар</div>
                             <input type="file" onChange={handleAvatarChange} content="Upload Avatar"/>
                         </div>
                         <div>
-                            <div>If you have your personal CV upload it</div>
+                            <div>Можете загрузить своё резюме</div>
                             <input type="file" onChange={handleFileChange} content="Upload CV"/>
                         </div>
                     </div>

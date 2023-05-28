@@ -12,10 +12,12 @@ class Message(BaseModel):
     vacancy_response = models.ForeignKey(
         "responses.VacancyResponse", related_name="messages", on_delete=models.CASCADE
     )
+    is_viewed = models.BooleanField(default=False)
 
     class Meta:
         app_label = "response_messages"
         verbose_name_plural = "Messages"
+        ordering = ["created"]
 
     def __str__(self):
         return f"{self.pk} {self.user}"

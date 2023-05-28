@@ -19,7 +19,7 @@ export const renderSalaryIfExists = (min_salary, max_salary,) => {
 }
 
 const Vacancy = (props) => {
-    const {id, title, company, is_favorite} = props;
+    const {id, title, company, city, is_favorite} = props;
     const [isVacancyFavorite, setVacancyFavorite] = useState(is_favorite);
     const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
@@ -73,18 +73,19 @@ const Vacancy = (props) => {
                     && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
                 {(tokenInfo?.company || tokenInfo?.is_director) && props.companyMembersPermissions &&
                     <div className="vacancy__buttons">
-                    <Button onClick={handleClickChangeVacancy}>Change</Button>
-                    <Button onClick={(event) => {handleClickDeleteVacancy(event, id)}} type='danger'>Delete</Button>
+                    <Button onClick={handleClickChangeVacancy}>Редактировать</Button>
+                    <Button onClick={(event) => {handleClickDeleteVacancy(event, id)}} type='danger'>Удалить</Button>
 
                     </div>}
             </div>
+            <div>{city}</div>
             {props.min_salary || props.max_salary ? renderSalaryIfExists(props.min_salary, props.max_salary) : null}
             {!props?.companyMembersPermissions && <div>{company?.title}</div>}
             {tokenInfo?.company && <div>{props?.manager?.email} {props?.manager?.name}</div>}
             {
                 !tokenInfo?.company && <Button onClick={respondToVacancy}
-                                               className={props.is_responded || !props.is_active? 'respond-button__disabled' : 'respond-button'}
-                                               disabled={props.is_responded}>Respond</Button>
+                                               className={props.is_responded || !props.is_active? 'respond-button__disabled button__disabled' : 'respond-button'}
+                                               disabled={props.is_responded}>Откликнуться</Button>
             }
             {error && <ErrorAlert error={error} setError={setError}/>}
         </div>

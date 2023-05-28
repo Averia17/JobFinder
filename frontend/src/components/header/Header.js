@@ -44,25 +44,25 @@ const Header = () => {
             </div>
             <div className='header-links'>
                 <div className='head'>
-                    <div className='vacancies'><Link to={{pathname: '/vacancies'}}>Vacancies</Link></div>
+                    <div className='vacancies'><Link to={{pathname: '/vacancies'}}>Вакансии</Link></div>
                     { isAuthorized &&
                         <>
-                            <div className='authentication'><Link to={{pathname: '/profile'}}>Profile</Link></div>
-                            <div className='authentication'><Link to={{pathname: '/favorites'}}>Favorites</Link></div>
+                            <div className='authentication'><Link to={{pathname: '/profile'}}>Профиль</Link></div>
+                            <div className='authentication'><Link to={{pathname: '/favorites'}}>Избранное</Link></div>
                         </>
                     }
                     {
                         isAuthorized ?
                             (tokenInfo?.company ?
                                     <>
-                                    <div className='authentication'><Link to={{pathname: '/resumes'}}>Resumes</Link></div>
-                                    <div className='authentication'><Link to={{pathname: '/company'}}>Company</Link>
+                                    <div className='authentication'><Link to={{pathname: '/resumes'}}>Резюме</Link></div>
+                                    <div className='authentication'><Link to={{pathname: '/company'}}>Компания</Link>
                                     </div>
                                     </>
                                     :
                                     <>
-                                        <div className='authentication'><Link to={{pathname: '/resumes/my'}}>Resumes</Link></div>
-                                        <div className='authentication'><Link to={{pathname: '/responses'}}>Responses</Link></div>
+                                        <div className='authentication'><Link to={{pathname: '/resumes/my'}}>Резюме</Link></div>
+                                        <div className='authentication'><Link to={{pathname: '/responses'}}>Отклики</Link></div>
                                     </>
                             )
                             :
@@ -74,7 +74,7 @@ const Header = () => {
                         <div className='authentication' onClick={handleLogout}>Logout</div>
                         :
                         <div className='authentication'>
-                            <Link to={{pathname: '/login'}}>Log in</Link>
+                            <Link to={{pathname: '/login'}}>Login</Link>
                             &nbsp;or&nbsp;
                             <Link to={{pathname: '/register'}}>Sign up</Link>
                         </div>

@@ -28,11 +28,11 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
     return (
         <form onSubmit={handleSearch} style={{display: "flex", justifyContent: "center", flexDirection: "column"}}>
             <div className="search__container">
-                <input className="search__input" type="search" placeholder="search"
+                <input className="search__input" type="search" placeholder="поиск"
                        onChange={e => setSearch(e.target.value)}/>
             </div>
             <div className="filter__container">
-                <label className="filter__label" htmlFor='experience_option'>Experience</label>
+                <label className="filter__label" htmlFor='experience_option'>Опыт работы</label>
                 <select className="filter__input" name='experience_option' onChange={handleChangeFilters}>
                     <option></option>
                     {experienceOptions.map(experienceOption => (
@@ -41,7 +41,7 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
                 </select>
             </div>
             <div className="filter__container">
-                <label className="filter__label" htmlFor='employment_type'>Employment type</label>
+                <label className="filter__label" htmlFor='employment_type'>Тип занятости</label>
                 <select className="filter__input" name='employment_type' onChange={handleChangeFilters}>
                     <option></option>
                     {employmentTypes.map(employmentType => (
@@ -50,7 +50,7 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
                 </select>
             </div>
             <div className="filter__container">
-                <label className="filter__label" htmlFor='company'>Companies</label>
+                <label className="filter__label" htmlFor='company'>Компании</label>
                 <select className="filter__input" name='company' onChange={handleChangeFilters}>
                     <option></option>
                     {companies.map(company => (
@@ -60,14 +60,10 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
             </div>
 
             <div className="filter__container">
-                <label className="filter__label" htmlFor='min_salary'>Min salary</label>
-                <Input className="filter__input" name='min_salary' type='number' step='0.1' onChange={handleChangeFilters}/>
+                <label className="filter__label" htmlFor='salary'>Ожидаемая зарплата, $</label>
+                <Input className="filter__input" name='salary' type='number' step='0.1' onChange={handleChangeFilters}/>
             </div>
-            <div className="filter__container">
-                <label className="filter__label" htmlFor='max_salary'>Max salary</label>
-                <Input className="filter__input" name='max_salary' type='number' step='0.1' onChange={handleChangeFilters}/>
-            </div>
-            <input className="filter__submit" type="submit" value="Find"/>
+            <input className="filter__submit" type="submit" value="Найти"/>
         </form>
     );
 };

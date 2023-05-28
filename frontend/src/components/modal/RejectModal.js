@@ -6,9 +6,9 @@ import Button from "../buttons/Button";
 const RejectModal = ({ isActive, handleClickHideModal, setRejectReason, handleConfirm }) => {
     return (
         <Modal isActive={isActive} handleClickHideModal={handleClickHideModal}>
-            <h2>Please, let respondent know a reason</h2>
+            <h2>Пожалуйста, укажите причину отказа</h2>
             <TextField onChange={e => setRejectReason(e.target.value)}/>
-            <Button onClick={handleConfirm}>Send</Button>
+            <Button onClick={handleConfirm}>Отправить</Button>
         </Modal>
     );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import Tab from "../../../tabs/Tab";
 import Response from "../../../response/Response";
 
-const ResponsesTab = ({ responses, setAcceptModalVisible, setRejectModalVisible, setChatModalVisible }) => {
+const ResponsesTab = ({ responses, setAcceptModalVisible, setRejectModalVisible, setChatModalVisible, setResponseStatus }) => {
     return (
         <Tab>
             {responses?.map(response => (
@@ -10,6 +10,7 @@ const ResponsesTab = ({ responses, setAcceptModalVisible, setRejectModalVisible,
                     setAcceptModalVisible={setAcceptModalVisible}
                     setRejectModalVisible={setRejectModalVisible}
                     setChatModalVisible={setChatModalVisible}
+                    setResponseStatus={setResponseStatus}
                     {...response}/>
             ))}
         </Tab>

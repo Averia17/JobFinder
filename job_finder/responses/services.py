@@ -12,7 +12,7 @@ class VacancyResponseService:
         VacancyResponse.invite: "You are invited to further discuss the vacancy {vacancy_title}",
     }
 
-    def __init__(self, vacancy_response):
+    def __init__(self, vacancy_response: VacancyResponse):
         self.vacancy_response = vacancy_response
 
     def create_message(self, data: dict):
@@ -26,10 +26,13 @@ class VacancyResponseService:
     def update_status(self, status):
         self.vacancy_response.status = status
         self.vacancy_response.save()
-        text = self._messages_by_status.get(status)
-        if text:
+        if text := self._messages_by_status.get(status):
             text = text.format(vacancy_title=self.vacancy_response.vacancy.title)
             self._send_notification(text)
+
+    def set_messages_viewed_status(self, user):
+        print(self.vacancy_response.messages.exclude(user=user))
+        self.vacancy_response.messages.exclude(user=user).update(is_viewed=True)
 
     def _send_notification(self, text):
         send_user_email.delay(

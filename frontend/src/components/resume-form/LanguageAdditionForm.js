@@ -31,7 +31,7 @@ const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ languag
                     ))
                 }
             </select>
-            <button type='button' onClick={handleClickDeleteLanguage}>Delete</button>
+            <button type='button' onClick={handleClickDeleteLanguage}>Удалить</button>
         </div>
     );
 });

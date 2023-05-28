@@ -14,6 +14,7 @@ import RejectModal from "../../components/modal/RejectModal";
 
 import ChatModal from "../../components/chat-modal/ChatModal";
 import dayjs from "dayjs";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 const VacancyPage = () => {
     const {id} = useParams();
@@ -22,20 +23,26 @@ const VacancyPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const responseId = searchParams.get('responseId');
     const [vacancyInfo, setVacancyInfo] = useState({});
+    const [error, setError] = useState(undefined);
     const [isVacancyFavorite, setVacancyFavorite] = useState(vacancyInfo.is_favorite);
     const [isAcceptModalVisible, setAcceptModalVisible] = useState(false);
     const [isRejectModalVisible, setRejectModalVisible] = useState(false);
     const [isChatModalVisible, setChatModalVisible] = useState(false);
     const [acceptMessage, setAcceptMessage] = useState(undefined);
     const [rejectMessage, setRejectMessage] = useState(undefined);
-
+    const [responseStatus, setResponseStatus] = useState(undefined);
+    const formattedResponses = vacancyInfo?.responses?.map(response => {
+                    delete response.vacancy.title
+                    return response
+                })
     const tabs = {
         responses:
             <ResponsesTab
                 setAcceptModalVisible={setAcceptModalVisible}
                 setRejectModalVisible={setRejectModalVisible}
                 setChatModalVisible={setChatModalVisible}
-                responses={vacancyInfo?.responses}/>,
+                setResponseStatus={setResponseStatus}
+                responses={formattedResponses}/>,
         views: <ViewsTab views={vacancyInfo?.views}/>,
     }
 
@@ -101,7 +108,15 @@ const VacancyPage = () => {
             headers: {
                 Authorization: `Bearer ${tokenInfo?.accessToken}`
             }
-        }))
+        })).catch(({response}) => {
+                const error = response.data
+                let message = "Message cannot be sent";
+                if(typeof error === 'object'  && "error" in error)
+                    message = error["error"];
+                if(Array.isArray(error))
+                    message = error[0]
+                setError(message)
+            })
     }
 
     const handleConfirmReject = () => {
@@ -117,7 +132,15 @@ const VacancyPage = () => {
             headers: {
                 Authorization: `Bearer ${tokenInfo?.accessToken}`
             }
-        }))
+        })).catch(({response}) => {
+                const error = response.data
+                let message = "Message cannot be sent";
+                if(typeof error === 'object'  && "error" in error)
+                    message = error["error"];
+                if(Array.isArray(error))
+                    message = error[0]
+                setError(message)
+            })
     }
 
     return (
@@ -129,12 +152,12 @@ const VacancyPage = () => {
             </div>
             <h2><Link className="company__link" to={`/companies/${company?.id}`}>{company?.title}</Link></h2>
             {!vacancyInfo.is_active && <b>
-                <div style={{color: "red"}}>Vacancy is not active</div>
+                <div style={{color: "red"}}>Вакансия находится в архиве</div>
             </b>}
             <div>{renderSalaryIfExists(vacancyInfo.min_salary, vacancyInfo.max_salary)}</div>
-            <p>Created {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
+            <p>Создана {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
             <div>{vacancyInfo.employment_type}</div>
-            <div>Required experience {vacancyInfo.experience_option} years</div>
+            <div>Обязательный опыт {vacancyInfo.experience_option}</div>
             {vacancyInfo.description &&
                 <div>
                     <hr/>
@@ -143,7 +166,7 @@ const VacancyPage = () => {
                 </div>
             }
             {!tokenInfo?.company && <button onClick={respondToVacancy}
-                                            disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Respond</button>}
+                                            disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Откликнуться</button>}
             {tokenInfo?.company && <Navbar setCurrentTab={setCurrentTab}/>}
             {tokenInfo?.company ? renderTab() : null}
             <AcceptModal
@@ -157,6 +180,8 @@ const VacancyPage = () => {
                 handleConfirm={handleConfirmReject}
                 setRejectReason={setRejectMessage}/>
             {isChatModalVisible && <ChatModal setChatModalVisible={setChatModalVisible}/>}
+            {error && <ErrorAlert error={error} setError={setError}/>}
+
         </div>
     );
 };

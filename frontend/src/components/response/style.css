@@ -12,3 +12,21 @@
     font-size: 1.1em;
 
 }
+.count__new__notification_messages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    background: #97dc97;
+    border-radius: 10px;
+}
+.messages_icon {
+    position: relative;
+    padding: 8px;
+}

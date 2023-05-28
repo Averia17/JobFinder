@@ -12,7 +12,7 @@ class CompanyAdmin(admin.ModelAdmin):
     fieldsets = [
         (
             None,
-            {"fields": ["title", "address", "description", "image", "director", "is_active"]},
+            {"fields": ["title", "address", "description", "image", "director", "is_active", "phone", "site"]},
         ),
         ("System", {"classes": ["collapse"], "fields": ["created", "updated"]}),
     ]

@@ -6,7 +6,7 @@ import Button from "../../buttons/Button";
 const VacanciesTab = ({ vacancies, setModalVisible }) => {
     return (
         <Tab>
-            <Button onClick={() => setModalVisible(true)}>New vacancy</Button>
+            <Button onClick={() => setModalVisible(true)}>Создать новую вакансию</Button>
             {
                 vacancies?.map(vacancy => (
                     <Vacancy key={vacancy.id} {...vacancy} companyMembersPermissions setModalVisible={setModalVisible}/>

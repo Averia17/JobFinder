@@ -10,8 +10,11 @@ const FavoritesPage = () => {
     const [vacancies, setVacancies] = useState([]);
     const [loading, setLoading] = useState(true);
     let url = "vacancies"
-    if(tokenInfo?.company)
+    let warningText = "вакансий"
+    if(tokenInfo?.company) {
         url = "resumes"
+        warningText = "резюме"
+    }
     useEffect(() => {
 
         axios.get(`/api/${url}/favorites`, {
@@ -35,8 +38,8 @@ const FavoritesPage = () => {
                         <Resume key={vacancy.id} {...vacancy}/>
                         :<Vacancy key={vacancy.id} {...vacancy}/>
                     }</>))
-                    : <div> You don't have favorites {url}</div>
-                    : <div> Loading...</div>
+                    : <div> У вас нет избранных {warningText}</div>
+                    : <div> Загрузка...</div>
                 }
             </div>
         </div>

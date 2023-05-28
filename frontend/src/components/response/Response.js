@@ -23,7 +23,6 @@ const Response = (props) => {
         searchParams.set('responseId', id);
         setSearchParams(searchParams);
         props.setChatModalVisible(true);
-        props.setResponseStatus(status);
     }
 
     const handleClickAccept = (event) => {
@@ -31,6 +30,7 @@ const Response = (props) => {
         searchParams.set('responseId', id);
         setSearchParams(searchParams);
         props.setAcceptModalVisible(true);
+        props?.setResponseStatus("INVITE");
     }
 
     const handleClickReject = (event) => {
@@ -38,6 +38,7 @@ const Response = (props) => {
         searchParams.set('responseId', id);
         setSearchParams(searchParams);
         props.setRejectModalVisible(true);
+        props?.setResponseStatus("REJECT");
     }
 
     const handleLinkToResumes = () => {
@@ -52,15 +53,17 @@ const Response = (props) => {
             navigate(`/vacancies/${props?.vacancy?.id}`)
 
     }
-
     return (
         <div className='responseBlock__container' onClick={handleLinkToResumes}>
             <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h2>{props?.vacancy?.title}</h2></Link>
             {!tokenInfo?.company && <p>{props?.vacancy?.company}</p>}
             {(props?.user?.name || props?.user?.email) && tokenInfo?.company && <p>{props?.user?.name} {props?.user?.email}</p>}
-            <p style={{ color: `${status === "Reject" && "red" || status === "Invite" && "green"}`}}>{status}</p>
+            <p style={{ color: `${status === "Отказ" && "red" || status === "Приглашение" && "green"}`}}>{status}</p>
             <p>{props?.created && dayjs(props?.created).format("DD.MM.YYYY")}</p>
-            <ImageButton src={messageIcon} onClick={handleClick}/>
+            <div className="messages_icon">
+                {props?.count_new_messages > 0 && <div className="count__new__notification_messages">{props?.count_new_messages}</div>}
+                <ImageButton src={messageIcon} onClick={handleClick}/>
+            </div>
             {tokenInfo?.company && <>
                 <ImageButton src={acceptIcon} onClick={handleClickAccept}>Accept</ImageButton>
                 <ImageButton src={cancelIcon} onClick={handleClickReject}>Reject</ImageButton>

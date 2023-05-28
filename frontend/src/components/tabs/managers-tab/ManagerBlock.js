@@ -18,7 +18,7 @@ const ManagerBlock = (props) => {
                 {props?.name && <p>{props?.name}</p>}
                 <p>{email}</p>
             </div>
-                <Button onClick={handleClickDeleteManager} type='danger'>Delete</Button>
+                <Button onClick={handleClickDeleteManager} type='danger'>удалить</Button>
         </div>
     );
 };

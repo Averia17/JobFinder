@@ -2,14 +2,13 @@ from django.db.models import Count
 from rest_framework.fields import (
     BooleanField,
     CharField,
-    SerializerMethodField,
     IntegerField,
 )
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from companies.models import CompanyManager
-from responses.serializers import VacancyResponseReadSerializer
+from responses.serializers import VacancyResponseSerializer
 from .models import Vacancy
 
 
@@ -74,6 +73,7 @@ class VacancyDetailSerializer(VacancySerializer):
 
     def to_representation(self, instance):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
+        self.fields["experience_option"] = CharField(source="get_experience_option_display")
         res = super().to_representation(instance)
         user = self.context["request"].user
         if user.is_authenticated:
@@ -82,8 +82,8 @@ class VacancyDetailSerializer(VacancySerializer):
             if (user.is_manager and instance.manager.user == user) or (
                 instance.company.director == user
             ):
-                res["responses"] = VacancyResponseReadSerializer(
-                    instance.responses.all(), many=True
+                res["responses"] = VacancyResponseSerializer(
+                    instance.responses.all(), many=True, context=self.context
                 ).data
                 res["views"] = instance.views.values(
                     "user__id", "user__name", "user__email"

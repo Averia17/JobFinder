@@ -14,6 +14,7 @@ class VacancyAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "title",
+                    "city",
                     "company",
                     "manager",
                     "is_active",

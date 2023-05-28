@@ -9,11 +9,7 @@ const CompanyPage = () => {
     const tokenInfo = useGetInfoFromToken();
 
     useEffect(() => {
-        axios.get(`/api/companies/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${tokenInfo?.accessToken}`
-            }
-        })
+        axios.get(`/api/companies/${id}`)
             .then(({data}) => setCompanyInfo(data));
     }, [])
 

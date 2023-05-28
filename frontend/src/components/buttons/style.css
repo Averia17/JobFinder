@@ -56,3 +56,8 @@
     top: 0;
     right: 0;
 }
+.button__disabled {
+    background: #d3d3ec;
+    color: #676767;
+    cursor: default;
+}

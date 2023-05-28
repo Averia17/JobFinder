@@ -19,11 +19,11 @@ class MessageSerializer(ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ("id", "user", "text", "vacancy_response", "created")
+        fields = ("id", "user", "text", "vacancy_response", "created", "is_viewed")
 
     def validate(self, attrs):
         if attrs["vacancy_response"].status == VacancyResponse.reject:
-            raise ValidationError("You cannot send messages after response reject")
+            raise ValidationError({"error": "You cannot send messages after response reject"})
         return attrs
 
     def to_representation(self, instance):

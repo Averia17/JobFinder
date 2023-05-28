@@ -6,9 +6,11 @@ import {employmentTypes, experienceOptions} from "./utils";
 import {useSearchParams} from "react-router-dom";
 import {TextField} from "@mui/material";
 import ErrorAlert from "../../../alerts/ErrorAlert";
+import {useNavigate} from "react-router";
 
 const VacancyForm = () => {
     const {accessToken} = useGetInfoFromToken();
+    const navigate = useNavigate();
     const [vacancy, setVacancy] = useState({});
     const [defaultVacancy, setDefaultVacancy] = useState({});
     const [managers, setManagers] = useState([]);
@@ -19,7 +21,10 @@ const VacancyForm = () => {
     useEffect(() => {
         if (vacancyId) {
             axios.get(`/api/vacancies/${vacancyId}`)
-                .then(({data}) => setDefaultVacancy(data))
+                .then(({data}) => {
+                    setDefaultVacancy(data);
+                    setVacancy({ ...vacancy, description: data?.description })
+                })
         }
     }, [vacancyId])
 
@@ -42,11 +47,15 @@ const VacancyForm = () => {
         if (vacancyId) {
             axios.patch(`/api/vacancies/${vacancyId}/`, {...vacancy}, {
                 headers: {Authorization: `Bearer ${accessToken}`}
-            }).then().catch(()=>{setError("Error updating vacancy")})
+            }).then(() => {
+                navigate(`/vacancies/${vacancyId}`)
+            }).catch(()=>{setError("Error updating vacancy")})
         } else {
             axios.post(`/api/vacancies/`, {...vacancy}, {
                 headers: {Authorization: `Bearer ${accessToken}`}
-            }).then().catch(()=>{setError("Error creating vacancy")})
+            }).then(({data}) => {
+                navigate(`/vacancies/${data.id}`)
+            }).catch(()=>{setError("Error creating vacancy")})
         }
     }
 
@@ -54,31 +63,31 @@ const VacancyForm = () => {
         <div>
             <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column"}}>
                 <div>
-                    <label htmlFor='title'>Vacancy title</label>
+                    <label htmlFor='title'>Название вакансии</label>
                     <Input name='title' defaultValue={defaultVacancy?.title} type='text' onChange={handleChange}
                            required/>
                 </div>
                 <div>
-                    <label htmlFor='city'>City</label>
+                    <label htmlFor='city'>Город</label>
                     <Input name='city' defaultValue={defaultVacancy?.city} type='text' onChange={handleChange}
                            required/>
                 </div>
                 <div>
-                    <label htmlFor='min_salary'>Min salary</label>
+                    <label htmlFor='min_salary'>Минимальная зарплата</label>
                     <Input name='min_salary' defaultValue={defaultVacancy?.min_salary} type='number'
                            onChange={handleChange}/>
                 </div>
                 <div>
-                    <label htmlFor='max_salary'>Max salary</label>
+                    <label htmlFor='max_salary'>Максимальная зарплата</label>
                     <Input name='max_salary' defaultValue={defaultVacancy?.max_salary} type='number'
                            onChange={handleChange}/>
                 </div>
                 <div>
-                    <label htmlFor='description'>Description</label>
-                    <TextField name='description' defaultValue={defaultVacancy?.description} onChange={handleChange}/>
+                    <label htmlFor='description'>Описание</label>
+                    <TextField name='description' value={vacancy?.description} onChange={handleChange}/>
                 </div>
                 {!vacancyId && <div>
-                    <p>Managers</p>
+                    <p>Менеджер</p>
                     <select name='manager' onChange={handleChange} required>
                         <option value=""></option>
                         {managers.map(({user}) => (
@@ -87,21 +96,22 @@ const VacancyForm = () => {
                     </select>
                 </div>}
                 <div>
-                    <p>Is vacancy active?</p>
+                    <p>Активная ли вакансия?</p>
                     <input name='is_active' defaultChecked={defaultVacancy?.is_active} className='booleanField'
                            type='checkbox' onChange={handleChange}/>
                 </div>
                 <div>
-                    <p>Required experience</p>
+                    <p>Обязательный опыт</p>
                     <select name='experience_option' onChange={handleChange}>
-                        {experienceOptions.map((experience) => (
-                            <option selected={experience === defaultVacancy?.experience_option} key={experience}
-                                    value={experience}>{experience}</option>
+                        {experienceOptions.map((experience, index) => (
+                            <option key={index}
+                                    selected={experience[1] === defaultVacancy?.experience_option}
+                                    value={experience[0]}>{experience[1]}</option>
                         ))}
                     </select>
                 </div>
                 <div>
-                    <p>Employment type</p>
+                    <p>Тип занятости</p>
                     <select name='employment_type' onChange={handleChange}>
                         {employmentTypes.map((type, index) => (
                             <option selected={type[1] === defaultVacancy?.employment_type} key={index}

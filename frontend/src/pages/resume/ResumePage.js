@@ -72,7 +72,7 @@ const ResumePage = () => {
                 resume ?
                     <>
                         {resume?.user?.id === tokenInfo?.user_id &&
-                            <Button onClick={handleClickDeleteResume} type='danger'>Delete</Button>}
+                            <Button onClick={handleClickDeleteResume} type='danger'>Удалить</Button>}
                         {tokenInfo?.company &&
                             <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
                         <div className="resume__header">
@@ -81,13 +81,14 @@ const ResumePage = () => {
                                 {tokenInfo?.user_id === resume?.user?.id &&
                                     <div><input type="file" onChange={handleAvatarChange} content="Update Avatar"/></div>}
                             </div>
-                            <div className="resume__views">Views: {resume?.views.map(view => (
+                            {resume?.user?.id === tokenInfo?.user_id && <div className="resume__views">Views: {resume?.views?.map(view => (
                                 <div className="resume__view">
                                     <div><Link className="resume__company__link" to={`/companies/${view?.company__id}`}> {view?.company__title}</Link>: </div>
                                     <div>{view?.count} times</div>
                                 </div>
                             ))}
                             </div>
+                            }
                         </div>
                         <div>{resume.title}</div>
                         <div>{resume.user?.name} {resume.user?.email}</div>
@@ -104,15 +105,15 @@ const ResumePage = () => {
                             </Document>
                             {resume?.file &&
                                 <div className="open-cv__link__container">
-                                    <Link to={resume?.file} className="open-cv__link">Open full CV</Link>
+                                    <Link to={resume?.file} className="open-cv__link">Открыть полное резюме</Link>
                                 </div>}
                         </div>
                     </>
                     : <>
-                        <div> You don't have resume yet.</div>
-                        <button className="submit__button" onClick={linkToCreateResumeForm}>Create resume</button>
+                        <div> У вас нет резюме</div>
+                        <button className="submit__button" onClick={linkToCreateResumeForm}>Создать резюме</button>
                     </>
-                : <div> Loading...</div>
+                : <div> Загрузка...</div>
             }
         </div>
     );

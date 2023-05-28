@@ -40,7 +40,7 @@ class Resume(BaseModel):
     education = models.CharField(_("Education"), max_length=64, null=True, blank=True)
     salary = models.PositiveSmallIntegerField(_("Salary"), null=True, blank=True)
     languages = models.JSONField(_("Languages"), default=dict, null=True, blank=True)
-    skills = ArrayField(models.CharField(max_length=16), null=True, blank=True)
+    skills = ArrayField(models.CharField(max_length=256), null=True, blank=True)
     file = models.FileField(
         _("CV"), upload_to=cv_generate_upload_path, null=True, blank=True
     )

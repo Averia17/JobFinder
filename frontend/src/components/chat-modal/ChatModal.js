@@ -17,6 +17,7 @@ const ChatModal = (props) => {
     const [isMessageSend, setMessageSend] = useState(false);
     const [messages, setMessages] = useState([]);
     const messagesEndRef = useRef(null);
+    const [responseStatus, setResponseStatus] = useState("Отказ");
 
     useEffect(() => {
         setResponseId(searchParams.get('responseId'))
@@ -27,7 +28,11 @@ const ChatModal = (props) => {
     }
 
     useEffect(() => {
-        setResponseId(searchParams.get('responseId'));
+        axios.get(`api/responses/${responseId}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(({data}) => setResponseStatus(data?.status))
     }, [searchParams])
 
     const handleSendMessage = () => {
@@ -72,7 +77,6 @@ const ChatModal = (props) => {
         setSearchParams(searchParams);
         setResponseId(undefined);
         props.setChatModalVisible(false);
-        props?.setResponseStatus(null);
     }
 
     const scrollToBottom = () => {
@@ -107,7 +111,7 @@ const ChatModal = (props) => {
                     onChange={handleChangeMessage}
                     value={message}
                     id="standard-textarea"
-                    placeholder={props?.responseStatus === 'Reject' ? 'Employer rejected you' : "Write there"}
+                    placeholder={responseStatus === 'Отказ' ? 'Вам отказали' : "Введите сообщение"}
                     multiline
                     rows={2}
                     variant="filled"
@@ -115,12 +119,12 @@ const ChatModal = (props) => {
                             paddingRight: 50
                         } }}
                     className='chat__textField'
-                    disabled={props?.responseStatus === 'Reject'}
+                    disabled={responseStatus === 'Отказ'}
                 />
                 <button
                     className='chat__button'
-                    disabled={props?.responseStatus === 'Reject'}
-                    onClick={handleSendMessage}>Send</button>
+                    disabled={responseStatus === 'Отказ'}
+                    onClick={handleSendMessage}>Отправить</button>
             </div>
         </div>
     );

@@ -17,10 +17,10 @@
 .filter__input {
     padding: 3px 7px;
     font-size: 1.05em;
-    width: 130px;
+    width: 162px;
 }
 select.filter__input {
-    width: 145px;
+    width: 178px;
 }
 .filter__submit {
     width: 147px;

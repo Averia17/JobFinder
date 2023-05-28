@@ -9,8 +9,8 @@ const Navbar = ({ setCurrentTab }) => {
 
     return (
         <nav className='navbar__container'>
-            <NavBlock title='Responses' value='responses' onChange={handleChangeTab} checked/>
-            <NavBlock title='Views' value='views' onChange={handleChangeTab}/>
+            <NavBlock title='Отклики' value='responses' onChange={handleChangeTab} checked/>
+            <NavBlock title='Просмотры' value='views' onChange={handleChangeTab}/>
         </nav>
     );
 };

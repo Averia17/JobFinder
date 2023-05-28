@@ -10,10 +10,10 @@ class VacancyResponse(BaseModel):
     viewed = "VIEWED"
     not_viewed = "NOT_VIEWED"
     VACANCY_RESPONSE_STATUS = (
-        (reject, "Reject"),
-        (invite, "Invite"),
-        (viewed, "Viewed"),
-        (not_viewed, "Not Viewed"),
+        (reject, "Отказ"),
+        (invite, "Приглашение"),
+        (viewed, "Просмотрено"),
+        (not_viewed, "Не просмотрено"),
     )
     vacancy = models.ForeignKey(
         "vacancies.Vacancy", related_name="responses", on_delete=models.CASCADE

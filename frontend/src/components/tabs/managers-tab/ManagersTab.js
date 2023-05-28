@@ -53,11 +53,11 @@ const ManagersTab = () => {
     return (
         <Tab>
             <form onSubmit={handleSubmitAddManager}>
-                <label htmlFor="name">Name </label>
+                <label htmlFor="name">Имя менеджера  </label>
                 <Input type='text' name='name' onChange={handleChangeManagerInfo}/>
                 <label htmlFor="email">Email </label>
                 <Input type='email' name='email' onChange={handleChangeManagerInfo}/>
-                <Input type='submit'></Input>
+                <Input type='submit' value="Добавить"></Input>
             </form>
             <div>
                 {
