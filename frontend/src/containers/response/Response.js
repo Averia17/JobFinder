@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Link, useSearchParams} from "react-router-dom";
-import Button from "../buttons/Button";
+import Button from "../../components/buttons/Button";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import './style.css'
-import ImageButton from "../buttons/ImageButton";
+import ImageButton from "../../components/buttons/ImageButton";
 import messageIcon from '../../assets/message.png'
 import acceptIcon from '../../assets/accept-button.png'
 import cancelIcon from '../../assets/cancel-button.png'

@@ -3,10 +3,10 @@ import {useNavigate} from "react-router";
 import axios from "axios";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
-import FavoriteButton from "../buttons/FavoriteButton";
-import Button from "../buttons/Button";
+import FavoriteButton from "../../components/buttons/FavoriteButton";
+import Button from "../../components/buttons/Button";
 import {useSearchParams} from "react-router-dom";
-import ErrorAlert from "../alerts/ErrorAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 export const renderSalaryIfExists = (min_salary, max_salary,) => {
     if (min_salary && max_salary) {

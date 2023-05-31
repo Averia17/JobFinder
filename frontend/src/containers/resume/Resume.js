@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./style.css"
 import {Link} from "react-router-dom";
-import FavoriteButton from "../buttons/FavoriteButton";
+import FavoriteButton from "../../components/buttons/FavoriteButton";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import axios from "axios";
 

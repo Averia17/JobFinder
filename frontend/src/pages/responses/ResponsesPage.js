@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import Response from "../../components/response/Response";
-import ChatModal from "../../components/chat-modal/ChatModal";
+import Response from "../../containers/response/Response";
+import ChatModal from "../../containers/chat-modal/ChatModal";
 import {useSearchParams} from "react-router-dom";
 
 const ResponsesPage = () => {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import Resume from "../../components/resume/Resume";
+import Resume from "../../containers/resume/Resume";
 import {useNavigate} from "react-router";
 import {useSearchParams} from "react-router-dom";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";

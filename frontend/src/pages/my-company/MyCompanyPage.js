@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import axios from "axios";
-import VacanciesTab from "../../components/tabs/vacancies-tab/VacanciesTab";
-import ManagersTab from "../../components/tabs/managers-tab/ManagersTab";
+import VacanciesTab from "../../containers/vacancies-tab/VacanciesTab";
+import ManagersTab from "../../containers/managers-tab/ManagersTab";
 import Navbar from "../../components/pages/my-company/navbar/Navbar";
 import './style.css'
 import ConfirmModal from "../../components/modal/ConfirmModal";
 import {useSearchParams} from "react-router-dom";
-import InfoTab from "../../components/tabs/info-tab/InfoTab";
+import InfoTab from "../../containers/info-tab/InfoTab";
 import VacancyModal from "../../components/pages/my-company/vacancy-form/VacancyModal";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
 
@@ -63,7 +63,7 @@ const MyCompanyPage = () => {
         }).then(() => {
             searchParams.delete('manager');
             setDeleteModalVisible(false);
-        }).catch(() => setCompanyError('Manager have vacancies, you cannot delete him'))
+        }).catch(() => setCompanyError('Manager have filters, you cannot delete him'))
     }
 
     const handleLogoChange = event => {

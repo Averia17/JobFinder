@@ -5,7 +5,7 @@ import {useSearchParams} from "react-router-dom";
 import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import dayjs from "dayjs";
-import ImageButton from "../buttons/ImageButton";
+import ImageButton from "../../components/buttons/ImageButton";
 import closeIcon from '../../assets/close.png'
 
 const ChatModal = (props) => {

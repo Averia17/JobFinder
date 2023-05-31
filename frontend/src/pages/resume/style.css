@@ -1,20 +1,42 @@
 .submit__button {
-    width: 120px;
     margin: 10px 0;
     background: #0000e6;
     color: #f8f6f6;
     padding: 5px 0;
     border-radius: 5px;
 }
-.resumes__container {
-    margin: 10px 80px;
-
+.resume__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1vmax 15vmax;
 }
+
+.resume__container h1, h2 {
+    color: #0000e6;
+}
+
+.resume__container div, p {
+    font-size: 1vmax;
+}
+
+.resume__container > div {
+    padding: 1vmax 0;
+    border-bottom: 1px solid black;
+    width: 50vmax;
+    gap: 0.5vmax;
+}
+
+.resume__container > div:last-child {
+    border: none;
+}
+
 .open-cv__link {
-    padding: 3px 5px;
+    padding: 0.5vmax 1vmax;
     background: #0000e6;
     color: #f8f6f6;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 .open-cv__link__container {
     display: flex;
@@ -35,13 +57,47 @@
 }
 .resume__header {
     display: flex;
+    gap: 0.5vmax;
+    justify-content: space-between;
 }
-.resume__logo {
-    margin-right: 100px;
-}
+
 .resume__view {
     display: flex;
 }
 .resume__company__link:hover {
     color: #2aabd2;
+}
+
+.resume__skills__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.resume__header__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vmax;
+}
+
+.resume__header__button {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+}
+
+.resume__skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25vmax;
+}
+
+.resume__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vmax;
+}
+
+.resume__views__container {
+    display: flex;
+    flex-direction: column;
 }

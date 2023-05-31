@@ -1,7 +1,7 @@
 import React from 'react';
-import Vacancy from "../../vacancy/Vacancy";
-import Tab from "../Tab";
-import Button from "../../buttons/Button";
+import Vacancy from "../vacancy/Vacancy";
+import Tab from "../../components/tabs/Tab";
+import Button from "../../components/buttons/Button";
 
 const VacanciesTab = ({ vacancies, setModalVisible }) => {
     return (

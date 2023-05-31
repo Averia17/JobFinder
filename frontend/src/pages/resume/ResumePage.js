@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import {pdfjs} from 'react-pdf';
 import Button from "../../components/buttons/Button";
 import FavoriteButton from "../../components/buttons/FavoriteButton";
+import SkillBlock from "../../components/resume-form/SkillBlock";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -66,39 +67,66 @@ const ResumePage = () => {
             })
         }
     };
+
+    const experience = Number(resume?.experience);
+
+    const formatViewsCountString = () => {
+        let countOfViews = resume?.views?.length;
+        const lastNumberOfViewsCount = +countOfViews.toString().charAt(countOfViews.length - 1);
+        return lastNumberOfViewsCount >= 2 && lastNumberOfViewsCount <= 4 && 'a';
+    }
+
     return (
-        <div className="resumes__container">
+        <div className="resume__container">
             {!loading ?
                 resume ?
                     <>
-                        {resume?.user?.id === tokenInfo?.user_id &&
-                            <Button onClick={handleClickDeleteResume} type='danger'>Удалить</Button>}
-                        {tokenInfo?.company &&
-                            <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
                         <div className="resume__header">
+                            <div className='resume__header__info'>
+                                <h1>{resume.user?.name} {resume.user?.email}</h1>
+                                <h4>{resume.user?.phone}</h4>
+                                <h4>{resume.city}</h4>
+                                <h4>Ваше резюме было просмотрено {resume?.views?.length} раз{formatViewsCountString()}</h4>
+                                <div className='resume__header__button'>
+                                    {resume?.user?.id === tokenInfo?.user_id &&
+                                        <Button onClick={handleClickDeleteResume} type='danger'>Удалить</Button>}
+                                    {tokenInfo?.company &&
+                                        <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
+                                </div>
+                            </div>
                             <div className="resume__logo">
                                 <div className="avatar__container"><img src={resume?.image || logo} alt=""/></div>
                                 {tokenInfo?.user_id === resume?.user?.id &&
                                     <div><input type="file" onChange={handleAvatarChange} content="Update Avatar"/></div>}
                             </div>
-                            {resume?.user?.id === tokenInfo?.user_id && <div className="resume__views">Views: {resume?.views?.map(view => (
-                                <div className="resume__view">
-                                    <div><Link className="resume__company__link" to={`/companies/${view?.company__id}`}> {view?.company__title}</Link>: </div>
-                                    <div>{view?.count} times</div>
-                                </div>
-                            ))}
+                        </div>
+                        <div className='resume__info'>
+                            <h1>{resume.title}</h1>
+                            <h4>Зарплатные ожидания: {resume?.salary}$</h4>
+                            <div>Опыт работы: {resume?.experience} {experience> 4 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
+                            <div>Образование: {resume?.education}</div>
+                            <div>{resume?.description}</div>
+                        </div>
+                        <div className='resume__skills__container'>
+                            <h2>Навыки</h2>
+                            <div className='resume__skills'>
+                                {resume?.skills[0]?.split(',')?.map(skill => <SkillBlock skill={skill}/>)}
                             </div>
+                        </div>
+                        <div className='resume__views__container'>
+                            <h2>Просмотры</h2>
+                            {resume?.user?.id === tokenInfo?.user_id && resume?.views?.length > 0 ?
+                                <div className="resume__views">Просмотры: {resume?.views?.map(view => (
+                                    <div className="resume__view">
+                                        <div><Link className="resume__company__link" to={`/companies/${view?.company__id}`}> {view?.company__title}</Link>: </div>
+                                        <div>{view?.count} раз</div>
+                                    </div>
+                                ))}
+                                </div>
+                                :
+                                <div>Ваше резюме пока не просматривали</div>
                             }
                         </div>
-                        <div>{resume.title}</div>
-                        <div>{resume.user?.name} {resume.user?.email}</div>
-                        <div>{resume.city}</div>
-                        <div>{resume?.experience} years</div>
-                        <div>{resume?.salary}</div>
-                        <div>{resume?.education}</div>
-                        <div>{resume?.description}</div>
-                        <div>skills: {resume?.skills?.map(skill => <span>{skill} </span>)}</div>
-                        <div></div>
                         <div style={{width: "100%"}}>
                             <Document file={resume?.file}>
                                 <Page pageNumber={1} renderTextLayer={false} width={1000}/>
@@ -111,7 +139,7 @@ const ResumePage = () => {
                     </>
                     : <>
                         <div> У вас нет резюме</div>
-                        <button className="submit__button" onClick={linkToCreateResumeForm}>Создать резюме</button>
+                        <Button className="submit__button" onClick={linkToCreateResumeForm}>Создать резюме</Button>
                     </>
                 : <div> Загрузка...</div>
             }

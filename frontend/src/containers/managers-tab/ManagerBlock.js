@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from "../../buttons/Button";
+import Button from "../../components/buttons/Button";
 import {useSearchParams} from "react-router-dom";
 
 const ManagerBlock = (props) => {

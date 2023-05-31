@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
-import {renderSalaryIfExists} from "../../components/vacancy/Vacancy";
+import {renderSalaryIfExists} from "../../containers/vacancy/Vacancy";
 import FavoriteButton from "../../components/buttons/FavoriteButton";
 import ResponsesTab from "../../components/pages/my-company/vacancy/ResponsesTab";
 import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
@@ -12,7 +12,7 @@ import AcceptModal from "../../components/modal/AcceptModal";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import RejectModal from "../../components/modal/RejectModal";
 
-import ChatModal from "../../components/chat-modal/ChatModal";
+import ChatModal from "../../containers/chat-modal/ChatModal";
 import dayjs from "dayjs";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
 

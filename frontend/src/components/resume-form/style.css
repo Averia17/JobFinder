@@ -1,7 +1,6 @@
 .skill_container {
     display: flex;
-    margin: 10px;
-    padding: 5px 10px;
+    padding: 0.4vmax 1vmax;
     border: 0.1em solid #0000b3;
     background: #0000e6;
     border-radius: 10px;
@@ -52,6 +51,10 @@
 /*}*/
 .column-2, .column-1 {
     height: 100%;
+}
+
+.skills {
+    gap: 0.1vmax;
 }
 
 /*.column-2 div {*/

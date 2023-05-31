@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import Vacancy from "../../components/vacancy/Vacancy";
+import Vacancy from "../../containers/vacancy/Vacancy";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
-import Filters from "../../components/pages/vacancies/Filters";
+import Filters from "../../containers/filters/Filters";
 import {useSearchParams} from "react-router-dom";
 
 const VacanciesPage = () => {

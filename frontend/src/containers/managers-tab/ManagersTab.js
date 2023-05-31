@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import Tab from "../Tab";
+import Tab from "../../components/tabs/Tab";
 import {Input} from "@mui/material";
 import axios from "axios";
-import {useGetInfoFromToken} from "../../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import ManagerBlock from "./ManagerBlock";
 import './style.css'
-import ErrorAlert from "../../alerts/ErrorAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 
 const ManagersTab = () => {

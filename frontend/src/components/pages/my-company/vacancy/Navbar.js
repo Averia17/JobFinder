@@ -2,7 +2,6 @@ import React from 'react';
 import NavBlock from "../../../nav-block/NavBlock";
 
 const Navbar = ({ setCurrentTab }) => {
-
     const handleChangeTab = event => {
         setCurrentTab(event.currentTarget.value)
     }

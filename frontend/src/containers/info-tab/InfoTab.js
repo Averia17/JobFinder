@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import Tab from "../Tab";
-import Input from "../../inputs/Input";
-import {useGetInfoFromToken} from "../../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import Tab from "../../components/tabs/Tab";
+import Input from "../../components/inputs/Input";
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import axios from "axios";
 import './style.css'
 import {TextField} from "@mui/material";

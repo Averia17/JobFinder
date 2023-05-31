@@ -172,7 +172,7 @@ const ResumeForm = () => {
                                 <button onClick={handleAddSkill} type='button'>Add</button>
                             </div>
 
-                            <div style={{display: 'flex'}}>
+                            <div className='skills' style={{display: 'flex'}}>
                                 {
                                     selectedSkills?.map(skill => (
                                         <SkillBlock skill={skill}/>

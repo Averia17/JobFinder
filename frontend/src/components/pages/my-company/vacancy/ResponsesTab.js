@@ -1,6 +1,6 @@
 import React from 'react';
 import Tab from "../../../tabs/Tab";
-import Response from "../../../response/Response";
+import Response from "../../../../containers/response/Response";
 
 const ResponsesTab = ({ responses, setAcceptModalVisible, setRejectModalVisible, setChatModalVisible, setResponseStatus }) => {
     return (
