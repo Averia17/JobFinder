@@ -5,7 +5,7 @@
     align-items: center;
 }
 
-.vacancyPage__header {
+.vacancyPage__header__container {
     display: flex;
     justify-content: center;
     align-items: center;

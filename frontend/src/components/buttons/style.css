@@ -40,8 +40,8 @@
 .favoriteButton__container {
     background: transparent;
     border: none;
-    width: 3vmax;
-    height: 2.5vmax;
+    width: 2vmax;
+    height: 1.75vmax;
     cursor: pointer;
 }
 

@@ -15,6 +15,7 @@ import RejectModal from "../../components/modal/RejectModal";
 import ChatModal from "../../containers/chat-modal/ChatModal";
 import dayjs from "dayjs";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
+import Button from "../../components/buttons/Button";
 
 const VacancyPage = () => {
     const {id} = useParams();
@@ -145,19 +146,31 @@ const VacancyPage = () => {
 
     return (
         <div className='vacancyPage__container'>
-            <div className='vacancyPage__header'>
-                <h1>{title}</h1>
-                {tokenInfo?.user_id &&
-                    <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>}
+            <div className='vacancyPage__header__container'>
+                <div className='header__title'>
+                    <h1>{title}</h1>
+                    <h2><Link className="company__link" to={`/companies/${company?.id}`}>{company?.title}</Link></h2>
+                    <div>
+                        <img src={company} alt=""/>
+                    </div>
+                </div>
+                <div className='header__info'>
+
+                </div>
+
+                {!vacancyInfo.is_active && <b>
+                    <div style={{color: "red"}}>Вакансия находится в архиве</div>
+                </b>}
+                <div>{renderSalaryIfExists(vacancyInfo.min_salary, vacancyInfo.max_salary)}</div>
+                <p>Создана {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
+                <div>{vacancyInfo.employment_type}</div>
+                <div>Обязательный опыт {vacancyInfo.experience_option}</div>
+                {tokenInfo?.user_id && <div className='vacancyPage__header__buttons'>
+                    {!tokenInfo?.company && <Button onClick={respondToVacancy}
+                                                    disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Откликнуться</Button>}
+                        <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>
+                </div>}
             </div>
-            <h2><Link className="company__link" to={`/companies/${company?.id}`}>{company?.title}</Link></h2>
-            {!vacancyInfo.is_active && <b>
-                <div style={{color: "red"}}>Вакансия находится в архиве</div>
-            </b>}
-            <div>{renderSalaryIfExists(vacancyInfo.min_salary, vacancyInfo.max_salary)}</div>
-            <p>Создана {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
-            <div>{vacancyInfo.employment_type}</div>
-            <div>Обязательный опыт {vacancyInfo.experience_option}</div>
             {vacancyInfo.description &&
                 <div>
                     <hr/>
@@ -165,8 +178,7 @@ const VacancyPage = () => {
                     <hr/>
                 </div>
             }
-            {!tokenInfo?.company && <button onClick={respondToVacancy}
-                                            disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Откликнуться</button>}
+
             {tokenInfo?.company && <Navbar setCurrentTab={setCurrentTab}/>}
             {tokenInfo?.company ? renderTab() : null}
             <AcceptModal

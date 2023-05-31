@@ -9,6 +9,7 @@
     padding: 1vmax 2vmax;
     border-radius: 0.5vmax;
     cursor: pointer;
+    gap: 0.5vmax;
 }
 
 .vacancy__header {

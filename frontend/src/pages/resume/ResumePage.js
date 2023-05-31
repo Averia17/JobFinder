@@ -68,7 +68,7 @@ const ResumePage = () => {
         }
     };
 
-    const experience = Number(resume?.experience);
+    const experience = +resume?.experience;
 
     const formatViewsCountString = () => {
         let countOfViews = resume?.views?.length;
@@ -103,7 +103,7 @@ const ResumePage = () => {
                         <div className='resume__info'>
                             <h1>{resume.title}</h1>
                             <h4>Зарплатные ожидания: {resume?.salary}$</h4>
-                            <div>Опыт работы: {resume?.experience} {experience> 4 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
+                            <div>Опыт работы: {experience} {experience> 4 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
                             <div>Образование: {resume?.education}</div>
                             <div>{resume?.description}</div>
                         </div>
