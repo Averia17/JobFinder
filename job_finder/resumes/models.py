@@ -73,11 +73,6 @@ class Resume(BaseModel):
                     f"File is too large. It should not exceed {bytes_to_mib(FILE_MAX_SIZE)} MiB"
                 )
         # TODO: check related exists
-        # print(self.user.resume is not None)
-        # print(bool(self.user.resume))
-        # print(type(self.user.resume))
-        # print(getattr(self.user, "resume"))
-        # print(bool(getattr(self.user, "resume")))
         # if not self.pk and hasattr(self.user, "resume"):
         #     raise ValidationError("You already have resume")
 
