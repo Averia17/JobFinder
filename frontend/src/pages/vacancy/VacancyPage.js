@@ -147,35 +147,31 @@ const VacancyPage = () => {
     return (
         <div className='vacancyPage__container'>
             <div className='vacancyPage__header__container'>
-                <div className='header__title'>
-                    <h1>{title}</h1>
-                    <h2><Link className="company__link" to={`/companies/${company?.id}`}>{company?.title}</Link></h2>
-                    <div>
-                        <img src={company} alt=""/>
+                <div className='header__title__container'>
+                    <div className='header__title'>
+                        <h1>{title}</h1>
+                        <h2><Link className="company__link" to={`/companies/${company?.id}`}>{company?.title}</Link></h2>
+                        {!vacancyInfo.is_active && <b>
+                            <div style={{color: "red"}}>Вакансия находится в архиве</div>
+                        </b>}
+                        <p className='vacancy__salary'>{renderSalaryIfExists(vacancyInfo.min_salary, vacancyInfo.max_salary)}</p>
+                        <div>{vacancyInfo.employment_type}</div>
+                        <div>Требуемый опыт работы: {vacancyInfo.experience_option?.includes('0') ? 'не требуется'
+                                : vacancyInfo.experience_option}
+                        </div>
+                        <p>Создана {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
+                        {tokenInfo?.user_id && <div className='vacancyPage__header__buttons'>
+                            {!tokenInfo?.company && <Button onClick={respondToVacancy}
+                                                            disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Откликнуться</Button>}
+                            <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>
+                        </div>}
                     </div>
+                    {company?.image && <div className='company__logo'><img src={`http://localhost:8000/${company?.image}`} alt=""/></div>}
                 </div>
-                <div className='header__info'>
-
-                </div>
-
-                {!vacancyInfo.is_active && <b>
-                    <div style={{color: "red"}}>Вакансия находится в архиве</div>
-                </b>}
-                <div>{renderSalaryIfExists(vacancyInfo.min_salary, vacancyInfo.max_salary)}</div>
-                <p>Создана {vacancyInfo?.created && dayjs(vacancyInfo?.created).format("DD.MM.YYYY")}</p>
-                <div>{vacancyInfo.employment_type}</div>
-                <div>Обязательный опыт {vacancyInfo.experience_option}</div>
-                {tokenInfo?.user_id && <div className='vacancyPage__header__buttons'>
-                    {!tokenInfo?.company && <Button onClick={respondToVacancy}
-                                                    disabled={vacancyInfo?.is_responded || !vacancyInfo?.is_active}>Откликнуться</Button>}
-                        <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isVacancyFavorite}/>
-                </div>}
             </div>
             {vacancyInfo.description &&
                 <div>
-                    <hr/>
                     <div style={{whiteSpace: "pre-line"}}>{vacancyInfo.description}</div>
-                    <hr/>
                 </div>
             }
 

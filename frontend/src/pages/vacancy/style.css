@@ -3,14 +3,66 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 1vmax;
+}
+.vacancyPage__container > div {
+    width: 50vmax;
+    padding: 2vmax;
+
 }
 
 .vacancyPage__header__container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 1vmax;
+    padding: 2vmax;
+    -webkit-box-shadow: 0 0 10px #e6e6ff;
+    box-shadow: 0 0 10px #e6e6ff;
 }
+
+.header__title__container {
+    display: flex;
+    justify-content: space-between;
+    width: inherit;
+}
+
+.header__title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vmax;
+}
+
+.company__logo {
+    width: 5vmax;
+    height: 5vmax;
+}
+
+.company__logo img {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+}
+
 .company__link:hover {
     color: #2aabd2;
+}
+
+.header__info {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+}
+
+.vacancyPage__header__buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5vmax;
+    padding-top: 1.5vmax;
+}
+
+.vacancy__salary {
+    font-size: 1.2vmax;
+    padding: 0.5vmax 0;
 }
