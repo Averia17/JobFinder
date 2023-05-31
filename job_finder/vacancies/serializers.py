@@ -33,7 +33,7 @@ class VacancySerializer(ModelSerializer):
     def to_representation(self, instance):
         result = super().to_representation(instance)
         company = instance.company
-        result["company"] = {"id": company.id, "title": company.title, "image": company.image}
+        result["company"] = {"id": company.id, "title": company.title, "image": company.image.url}
         return result
 
 
