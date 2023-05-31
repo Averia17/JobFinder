@@ -1,0 +1,44 @@
+.vacancy__form {
+    display: flex;
+    flex-direction: column;
+    width: 30vmax;
+    font-size: 1vmax;
+}
+
+.vacancy__form form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: inherit;
+    gap: 1vmax;
+}
+
+.vacancy__form input, select {
+    width: 15vmax;
+    height: 1.5vmax;
+    font-size: 1vmax;
+}
+
+.vacancy__form form > div {
+    display: flex;
+    justify-content: space-between;
+    width: inherit;
+}
+
+.vacancy__description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1vmax;
+}
+
+.vacancy__form input[type="submit"] {
+    align-self: center;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #0000e6;
+    color: #f8f6f6;
+    font-size: 0.9vmax;
+    height: 2vmax;
+}

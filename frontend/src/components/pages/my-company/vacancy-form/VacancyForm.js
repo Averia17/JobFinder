@@ -7,6 +7,7 @@ import {useSearchParams} from "react-router-dom";
 import {TextField} from "@mui/material";
 import ErrorAlert from "../../../alerts/ErrorAlert";
 import {useNavigate} from "react-router";
+import './style.css'
 
 const VacancyForm = () => {
     const {accessToken} = useGetInfoFromToken();
@@ -60,8 +61,8 @@ const VacancyForm = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column"}}>
+        <div className='vacancy__form'>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor='title'>Название вакансии</label>
                     <Input name='title' defaultValue={defaultVacancy?.title} type='text' onChange={handleChange}
@@ -81,10 +82,6 @@ const VacancyForm = () => {
                     <label htmlFor='max_salary'>Максимальная зарплата</label>
                     <Input name='max_salary' defaultValue={defaultVacancy?.max_salary} type='number'
                            onChange={handleChange}/>
-                </div>
-                <div>
-                    <label htmlFor='description'>Описание</label>
-                    <TextField name='description' value={vacancy?.description} onChange={handleChange}/>
                 </div>
                 {!vacancyId && <div>
                     <p>Менеджер</p>
@@ -119,10 +116,13 @@ const VacancyForm = () => {
                         ))}
                     </select>
                 </div>
-                <input type='submit'/>
+                <div className='vacancy__description'>
+                    <label htmlFor='description'>Описание</label>
+                    <TextField multiline minRows={10} fullWidth name='description' value={vacancy?.description} onChange={handleChange}/>
+                </div>
+                <input className='vacancy__submit__button' type='submit'/>
             </form>
             {error && <ErrorAlert error={error} setError={setError}/>}
-
         </div>
     );
 };
