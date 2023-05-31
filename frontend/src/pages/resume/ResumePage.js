@@ -110,7 +110,9 @@ const ResumePage = () => {
                         <div className='resume__skills__container'>
                             <h2>Навыки</h2>
                             <div className='resume__skills'>
-                                {resume?.skills[0]?.split(',')?.map(skill => <SkillBlock skill={skill}/>)}
+                                {resume?.skills?.map(skill => (
+                                    skill.split(',').map(skill => <SkillBlock skill={skill}/>)
+                                ))}
                             </div>
                         </div>
                         <div className='resume__views__container'>
