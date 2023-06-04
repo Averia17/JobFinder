@@ -51,6 +51,7 @@ class Resume(BaseModel):
     class Meta:
         app_label = "resumes"
         verbose_name_plural = "Resumes"
+        ordering = ["-updated"]
 
     def __str__(self):
         return f"{self.pk}"

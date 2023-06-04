@@ -7,6 +7,9 @@ import {languages} from "./utils";
 import SkillBlock from "./SkillBlock";
 import {useNavigate} from "react-router";
 import ErrorAlert from "../alerts/ErrorAlert";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
+
 
 const ResumeForm = () => {
     const {accessToken} = useGetInfoFromToken();
@@ -27,17 +30,20 @@ const ResumeForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        let formData =  new FormData();
-        for ( let key in userInfo ) {
+        let formData = new FormData();
+        console.log(userInfo)
+        for (let key in userInfo) {
             formData.append(key, userInfo[key]);
         }
-        formData.append("skills", selectedSkills)
-        if(file)
+        if (selectedSkills.length)
+            formData.append("skills", selectedSkills)
+        if (file)
             formData.append("file", file)
-        if(image)
+        if (image)
             formData.append("image", image)
-        formData.append("langauges", JSON.stringify(selectedLanguages))
-
+        if (Object.keys(selectedLanguages).length)
+            formData.append("languages", JSON.stringify(selectedLanguages))
+        console.log(formData)
         axios.post(`/api/resumes/`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -47,9 +53,9 @@ const ResumeForm = () => {
             .catch(({response}) => {
                 const error = response.data
                 let message = "Resume could not be saved";
-                if(typeof error === 'object'  && "user" in error)
+                if (typeof error === 'object' && "user" in error)
                     message = error["user"];
-                if(Array.isArray(error))
+                if (Array.isArray(error))
                     message = error[0]
                 setResumeError(message)
             })
@@ -66,7 +72,13 @@ const ResumeForm = () => {
             setFile(event.target.files[0]);
         }
     };
-     const handleAvatarChange = event => {
+    const handleChangeDescription = text => {
+        setUserInfo({
+            ...userInfo,
+            description: text,
+        })
+    };
+    const handleAvatarChange = event => {
         if (event.target.files) {
             setImage(event.target.files[0]);
         }
@@ -136,10 +148,7 @@ const ResumeForm = () => {
                             <label htmlFor='experience'>Опыт работы</label>
                             <Input name='experience' type='number' step='0.1' onChange={handleChange}/>
                         </div>
-                        <div>
-                            <label htmlFor='description'>Описание</label>
-                            <Input name='description' type='text' onChange={handleChange}/>
-                        </div>
+
                         <div>
                             <label htmlFor='education'>Образование</label>
                             <Input name='education' type='text' onChange={handleChange}/>
@@ -181,8 +190,8 @@ const ResumeForm = () => {
                             </div>
 
                         </div>
-                         <div>
-                             <div>Загрузить аватар</div>
+                        <div>
+                            <div>Загрузить аватар</div>
                             <input type="file" onChange={handleAvatarChange} content="Upload Avatar"/>
                         </div>
                         <div>
@@ -190,6 +199,12 @@ const ResumeForm = () => {
                             <input type="file" onChange={handleFileChange} content="Upload CV"/>
                         </div>
                     </div>
+                </div>
+                <div className="resume__description">
+                    <SimpleMDE
+                        style={{"padding": "5px 10px", "font-size": "17px"}}
+                    value={userInfo?.description}
+                    onChange={(text) => handleChangeDescription(text)}/>
                 </div>
                 <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                     <input className="create-resume__button" type='submit'/>

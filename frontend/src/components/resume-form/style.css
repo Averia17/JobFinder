@@ -29,7 +29,16 @@
 .resume__form__container label {
     margin-bottom: 4px;
 }
-
+.resume__description {
+    margin: 0 20%;
+}
+.editor-preview {
+    padding: 5px !important;
+    background: white !important;
+}
+.editor-preview ol{
+    padding-left: 15px !important;
+}
 .create-resume__button {
     text-align: center;
     width: 130px;

@@ -21,4 +21,5 @@ class VacancyFilter(filters.FilterSet):
             "employment_type",
             "is_active",
             "company",
+            "city"
         ]

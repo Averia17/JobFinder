@@ -10,6 +10,7 @@ import {pdfjs} from 'react-pdf';
 import Button from "../../components/buttons/Button";
 import FavoriteButton from "../../components/buttons/FavoriteButton";
 import SkillBlock from "../../components/resume-form/SkillBlock";
+import marked from "marked";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -72,7 +73,7 @@ const ResumePage = () => {
 
     const formatViewsCountString = () => {
         let countOfViews = resume?.views?.length;
-        const lastNumberOfViewsCount = +countOfViews.toString().charAt(countOfViews.length - 1);
+        const lastNumberOfViewsCount = +countOfViews?.toString().charAt(countOfViews.length - 1);
         return lastNumberOfViewsCount >= 2 && lastNumberOfViewsCount <= 4 && 'a';
     }
 
@@ -103,9 +104,13 @@ const ResumePage = () => {
                         <div className='resume__info'>
                             <h1>{resume.title}</h1>
                             <h4>Зарплатные ожидания: {resume?.salary}$</h4>
-                            <div>Опыт работы: {experience} {experience> 4 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
-                            <div>Образование: {resume?.education}</div>
-                            <div>{resume?.description}</div>
+                            <div>Опыт работы: {experience} {experience> 4 || experience === 0 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
+                            {resume?.education && <div>Образование: {resume?.education}</div>}
+                            {resume?.description && <div className="resume__parsed_description">
+                                О себе:
+                                <div className="editor-preview" dangerouslySetInnerHTML={{__html: marked.parse(resume?.description)}}></div>
+                            </div>
+                            }
                         </div>
                         <div className='resume__skills__container'>
                             <h2>Навыки</h2>
