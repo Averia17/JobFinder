@@ -1,3 +1,5 @@
+import itertools
+
 from django.db.models import Exists, OuterRef
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
@@ -77,4 +79,5 @@ class ResumeViewSet(ModelViewSet):
 
     @action(detail=False, methods=["GET"])
     def filters(self, request, *args, **kwargs):
-        return Response({"city": set(Resume.objects.values_list("city", flat=True))})
+        skills = set(itertools.chain(*Resume.objects.values_list("skills", flat=True)))
+        return Response({"city": set(Resume.objects.values_list("city", flat=True)), "skills": skills})

@@ -31,19 +31,16 @@ const ResumeForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         let formData = new FormData();
-        console.log(userInfo)
-        for (let key in userInfo) {
+        for (let key in userInfo)
             formData.append(key, userInfo[key]);
-        }
         if (selectedSkills.length)
-            formData.append("skills", selectedSkills)
+            formData.append("skills", selectedSkills.join(','))
         if (file)
             formData.append("file", file)
         if (image)
             formData.append("image", image)
         if (Object.keys(selectedLanguages).length)
             formData.append("languages", JSON.stringify(selectedLanguages))
-        console.log(formData)
         axios.post(`/api/resumes/`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
