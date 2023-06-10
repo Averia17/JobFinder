@@ -1,3 +1,5 @@
+import itertools
+
 from django.db.models import Exists, OuterRef
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
@@ -18,7 +20,7 @@ from views.serializers import ResumeViewSerializer
 class ResumeViewSet(ModelViewSet):
     queryset = Resume.objects.all()
     serializer_class = ResumeDetailSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     search_fields = ["title", "description"]
     filter_backends = (DjangoFilterBackend, SearchFilter)
     filterset_class = ResumeFilter
@@ -47,11 +49,11 @@ class ResumeViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         queryset = super().get_queryset()
-        if user.is_manager or user.is_director:
-            queryset = queryset.annotate(is_favorite=Exists(
-                    user.favorite_resumes.filter(resume_id=OuterRef("id"))
-                ),
-            )
+        # if user.is_manager or user.is_director:
+        #     queryset = queryset.annotate(is_favorite=Exists(
+        #             user.favorite_resumes.filter(resume_id=OuterRef("id"))
+        #         ),
+        #     )
         return queryset
 
     def retrieve(self, request, pk=None, *args, **kwargs):
@@ -77,4 +79,5 @@ class ResumeViewSet(ModelViewSet):
 
     @action(detail=False, methods=["GET"])
     def filters(self, request, *args, **kwargs):
-        return Response({"city": set(Resume.objects.values_list("city", flat=True))})
+        skills = set(itertools.chain(*Resume.objects.values_list("skills", flat=True)))
+        return Response({"city": set(Resume.objects.values_list("city", flat=True)), "skills": skills})

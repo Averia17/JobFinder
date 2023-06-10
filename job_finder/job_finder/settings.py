@@ -168,43 +168,9 @@ EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "console": {
-            "format": "%(levelname)-6s %(name)-12s %(asctime)s %(message)s",
-        },
-        "file": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"},
-    },
-    "handlers": {
-        "console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "console",
-        },
-        "file": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "formatter": "file",
-            "filename": "debug.log",
-        },
-        "celery": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "formatter": "console",
-            "filename": "celery.log",
-        },
-    },
-    "loggers": {
-        "": {"level": "DEBUG", "handlers": ["console", "file"]},
-        "celery": {
-            "level": "DEBUG",
-            "handlers": ["celery", "console"],
-            "propagate": False,
-        },
-    },
-}
+GOOGLE_ID_TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo"
+GOOGLE_OAUTH2_CLIENT_ID = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
+
 
 if DEBUG:
     import socket

@@ -80,9 +80,11 @@ const LoginPage = () => {
             };
             validateTokenAndObtainSession({data, idToken})
                 .then(response => {
-                    localStorage.setItem('access_token', response.data.access);
-                    localStorage.setItem('refresh_token', response.data.refresh);
-                    localStorage.setItem('user', response.data.id);
+                    localStorage.setItem('access_token', response.data.access_token);
+                    localStorage.setItem('refresh_token', response.data.refresh_token);
+                }).then(() => {
+                    navigate("/");
+                    window.location.reload();
                 })
                 .catch(err => console.log(err));
         }, []

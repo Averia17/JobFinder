@@ -9,7 +9,7 @@ from favorites.views import FavoriteVacanciesViewSet, FavoriteResumesViewSet
 from responses.views import VacancyResponseViewSet
 from . import settings
 from resumes.views import ResumeViewSet
-from users.views import UserViewSet, CustomTokenObtainPairView
+from users.views import UserViewSet, CustomTokenObtainPairView, GoogleLoginView
 from vacancies.views import VacancyViewSet
 
 router = SimpleRouter()
@@ -27,6 +27,7 @@ urlpatterns = [
     path("login/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("refresh-token/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token-verify/", TokenVerifyView.as_view(), name="token-verify"),
+    path("login/google/", GoogleLoginView.as_view(), name="login-with-google"),
     path("api/", include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,5 +1,5 @@
 from django.db.models import Count
-from rest_framework.fields import CurrentUserDefault, BooleanField
+from rest_framework.fields import CurrentUserDefault, BooleanField, CharField, ListField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
@@ -28,6 +28,7 @@ class ResumeDetailSerializer(ResumeSerializer):
     user = PrimaryKeyRelatedField(
         queryset=User.objects.all(), default=CurrentUserDefault(), write_only=True
     )
+    # skills = ListField(child=CharField(), required=False)
 
     class Meta(ResumeSerializer.Meta):
         fields = ResumeSerializer.Meta.fields + (
@@ -39,6 +40,13 @@ class ResumeDetailSerializer(ResumeSerializer):
             "file",
             "image"
         )
+
+    def create(self, validated_data):
+        skills = validated_data.pop("skills", [])
+        # form data return list with one element
+        if isinstance(skills, list) and len(skills) == 1:
+            validated_data["skills"] = skills[0].strip(',').split(',')
+        return super().create(validated_data)
 
     def to_representation(self, instance):
         res = super().to_representation(instance)
