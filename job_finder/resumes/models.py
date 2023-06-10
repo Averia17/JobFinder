@@ -45,6 +45,7 @@ class Resume(BaseModel):
         _("CV"), upload_to=cv_generate_upload_path, null=True, blank=True
     )
     image = models.ImageField(_("Avatar"), upload_to=avatar_generate_upload_path, null=True, blank=True)
+    is_active = models.BooleanField(_("Is active"), default=True)
 
     objects = FileManager.as_manager()
 

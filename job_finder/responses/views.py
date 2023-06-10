@@ -11,6 +11,22 @@ from responses.serializers import VacancyResponseSerializer
 from responses.services import VacancyResponseService
 
 
+def database_debug(func):
+    def inner_func(*args, **kwargs):
+        from django.db import connection
+        from django.db import reset_queries
+        reset_queries()
+        res = func(*args, *kwargs)
+        query_info = connection.queries
+        print('function_name: {}'.format(func.__name__))
+        print('query_count: {}'.format(len(query_info)))
+        # queries = ['{}\n'.format(query['sql']) for query in query_info]
+        # print('queries: \n{}'.format(''.join(queries)))
+        return res
+
+    return inner_func
+
+
 class VacancyResponseViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -36,17 +52,12 @@ class VacancyResponseViewSet(
         ]
 
     def get_queryset(self):
-        # TODO: try to do more elegant
-        queryset = super().get_queryset()
+        filter_params = {"user": self.request.user}
+        if self.request.user.is_manager:
+            filter_params = {"vacancy__in": self.request.user.companymanager.vacancies.all()}
         if self.request.user.is_director:
-            return queryset.filter(
-                vacancy__in=self.request.user.company.vacancies.all()
-            )
-        elif self.request.user.is_manager:
-            return queryset.filter(
-                vacancy__in=self.request.user.companymanager.vacancies.all()
-            )
-        return queryset.filter(user=self.request.user)
+            filter_params = {"vacancy__in": self.request.user.company.vacancies.all()}
+        return super().get_queryset().filter(**filter_params)
 
     @action(detail=True, methods=["GET", "POST"], serializer_class=MessageSerializer)
     def messages(self, request, pk=None):
@@ -67,8 +78,8 @@ class VacancyResponseViewSet(
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         if (
-            request.user != instance.user
-            and instance.status == VacancyResponse.not_viewed
+                request.user != instance.user
+                and instance.status == VacancyResponse.not_viewed
         ):
             instance.status = VacancyResponse.viewed
             instance.save()

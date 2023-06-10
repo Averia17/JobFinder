@@ -14,5 +14,4 @@ class ResumeFilter(filters.FilterSet):
 
     class Meta:
         model = Resume
-        # TODO: add more fields
-        fields = ["city", "experience", "salary", "skills"]
+        fields = ["city", "experience", "salary", "skills", "position"]
