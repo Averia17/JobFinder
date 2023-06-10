@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.2",
     "dayjs": "^1.11.7",
+    "easymde": "^2.16.0",
     "gapi-script": "^1.2.0",
     "jwt-decode": "^3.1.2",
     "pdfjs-dist": "^3.5.141",

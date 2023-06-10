@@ -17,13 +17,15 @@ const Resume = ({id, title, city, user, experience, salary, is_favorite}) => {
 
     return (
         <div className="resume__container">
-            {tokenInfo?.company && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
             <Link to={{pathname: `/resumes/${id}`}}>
-                <h2>{title}</h2>
+                <div className='resume__header__container'>
+                    <h2>{title}</h2>
+                    {tokenInfo?.company && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
+                </div>
                 <p>{user?.name} {user?.email} </p>
                 <p className="resume__field">Location: {city}</p>
                 <p className="resume__field">Work experience: {experience} years</p>
-                <p className="resume__field">Expected salary : {salary}$</p>
+                {salary && <p className="resume__field">Expected salary : {salary}$</p>}
             </Link>
         </div>
     );

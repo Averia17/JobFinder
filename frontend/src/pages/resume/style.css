@@ -5,7 +5,7 @@
     padding: 5px 0;
     border-radius: 5px;
 }
-.resume__container {
+.resumePage__container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,22 +13,22 @@
     margin: 1vmax 15vmax;
 }
 
-.resume__container h1, h2 {
+.resumePage__container h1, h2 {
     color: #0000e6;
 }
 
-.resume__container div, .resume__container p {
+.resumePage__container div, .resume__container p {
     font-size: 1vmax;
 }
 
-.resume__container > div {
+.resumePage__container > div {
     padding: 1vmax 0;
     border-bottom: 1px solid black;
     width: 50vmax;
     gap: 0.5vmax;
 }
 
-.resume__container > div:last-child {
+.resumePage__container > div:last-child {
     border: none;
 }
 

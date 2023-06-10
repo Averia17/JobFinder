@@ -1,3 +1,20 @@
+.resume__container {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-shadow: 0 0 10px #e6e6ff;
+    box-shadow: 0 0 10px #e6e6ff;
+    flex: 1 1 auto;
+    width: 35vmax;
+    padding: 1vmax 2vmax;
+}
+
+.resume__header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1vmax;
+    height: 3vmax;
+}
 .resume__field {
     font-size: 1.05em;
 }

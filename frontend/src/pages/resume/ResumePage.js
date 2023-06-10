@@ -78,7 +78,7 @@ const ResumePage = () => {
     }
 
     return (
-        <div className="resume__container">
+        <div className="resumePage__container">
             {!loading ?
                 resume ?
                     <>
