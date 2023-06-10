@@ -4,14 +4,14 @@ import Input from "../../components/inputs/Input";
 import './style.css'
 
 
-const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
+const ResumesFilters = ({ filters, setFilters, setSearch, handleSearch }) => {
     const [experienceOptions, setExperienceOptions] = useState([]);
     const [employmentTypes, setEmploymentTypes] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/vacancies/filters')
+        axios.get('/api/resumes/filters')
             .then(({data}) => {
                 setExperienceOptions(data.experience_option);
                 setEmploymentTypes(data.employment_type);
@@ -28,9 +28,9 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
     }
 
     return (
-        <form onSubmit={handleSearch} style={{display: "flex", justifyContent: "center", flexDirection: "column"}}>
+        <form onSubmit={handleSearch} className='filters__container'>
             <div className="search__container">
-                <input className="search__input" type="search" placeholder="поиск"
+                <input className="search__input" type="search" placeholder="Поиск"
                        onChange={e => setSearch(e.target.value)}/>
             </div>
             <div className="filter__container">
@@ -78,4 +78,4 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
     );
 };
 
-export default Filters;
+export default ResumesFilters;

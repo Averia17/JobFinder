@@ -3,7 +3,7 @@ import axios from "axios";
 import Vacancy from "../../containers/vacancy/Vacancy";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
-import Filters from "../../containers/filters/Filters";
+import VacanciesFilters from "../../containers/filters/VacanciesFilters";
 import {useSearchParams} from "react-router-dom";
 
 const VacanciesPage = () => {
@@ -54,7 +54,7 @@ const VacanciesPage = () => {
     return (
         <div className='vacancies-page-container'>
             <div className='filters'>
-                <Filters filters={filters} setFilters={setFilters} setSearch={setSearch} handleSearch={handleSearch}/>
+                <VacanciesFilters filters={filters} setFilters={setFilters} setSearch={setSearch} handleSearch={handleSearch}/>
             </div>
             <div className='vacancies-container'>
                 { !loading ?
