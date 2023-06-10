@@ -81,5 +81,6 @@ class VacancyViewSet(ModelViewSet):
                 "company": Company.objects.exclude(vacancies=None).values(
                     "id", "title"
                 ),
+                "city": set(Vacancy.objects.values_list("city", flat=True))
             }
         )

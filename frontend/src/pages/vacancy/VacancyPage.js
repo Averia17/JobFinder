@@ -16,6 +16,7 @@ import ChatModal from "../../containers/chat-modal/ChatModal";
 import dayjs from "dayjs";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
 import Button from "../../components/buttons/Button";
+import marked from "marked";
 
 const VacancyPage = () => {
     const {id} = useParams();
@@ -171,7 +172,9 @@ const VacancyPage = () => {
             </div>
             {vacancyInfo.description &&
                 <div>
-                    <div style={{whiteSpace: "pre-line"}}>{vacancyInfo.description}</div>
+                    <div className="editor-preview" dangerouslySetInnerHTML={{__html: marked.parse(vacancyInfo?.description)}}></div>
+
+                    {/*<div style={{whiteSpace: "pre-line"}}>{vacancyInfo.description}</div>*/}
                 </div>
             }
 

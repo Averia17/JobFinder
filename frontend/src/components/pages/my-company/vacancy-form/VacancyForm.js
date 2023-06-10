@@ -8,6 +8,7 @@ import {TextField} from "@mui/material";
 import ErrorAlert from "../../../alerts/ErrorAlert";
 import {useNavigate} from "react-router";
 import './style.css'
+import SimpleMDE from "react-simplemde-editor";
 
 const VacancyForm = () => {
     const {accessToken} = useGetInfoFromToken();
@@ -59,7 +60,12 @@ const VacancyForm = () => {
             }).catch(()=>{setError("Error creating vacancy")})
         }
     }
-
+    const handleChangeDescription = text => {
+        setVacancy({
+            ...vacancy,
+            description: text,
+        })
+    };
     return (
         <div className='vacancy__form'>
             <form onSubmit={handleSubmit}>
@@ -118,7 +124,13 @@ const VacancyForm = () => {
                 </div>
                 <div className='vacancy__description'>
                     <label htmlFor='description'>Описание</label>
-                    <TextField multiline minRows={10} fullWidth name='description' value={vacancy?.description} onChange={handleChange}/>
+                    <div >
+                        <SimpleMDE
+                            style={{"padding": "5px 10px", "font-size": "17px"}}
+                            value={vacancy?.description}
+                            onChange={(text) => handleChangeDescription(text)}/>
+                    </div>
+                    {/*<TextField multiline minRows={10} fullWidth name='description' value={vacancy?.description} onChange={handleChange}/>*/}
                 </div>
                 <input className='vacancy__submit__button' type='submit'/>
             </form>

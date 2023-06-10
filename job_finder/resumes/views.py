@@ -74,3 +74,7 @@ class ResumeViewSet(ModelViewSet):
             )
         )
         return super().list(request, *args, **kwargs)
+
+    @action(detail=False, methods=["GET"])
+    def filters(self, request, *args, **kwargs):
+        return Response({"city": set(Resume.objects.values_list("city", flat=True))})

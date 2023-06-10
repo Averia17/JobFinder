@@ -31,6 +31,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1vmax;
+    text-align: left;
 }
 
 .vacancy__form input[type="submit"] {

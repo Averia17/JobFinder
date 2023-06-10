@@ -8,6 +8,7 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
     const [experienceOptions, setExperienceOptions] = useState([]);
     const [employmentTypes, setEmploymentTypes] = useState([]);
     const [companies, setCompanies] = useState([]);
+    const [cities, setCities] = useState([]);
 
     useEffect(() => {
         axios.get('/api/vacancies/filters')
@@ -15,6 +16,7 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
                 setExperienceOptions(data.experience_option);
                 setEmploymentTypes(data.employment_type);
                 setCompanies(data.company);
+                setCities(data.city);
             })
     }, [])
 
@@ -58,7 +60,15 @@ const Filters = ({filters, setFilters, setSearch, handleSearch}) => {
                     ))}
                 </select>
             </div>
-
+            <div className="filter__container">
+                <label className="filter__label" htmlFor='city'>Город</label>
+                <select className="filter__input" name='city' onChange={handleChangeFilters}>
+                    <option></option>
+                    {cities.map(city => (
+                        <option value={city}>{city}</option>
+                    ))}
+                </select>
+            </div>
             <div className="filter__container">
                 <label className="filter__label" htmlFor='salary'>Ожидаемая зарплата, $</label>
                 <Input className="filter__input" name='salary' type='number' step='0.1' onChange={handleChangeFilters}/>

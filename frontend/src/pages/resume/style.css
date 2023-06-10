@@ -17,7 +17,7 @@
     color: #0000e6;
 }
 
-.resume__container div, p {
+.resume__container div, .resume__container p {
     font-size: 1vmax;
 }
 
