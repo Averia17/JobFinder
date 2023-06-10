@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
-import RegisterForm from "../components/register-form/RegisterForm";
-import ErrorAlert from "../components/alerts/ErrorAlert";
+import RegisterForm from "../../components/register-form/RegisterForm";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
+import './style.css'
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -79,7 +80,7 @@ const RegisterPage = () => {
         :
         <div className="authorization-container-wrapper">
             <div className="authorization-container">
-                <p className="form-header">Sign Up</p>
+                <p className="form-header">Регистрация</p>
                 <RegisterForm className='authorization-form'
                               userData={userData}
                               setUserData={setUserData}
@@ -88,7 +89,7 @@ const RegisterPage = () => {
                               onSubmit={handleSubmit}>
                 </RegisterForm>
                 <p className="form-footer">
-                    Already have an account? <Link to={{pathname: '/login'}}>Log in</Link>
+                    У Вас уже есть аккаунт? <Link to={{pathname: '/login'}}>Войти</Link>
                 </p>
             </div>
             {signupError && <ErrorAlert error={signupError} setError={setSignupError}/>}

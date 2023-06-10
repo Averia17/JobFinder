@@ -13,7 +13,7 @@ const CompanyForm = ({companyData, setCompanyData}) => {
 
     return (
         <>
-            <Input type='text' name='title' required placeholder='Company title' onChange={handleChangeData}/>
+            <Input type='text' name='title' required placeholder='Название компании' onChange={handleChangeData}/>
         </>
     );
 };

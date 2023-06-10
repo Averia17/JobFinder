@@ -1,0 +1,45 @@
+.authorization-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1vmax;
+}
+
+.authorization-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5vmax;
+    gap: 0.7vmax;
+    padding: 3vmax 5vmax;
+    -webkit-box-shadow: 0 0 10px #e6e6ff;
+    box-shadow: 0 0 10px #e6e6ff;
+    width: 15vmax;
+}
+
+.authorization-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7vmax;
+}
+
+.authorization-container form .submit-button {
+    padding: 0.5vmax;
+    color: #fff;
+    border: none;
+    background: #0000e6;
+    font-size: 0.8vmax;
+}
+
+.form-footer {
+    white-space: pre-wrap;
+}
+
+.form-header {
+    font-size: 1.2vmax;
+}
+
+.director__checkbox__container {
+    display: flex;
+    justify-content: space-between;
+}
