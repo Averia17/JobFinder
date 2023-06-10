@@ -20,7 +20,7 @@ from views.serializers import ResumeViewSerializer
 class ResumeViewSet(ModelViewSet):
     queryset = Resume.objects.all()
     serializer_class = ResumeDetailSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     search_fields = ["title", "description"]
     filter_backends = (DjangoFilterBackend, SearchFilter)
     filterset_class = ResumeFilter
@@ -49,11 +49,11 @@ class ResumeViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         queryset = super().get_queryset()
-        # if user.is_manager or user.is_director:
-        #     queryset = queryset.annotate(is_favorite=Exists(
-        #             user.favorite_resumes.filter(resume_id=OuterRef("id"))
-        #         ),
-        #     )
+        if user.is_manager or user.is_director:
+            queryset = queryset.annotate(is_favorite=Exists(
+                    user.favorite_resumes.filter(resume_id=OuterRef("id"))
+                ),
+            )
         return queryset
 
     def retrieve(self, request, pk=None, *args, **kwargs):
