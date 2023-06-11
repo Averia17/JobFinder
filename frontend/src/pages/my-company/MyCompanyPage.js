@@ -82,7 +82,12 @@ const MyCompanyPage = () => {
     return (
         <div key={id} className='myCompany__container'>
             {companyInfo?.image && <div className="logo__container"><img src={companyInfo?.image} alt=""/></div>}
-            {tokenInfo?.is_director && <div><input type="file" onChange={handleLogoChange} content="Update Logo"/></div>}
+            {tokenInfo?.is_director && <div className="upload-logo__container">
+                <label htmlFor="formId" className="upload-logo__button">
+                     <input onChange={handleLogoChange}  name="" type="file" id="formId" hidden />
+                      Загрузить аватар компании
+                 </label>
+            </div>}
             <h1>{title}</h1>
             {!is_active && <p className='myCompany__notActive'>Ваша компания не активна</p>}
             <Navbar isDirector={tokenInfo?.is_director} setCurrentTab={setCurrentTab}/>

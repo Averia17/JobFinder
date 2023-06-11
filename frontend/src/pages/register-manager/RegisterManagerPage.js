@@ -24,7 +24,7 @@ const RegisterManagerPage = () => {
         event.preventDefault();
         const {password, confirmPassword} = managerPasswords;
         if (password !== confirmPassword) {
-            setSignupError('Your passwords are not equal');
+            setSignupError('Пароли не совпадают');
             return;
         }
         if (token && email) {

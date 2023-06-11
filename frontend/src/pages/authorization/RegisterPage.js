@@ -23,7 +23,7 @@ const RegisterPage = () => {
         e.preventDefault();
         let { email, password, confirmPassword } = userData;
         if (password !== confirmPassword) {
-            setSignupError('Your passwords are not equal');
+            setSignupError('Пароли не совпадают');
             return;
         }
         if (!userData.isEmployee) {

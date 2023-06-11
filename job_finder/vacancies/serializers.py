@@ -90,6 +90,6 @@ class VacancyDetailSerializer(VacancySerializer):
                     instance.responses.all(), many=True, context=self.context
                 ).data
                 res["views"] = instance.views.values(
-                    "user__id", "user__name", "user__email"
+                    "user__id", "user__name", "user__email", "created__date"
                 ).annotate(count=Count("user__id"))
         return res

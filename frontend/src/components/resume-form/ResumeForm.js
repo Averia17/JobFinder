@@ -196,14 +196,22 @@ const ResumeForm = () => {
                             </div>
 
                         </div>
-                        <div>
-                            <div>Загрузить аватар</div>
-                            <input type="file" onChange={handleAvatarChange} content="Upload Avatar"/>
+                        <div className="upload-logo__container">
+                            {image && <div className="logo__container"><img src={URL.createObjectURL(image)} alt=""/></div>}
+                            <label htmlFor="logoId" className="upload-logo__button">
+                                 <input onChange={handleAvatarChange}  name="" type="file" id="logoId" hidden />
+                                  Загрузить аватар
+                             </label>
                         </div>
-                        <div>
+                        <div className="upload-logo__container">
                             <div>Можете загрузить своё резюме</div>
-                            <input type="file" onChange={handleFileChange} content="Upload CV"/>
+                            <label htmlFor="cvID" className="upload-logo__button">
+                                 <input onChange={handleFileChange}  name="" type="file" id="cvID" hidden />
+                                  Загрузить резюме
+                             </label>
+                            {file && <div>Загружен файл {file.name}</div>}
                         </div>
+
                     </div>
                 </div>
                 <div className="resume__description">

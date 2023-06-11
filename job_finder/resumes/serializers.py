@@ -53,6 +53,6 @@ class ResumeDetailSerializer(ResumeSerializer):
         user = self.context["request"].user
         if user.is_authenticated and instance.user == user:
             res["views"] = instance.views.values(
-                "company__id", "company__title"
+                "company__id", "company__title", "created__date"
             ).annotate(count=Count("company__id"))
         return res
