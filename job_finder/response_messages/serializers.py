@@ -23,7 +23,7 @@ class MessageSerializer(ModelSerializer):
 
     def validate(self, attrs):
         if attrs["vacancy_response"].status == VacancyResponse.reject:
-            raise ValidationError({"error": "You cannot send messages after response reject"})
+            raise ValidationError({"error": "Вы не можете отправлять сообщения после отказа"})
         return attrs
 
     def to_representation(self, instance):

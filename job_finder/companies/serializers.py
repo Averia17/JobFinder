@@ -84,5 +84,5 @@ class PasswordSerializer(serializers.Serializer):
     def validate(self, data):
         hash_str = data["email"] + SECRET_KEY
         if data["token"] != hashlib.sha256(hash_str.encode()).hexdigest():
-            raise serializers.ValidationError({"token": "token is not valid"})
+            raise serializers.ValidationError({"token": "невалидный token"})
         return data

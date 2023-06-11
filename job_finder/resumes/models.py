@@ -68,11 +68,11 @@ class Resume(BaseModel):
             file_type = guessed_file_type or ""
             if file_type != "application/pdf":
                 raise ValidationError(
-                    f"File type '{file_type}' is incorrect (only pdf accepted)"
+                    f"Некорректный тип файла '{file_type}' (доступен только pdf)"
                 )
             if self.file.size > FILE_MAX_SIZE:
                 raise ValidationError(
-                    f"File is too large. It should not exceed {bytes_to_mib(FILE_MAX_SIZE)} MiB"
+                    f"Файл слишком большой, максимальный размер {bytes_to_mib(FILE_MAX_SIZE)} MB"
                 )
         # TODO: check related exists
         # if not self.pk and hasattr(self.user, "resume"):
