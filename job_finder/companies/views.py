@@ -24,7 +24,7 @@ from companies.serializers import (
     CompanySerializer,
     PasswordSerializer,
     CompanyManagerCreateSerializer,
-    CompanyManagerSerializer, CompanyPrivateSerializer,
+    CompanyManagerSerializer, CompanyDetailSerializer,
 )
 from job_finder.settings import BASE_FRONTEND_URL, SECRET_KEY
 from users.models import User
@@ -54,7 +54,7 @@ class CompanyViewSet(
 
     def get_serializer_class(self):
         if self.action in ["create", "update", "partial_update", "my"]:
-            self.serializer_class = CompanyPrivateSerializer
+            self.serializer_class = CompanyDetailSerializer
         return self.serializer_class
 
     @transaction.atomic

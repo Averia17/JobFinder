@@ -20,7 +20,7 @@ class CompanySerializer(ModelSerializer):
         exclude = ("director", )
 
 
-class CompanyPrivateSerializer(ModelSerializer):
+class CompanyDetailSerializer(ModelSerializer):
     vacancies = SerializerMethodField()
 
     class Meta:
@@ -30,9 +30,8 @@ class CompanyPrivateSerializer(ModelSerializer):
     def get_vacancies(self, obj):
         vacancies = obj.vacancies
         user = self.context["request"].user
-        if user and user.is_manager:
+        if user and user.is_authenticated and user.is_manager:
             vacancies = user.companymanager.vacancies
-        print(vacancies)
         vacancies = vacancies.annotate(
             count_new_responses=Count(
                 "responses", filter=Q(responses__status=VacancyResponse.not_viewed)
