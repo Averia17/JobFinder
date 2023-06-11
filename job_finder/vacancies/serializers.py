@@ -89,7 +89,12 @@ class VacancyDetailSerializer(VacancySerializer):
                 res["responses"] = VacancyResponseSerializer(
                     instance.responses.all(), many=True, context=self.context
                 ).data
+                # vacancy_views = instance.views.order_by("-created__date")
+                # chart_data = vacancy_views.values("created__date").annotate(count=Count("created__date"))
+                # results = vacancy_views.values(
+                #     "user__id", "user__name", "user__email", "created__date").annotate(count=Count("user__id"))
+                # res.update({"views": {"chart_data": chart_data, "results": results}})
                 res["views"] = instance.views.values(
-                    "user__id", "user__name", "user__email", "created__date"
+                    "user__id", "user__name", "user__email" # created__date
                 ).annotate(count=Count("user__id"))
         return res

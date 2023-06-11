@@ -33,6 +33,7 @@ const ResumesFilters = ({ changeSkillModalVisibility, handleChangeFilters, handl
                 <Input className="filter__input" name='experience'type="text" placeholder="Опыт работы"
                        onChange={handleChangeFilters}/>
             </div>
+            {skills.length > 0 &&
             <div className="filter__container">
                 <label className="filter__label" htmlFor='skills'>Навыки</label>
                 {skills?.slice(0, 5)?.map(skill => (
@@ -41,8 +42,9 @@ const ResumesFilters = ({ changeSkillModalVisibility, handleChangeFilters, handl
                         <label htmlFor='skills'>{skill}</label>
                     </div>
                 ))}
-                <p className='filter__showMore' onClick={changeSkillModalVisibility}>Показать больше</p>
+                {skills.length > 5 && <p className='filter__showMore' onClick={changeSkillModalVisibility}>Показать больше</p>}
             </div>
+            }
             <div className="filter__container">
                 <label className="filter__label" htmlFor='city'>Город</label>
                 <select className="filter__input" name='city' onChange={handleChangeFilters}>

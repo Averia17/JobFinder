@@ -102,7 +102,12 @@ const ResumePage = () => {
                             <div className="resume__logo">
                                 <div className="avatar__container"><img src={resume?.image || logo} alt=""/></div>
                                 {tokenInfo?.user_id === resume?.user?.id &&
-                                    <div><input type="file" onChange={handleAvatarChange} content="Update Avatar"/></div>}
+                                  <div className="upload-logo__container">
+                                    <label htmlFor="resumeLogoId" className="upload-logo__button">
+                                         <input onChange={handleAvatarChange}  name="" type="file" id="resumeLogoId" hidden />
+                                          Загрузить аватар
+                                     </label>
+                                </div>}
                             </div>
                         </div>
                         <div className='resume__info'>

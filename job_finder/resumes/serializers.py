@@ -52,7 +52,12 @@ class ResumeDetailSerializer(ResumeSerializer):
         res = super().to_representation(instance)
         user = self.context["request"].user
         if user.is_authenticated and instance.user == user:
+            # resume_views = instance.views.order_by("-created__date")
+            # chart_data = resume_views.values("created__date").annotate(count=Count("created__date"))
+            # results = resume_views.values(
+            #     "company__id", "company__title", "created__date").annotate(count=Count("company__id"))
+            # res.update({"views": {"chart_data": chart_data, "results": results}})
             res["views"] = instance.views.values(
-                "company__id", "company__title", "created__date"
+                "company__id", "company__title"
             ).annotate(count=Count("company__id"))
         return res
