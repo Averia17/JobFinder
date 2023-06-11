@@ -50,7 +50,7 @@ class GoogleLoginView(APIView):
     def google_validate_id_token(id_token: str) -> bool:
         response = requests.get(GOOGLE_ID_TOKEN_INFO_URL, params={"id_token": id_token})
         if not response.ok:
-            raise ValidationError("id_token is invalid.")
+            raise ValidationError("id_token неверный.")
         audience = response.json()["aud"]
         if audience != GOOGLE_OAUTH2_CLIENT_ID:
             raise ValidationError("Invalid audience.")

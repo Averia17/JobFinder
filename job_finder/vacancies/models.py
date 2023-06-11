@@ -5,6 +5,8 @@ from core.constants import EXPERIENCE_OPTIONS, EMPLOYMENT_TYPE
 from core.models import BaseModel
 from django.utils.translation import gettext_lazy as _
 
+from job_finder.settings import EMAIL_HOST_USER
+
 
 class Vacancy(BaseModel):
     title = models.CharField(_("Title"), max_length=256, blank=False)
@@ -43,12 +45,12 @@ class Vacancy(BaseModel):
 
     def clean(self):
         if self.min_salary and self.max_salary and self.min_salary > self.max_salary:
-            raise ValidationError("Min salary cannot be bigger than max salary")
+            raise ValidationError("Минимальная зарплата не может быть больше максимальной")
         if self.manager and not self.company.managers.all().contains(self.manager):
-            raise ValidationError("Manager must be from vacancy company")
+            raise ValidationError("Менеджер должен быть из вашей компании")
         if not self.company.is_active:
             raise ValidationError(
-                "Your company must be active, write to support to verify your company"
+                f"Ваша компания неактивна, напишите {EMAIL_HOST_USER} для проверки"
             )
 
     def save(
