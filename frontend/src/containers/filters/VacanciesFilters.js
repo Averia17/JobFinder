@@ -30,7 +30,7 @@ const VacanciesFilters = ({filters, setFilters, setSearch, handleSearch}) => {
     return (
         <form onSubmit={handleSearch} className='filters__container'>
             <div className="search__container">
-                <input className="search__input" type="search" placeholder="Поиск"
+                <input className="search__input" type="search" name='search' placeholder="Поиск"
                        onChange={e => setSearch(e.target.value)}/>
             </div>
             <div className="filter__container">

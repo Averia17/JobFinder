@@ -7,9 +7,60 @@
     width: 180px;
     height: 180px;
 }
-.company__container {
+.companyPage__container {
     display: flex;
     flex-direction: column;
-    margin-left: 80px;
-    /*align-items: center;*/
+    align-items: center;
+    padding: 1vmax 0;
+}
+
+.companyPage__header, .companyPage__description {
+    display: flex;
+    align-items: center;
+    gap: 0.5vmax;
+    width: 45vmax;
+    box-shadow: 0 0 10px #e6e6ff;
+    padding: 2vmax;
+    font-size: 1vmax;
+}
+
+.companyPage__header {
+    justify-content: space-between;
+}
+
+
+.companyPage__vacancies h1 {
+    padding: 1vmax;
+    color: #595959;
+}
+
+.companyPage__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.companyPage__info > div {
+    display: flex;
+    justify-content: space-between;
+    width: 25vmax;
+}
+
+.companyPage__info h1 {
+    padding-bottom: 1vmax;
+}
+
+.logo__container {
+    padding-right: 2vmax;
+}
+
+.companyPage__link {
+    padding: 1vmax;
+    width: 45vmax;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.companyPage__link:hover {
+    color: #0000b3;
 }

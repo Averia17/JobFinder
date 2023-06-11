@@ -37,3 +37,20 @@ select.filter__input {
     border-radius: 5px;
     font-size: 1.05em;
 }
+
+.skill__container {
+    display: flex;
+    align-items: center;
+}
+
+.filter__showMore {
+    font-size: 0.9vmax;
+    width: 100%;
+    text-align: center;
+    padding-top: 0.2vmax;
+    cursor: pointer;
+}
+
+.filter__showMore:hover {
+    color: #0000b3;
+}

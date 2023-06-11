@@ -2,63 +2,46 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Input from "../../components/inputs/Input";
 import './style.css'
+import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
+import {Checkbox} from "@mui/material";
+import {specializations} from "../../utils/utils";
 
 
-const ResumesFilters = ({ filters, setFilters, setSearch, handleSearch }) => {
-    const [experienceOptions, setExperienceOptions] = useState([]);
-    const [employmentTypes, setEmploymentTypes] = useState([]);
-    const [companies, setCompanies] = useState([]);
+const ResumesFilters = ({ changeSkillModalVisibility, handleChangeFilters, handleSearch }) => {
+    const tokenInfo = useGetInfoFromToken();
+    const [skills, setSkills] = useState([]);
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/resumes/filters')
+        axios.get('/api/resumes/filters', {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }})
             .then(({data}) => {
-                setExperienceOptions(data.experience_option);
-                setEmploymentTypes(data.employment_type);
-                setCompanies(data.company);
+                setSkills(data.skills);
                 setCities(data.city);
             })
     }, [])
 
-    const handleChangeFilters = (event) => {
-        setFilters({
-            ...filters,
-            [event.target.name]: event.target.value
-        })
-    }
-
     return (
         <form onSubmit={handleSearch} className='filters__container'>
             <div className="search__container">
-                <input className="search__input" type="search" placeholder="Поиск"
-                       onChange={e => setSearch(e.target.value)}/>
+                <input className="search__input" type="search" name='search' placeholder="Поиск"
+                       onChange={handleChangeFilters}/>
             </div>
             <div className="filter__container">
-                <label className="filter__label" htmlFor='experience_option'>Опыт работы</label>
-                <select className="filter__input" name='experience_option' onChange={handleChangeFilters}>
-                    <option></option>
-                    {experienceOptions.map(experienceOption => (
-                        <option value={experienceOption[0]}>{experienceOption[1]}</option>
-                    ))}
-                </select>
+                <Input className="filter__input" name='experience'type="text" placeholder="Опыт работы"
+                       onChange={handleChangeFilters}/>
             </div>
             <div className="filter__container">
-                <label className="filter__label" htmlFor='employment_type'>Тип занятости</label>
-                <select className="filter__input" name='employment_type' onChange={handleChangeFilters}>
-                    <option></option>
-                    {employmentTypes.map(employmentType => (
-                        <option value={employmentType[0]}>{employmentType[1]}</option>
-                    ))}
-                </select>
-            </div>
-            <div className="filter__container">
-                <label className="filter__label" htmlFor='company'>Компании</label>
-                <select className="filter__input" name='company' onChange={handleChangeFilters}>
-                    <option></option>
-                    {companies.map(company => (
-                        <option value={company.id}>{company.title}</option>
-                    ))}
-                </select>
+                <label className="filter__label" htmlFor='skills'>Навыки</label>
+                {skills?.slice(0, 5)?.map(skill => (
+                    <div className='skill__container'>
+                        <Checkbox name='skills' value={skill} onChange={handleChangeFilters}/>
+                        <label htmlFor='skills'>{skill}</label>
+                    </div>
+                ))}
+                <p className='filter__showMore' onClick={changeSkillModalVisibility}>Показать больше</p>
             </div>
             <div className="filter__container">
                 <label className="filter__label" htmlFor='city'>Город</label>
@@ -66,6 +49,15 @@ const ResumesFilters = ({ filters, setFilters, setSearch, handleSearch }) => {
                     <option></option>
                     {cities.map(city => (
                         <option value={city}>{city}</option>
+                    ))}
+                </select>
+            </div>
+            <div className="filter__container">
+                <label className="filter__label" htmlFor='position'>Специализация</label>
+                <select className="filter__input" name='position' onChange={handleChangeFilters}>
+                    <option></option>
+                    {specializations.map(({ items }) => (
+                        items?.map(({text}) => <option value={text}>{text}</option>)
                     ))}
                 </select>
             </div>

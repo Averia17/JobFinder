@@ -25,10 +25,10 @@ const MyCompanyPage = () => {
         }).then(({ data }) => setCompanyInfo(data))
     }, [tokenInfo.company])
 
-    const { id, title, vacancies } = companyInfo;
+    const { id, title, vacancies, is_active } = companyInfo;
 
     const tabs = {
-        vacancies: <VacanciesTab vacancies={vacancies} setModalVisible={setVacancyModalVisible}/>,
+        vacancies: <VacanciesTab isActive={is_active} vacancies={vacancies} setModalVisible={setVacancyModalVisible}/>,
         managers: <ManagersTab/>,
         info: <InfoTab setError={setCompanyError} company={companyInfo}/>,
     }
@@ -84,10 +84,11 @@ const MyCompanyPage = () => {
             {companyInfo?.image && <div className="logo__container"><img src={companyInfo?.image} alt=""/></div>}
             {tokenInfo?.is_director && <div><input type="file" onChange={handleLogoChange} content="Update Logo"/></div>}
             <h1>{title}</h1>
+            {!is_active && <p className='myCompany__notActive'>Ваша компания не активна</p>}
             <Navbar isDirector={tokenInfo?.is_director} setCurrentTab={setCurrentTab}/>
-            { tokenInfo?.company && renderTab()}
+            {tokenInfo?.company && renderTab()}
             <ConfirmModal isActive={isDeleteModalVisible} handleClickHideModal={handleClickHideModal}
-                          handleConfirm={handleConfirmDeleteManager} title='Are you sure you want to delete this manager?'/>
+                          handleConfirm={handleConfirmDeleteManager} title='Вы уверены, что хотите удалить этого менеджера?'/>
             <VacancyModal isActive={isVacancyModalVisible} handleClickHideModal={handleClickHideVacancyModal}/>
             {companyError && <ErrorAlert error={companyError} setError={setCompanyError}/>}
         </div>

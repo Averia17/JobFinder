@@ -4,20 +4,32 @@ import Vacancy from "../../containers/vacancy/Vacancy";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import Resume from "../../containers/resume/Resume";
+import ResponsesTab from "../../components/pages/my-company/vacancy/ResponsesTab";
+import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
+import FavoritesResumesTab from "../../containers/favorites/favorites-resumes-tab/FavoritesResumesTab";
+import FavoritesVacanciesTab from "../../containers/favorites/favorites-vacancies-tab/FavoritesVacanciesTab";
+import Navbar from "../../containers/favorites/navbar/Navbar";
 
 const FavoritesPage = () => {
     const tokenInfo = useGetInfoFromToken();
     const [vacancies, setVacancies] = useState([]);
+    const [resumes, setResumes] = useState([]);
     const [loading, setLoading] = useState(true);
-    let url = "vacancies"
-    let warningText = "вакансий"
-    if(tokenInfo?.company) {
-        url = "resumes"
-        warningText = "резюме"
-    }
-    useEffect(() => {
 
-        axios.get(`/api/${url}/favorites`, {
+    const tabs = {
+        resumes: <FavoritesResumesTab resumes={resumes}/>,
+        vacancies: <FavoritesVacanciesTab vacancies={vacancies}/>,
+    }
+
+    const [currentTab, setCurrentTab] = useState('resumes');
+
+    const renderTab = () => {
+        let tab = Object.keys(tabs).find(key => key === currentTab);
+        return tabs[tab];
+    }
+
+    useEffect(() => {
+        axios.get(`/api/vacancies/favorites`, {
             headers: {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
@@ -28,17 +40,31 @@ const FavoritesPage = () => {
         setLoading(false)
     }, [])
 
+    useEffect(() => {
+        if (tokenInfo?.company) {
+            axios.get(`/api/resumes/favorites`, {
+                headers: {
+                    'Authorization': `Bearer ${tokenInfo?.accessToken}`
+                }
+            })
+                .then(({data}) => {
+                    setResumes(data)
+                });
+            setLoading(false)
+        }
+    }, [])
+
     return (
         <div className='vacancies-page-container'>
             <div className='vacancies-container'>
                 { !loading ?
-                    vacancies.length > 0 ?
-                    vacancies.map(vacancy => (<>{
                         tokenInfo?.company ?
-                        <Resume key={vacancy.id} {...vacancy}/>
-                        :<Vacancy key={vacancy.id} {...vacancy}/>
-                    }</>))
-                    : <div> У вас нет избранных {warningText}</div>
+                            <>
+                                <Navbar setCurrentTab={setCurrentTab}/>
+                                {renderTab()}
+                            </>
+                            :
+                            <FavoritesVacanciesTab vacancies={vacancies}/>
                     : <div> Загрузка...</div>
                 }
             </div>

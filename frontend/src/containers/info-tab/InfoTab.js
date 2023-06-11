@@ -43,32 +43,28 @@ const InfoTab = ({ setError, company }) => {
         <Tab>
             <form className='infoTab__container' onSubmit={handleSubmitUpdate}>
                 <div>
-                    <label htmlFor='address'>Address</label>
+                    <label htmlFor='address'>Адрес</label>
                     <Input type='text' name='address' defaultValue={address} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
-                    <label htmlFor='director'>Director</label>
-                    <Input type='text' name='director' defaultValue={director} onChange={handleChangeCompanyInfo} disabled/>
-                </div>
-                <div>
-                    <label htmlFor='description'>Description</label>
-                    <TextField multiline rows={2} maxRows={4} type='text' name='description' defaultValue={description} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
-                </div>
-                <div>
-                    <label htmlFor='phone'>Phone</label>
+                    <label htmlFor='phone'>Номер телефона</label>
                     <Input type='text' name='phone' defaultValue={phone} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
-                    <label htmlFor='site'>Site</label>
+                    <label htmlFor='site'>Сайт</label>
                     <Input type='url' name='site' defaultValue={site} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
-                    <label htmlFor='employees_number'>Employees number</label>
+                    <label htmlFor='employees_number'>Количество сотрудников</label>
                     <Input type='number' name='employees_number' min='0' defaultValue={employees_number} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>
                     <label htmlFor='email'>Email</label>
                     <Input type='email' name='email' defaultValue={email} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
+                </div>
+                <div>
+                    <label htmlFor='description'>Описание</label>
+                    <TextField multiline rows={10} maxRows={10} fullWidth type='text' name='description' defaultValue={description} onChange={handleChangeCompanyInfo} disabled={!tokenInfo?.is_director}/>
                 </div>
                 <div>{isUpdated && <input className="submit__button" type='submit'/>}</div>
             </form>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router";
 import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
@@ -17,13 +17,15 @@ import dayjs from "dayjs";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
 import Button from "../../components/buttons/Button";
 import marked from "marked";
+import {TextField} from "@mui/material";
+import CoverLetter from "../../containers/cover-letter/CoverLetter";
 
 const VacancyPage = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const tokenInfo = useGetInfoFromToken();
     const [searchParams, setSearchParams] = useSearchParams();
-    const responseId = searchParams.get('responseId');
+    const [responseId, setResponseId] = useState(searchParams.get('responseId'));
     const [vacancyInfo, setVacancyInfo] = useState({});
     const [error, setError] = useState(undefined);
     const [isVacancyFavorite, setVacancyFavorite] = useState(vacancyInfo.is_favorite);
@@ -33,6 +35,8 @@ const VacancyPage = () => {
     const [acceptMessage, setAcceptMessage] = useState(undefined);
     const [rejectMessage, setRejectMessage] = useState(undefined);
     const [responseStatus, setResponseStatus] = useState(undefined);
+    const coverLetterRef = useRef(null);
+    const [isResponded, setResponded] = useState(false);
     const formattedResponses = vacancyInfo?.responses?.map(response => {
                     delete response.vacancy.title
                     return response
@@ -63,7 +67,7 @@ const VacancyPage = () => {
             }
         })
             .then(({data}) => setVacancyInfo(data))
-    }, []);
+    }, [isResponded]);
 
     const {title, company} = vacancyInfo;
 
@@ -72,7 +76,11 @@ const VacancyPage = () => {
             headers: {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
-        }).catch(({response}) => {
+        }).then(({data}) => {
+            setResponseId(data.id)
+            setResponded(true)
+        })
+            .catch(({response}) => {
             if(response.status === 401) {
                navigate('/login')
             }
@@ -145,6 +153,14 @@ const VacancyPage = () => {
             })
     }
 
+    const scrollToBottom = () => {
+        coverLetterRef.current?.scrollIntoView({ behavior: "smooth", alignToTop: false })
+    }
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [isResponded]);
+
     return (
         <div className='vacancyPage__container'>
             <div className='vacancyPage__header__container'>
@@ -177,7 +193,10 @@ const VacancyPage = () => {
                     {/*<div style={{whiteSpace: "pre-line"}}>{vacancyInfo.description}</div>*/}
                 </div>
             }
-
+            {isResponded && <>
+                <CoverLetter responseId={responseId}/>
+                <div className='coverLetter__ref' ref={coverLetterRef}/>
+            </>}
             {tokenInfo?.company && <Navbar setCurrentTab={setCurrentTab}/>}
             {tokenInfo?.company ? renderTab() : null}
             <AcceptModal

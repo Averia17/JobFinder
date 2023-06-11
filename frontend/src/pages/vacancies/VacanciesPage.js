@@ -4,15 +4,15 @@ import Vacancy from "../../containers/vacancy/Vacancy";
 import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import VacanciesFilters from "../../containers/filters/VacanciesFilters";
-import {useSearchParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 const VacanciesPage = () => {
+    const { state } = useLocation();
     const tokenInfo = useGetInfoFromToken();
     const [vacancies, setVacancies] = useState([]);
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState(undefined);
     const [loading, setLoading] = useState(true);
-
 
     const formatQueryParams = () => {
         const searchParams = new URLSearchParams();
@@ -36,6 +36,21 @@ const VacanciesPage = () => {
             });
         setLoading(false)
     }, [])
+
+    useEffect(() => {
+        if (state?.company) {
+            setLoading(true);
+            axios.get(`/api/vacancies?company=${state?.company}&is_active=true`, tokenInfo?.accessToken && {
+                headers: {
+                    'Authorization': `Bearer ${tokenInfo?.accessToken}`
+                }
+            })
+                .then(({data}) => {
+                    setVacancies(data)
+                });
+            setLoading(false)
+        }
+    }, [state])
 
     const handleSearch = (e) => {
         setLoading(true)

@@ -6,15 +6,16 @@ import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFro
 import ManagerBlock from "./ManagerBlock";
 import './style.css'
 import ErrorAlert from "../../components/alerts/ErrorAlert";
+import Button from "../../components/buttons/Button";
+import AddManagerModal from "../../components/pages/my-company/add-manager-modal/AddManagerModal";
 
 
 const ManagersTab = () => {
     const { accessToken } = useGetInfoFromToken();
     const [managers, setManagers] = useState([]);
-    const [managerInfo, setManagerInfo] = useState({ name: undefined, email: undefined });
-    const [resultMessage, setResultMessage] = useState(undefined);
     const [error, setError] = useState(undefined);
-
+    const [resultMessage, setResultMessage] = useState(undefined);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         axios.get('/api/managers', {
@@ -28,37 +29,18 @@ const ManagersTab = () => {
             })
     }, [])
 
-    const handleChangeManagerInfo = event => {
-        setManagerInfo({
-            ...managerInfo,
-            [event.target.name]: event.target.value
-        })
+    const showManagerModal = () => {
+        setModalVisible(true);
     }
 
-    const handleSubmitAddManager = event => {
-        event.preventDefault();
-        axios.post('/api/managers/', managerInfo, {
-            headers: { Authorization: `Bearer ${accessToken}`}
-        }).then(({ data }) => setResultMessage(data))
-            .catch(({ response }) => {
-                let error = response.data;
-                if ("user" in response.data)
-                    error = "User with this email have already received email"
-                if ("detail" in response.data)
-                    error = response.data.detail
-                setError(error)
-            })
+    const hideManagerModal = () => {
+        setModalVisible(false);
     }
+
 
     return (
         <Tab>
-            <form onSubmit={handleSubmitAddManager}>
-                <label htmlFor="name">Имя менеджера  </label>
-                <Input type='text' name='name' onChange={handleChangeManagerInfo}/>
-                <label htmlFor="email">Email </label>
-                <Input type='email' name='email' onChange={handleChangeManagerInfo}/>
-                <Input type='submit' value="Добавить"></Input>
-            </form>
+            <Button onClick={showManagerModal}>Добавить менеджера</Button>
             <div>
                 {
                     managers?.map(({ user }) => (
@@ -66,6 +48,7 @@ const ManagersTab = () => {
                     ))
                 }
             </div>
+            <AddManagerModal isActive={isModalVisible} hideModal={hideManagerModal} setError={setError} setResultMessage={setResultMessage}/>
             {error && <ErrorAlert error={error} setError={setError}/>}
             <p>{resultMessage}</p>
         </Tab>

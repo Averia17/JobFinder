@@ -1,0 +1,14 @@
+.addManager__modal {
+    display: flex;
+    flex-direction: column;
+    gap: 1vmax;
+}
+
+.addManager__modal .submit-button {
+    padding: 0.7vmax;
+    background: #0000b3;
+    color: white;
+    border: none;
+    border-radius: 0.5vmax;
+    cursor: pointer;
+}

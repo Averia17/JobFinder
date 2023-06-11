@@ -116,7 +116,7 @@ const LoginPage = () => {
                     />
                     <Input type="password"
                            name="password"
-                          defaultValue={userData.password ? userData.password : null}
+                           defaultValue={userData.password ? userData.password : null}
                            onChange={handleChangeData}
                            placeholder="Пароль"
                     />

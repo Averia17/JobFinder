@@ -50,18 +50,15 @@ const RegisterManagerPage = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmitRegisterManager}>
-                <div className="register-manager__container">
-                    <label htmlFor='password'>Password</label>
-                    <Input type='password' name='password' onChange={handleChangePasswords} required/>
-                    <label htmlFor='confirmPassword'>Confirm password</label>
-                    <Input type='password' name='confirmPassword' onChange={handleChangePasswords} required/>
-                </div>
-                <div className="submit__button__container">
-                    <input className="submit__button" type='submit'/>
-                </div>
-            </form>
+        <div className='authorization-container-wrapper'>
+            <div className="authorization-container">
+                <p className="form-header">Создайте пароль</p>
+                <form onSubmit={handleSubmitRegisterManager} className='authorization-form'>
+                        <Input placeholder="Пароль" type='password' name='password' onChange={handleChangePasswords} required/>
+                        <Input placeholder="Повторите пароль" type='password' name='confirmPassword' onChange={handleChangePasswords} required/>
+                        <input className="submit-button" type='submit'/>
+                </form>
+            </div>
             {signupError && <ErrorAlert error={signupError} setError={setSignupError}/>}
         </div>
     );

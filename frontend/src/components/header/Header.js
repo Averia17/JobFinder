@@ -39,7 +39,7 @@ const Header = () => {
 
     return (
         <div className='header-container'>
-            <div className='header-logo-container'>
+            <div className='header-logo-container' onClick={() => navigate('/')}>
                 <img src={logo}/>
             </div>
             <div className='header-links'>

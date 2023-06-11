@@ -21,4 +21,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.5vmax;
+}
+
+.myCompany__notActive {
+    font-size: 1vmax;
+    color: red;
 }

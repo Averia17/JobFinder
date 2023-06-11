@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {languageLevels, languages} from "./utils";
+import {languageLevels, languages} from "../../utils/utils";
 import Input from "../inputs/Input";
 
 const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ language, selectedLanguages, setSelectedLanguages, languagesForms, setLanguagesForms, setNewLanguage }) {

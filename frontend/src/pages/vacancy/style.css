@@ -46,7 +46,7 @@
 }
 
 .company__link:hover {
-    color: #2aabd2;
+    color: #0000e6;
 }
 
 .header__info {
@@ -65,4 +65,7 @@
 .vacancy__salary {
     font-size: 1.2vmax;
     padding: 0.5vmax 0;
+}
+
+.coverLetter__ref {
 }

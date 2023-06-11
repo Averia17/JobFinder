@@ -84,15 +84,19 @@ const ResumePage = () => {
                     <>
                         <div className="resume__header">
                             <div className='resume__header__info'>
-                                <h1>{resume.user?.name} {resume.user?.email}</h1>
-                                <h4>{resume.user?.phone}</h4>
+                                <div className='resume__title__container'>
+                                    <div className='resume__title'>
+                                        <h1>{resume.user?.name} {resume.user?.email}</h1>
+                                        <h4>{resume.user?.phone}</h4>
+                                    </div>
+                                    {tokenInfo?.company &&
+                                        <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
+                                </div>
                                 <h4>{resume.city}</h4>
-                                <h4>Ваше резюме было просмотрено {resume?.views?.length} раз{formatViewsCountString()}</h4>
+                                {!tokenInfo?.company && <h4>Ваше резюме было просмотрено {resume?.views?.length} раз{formatViewsCountString()}</h4>}
                                 <div className='resume__header__button'>
                                     {resume?.user?.id === tokenInfo?.user_id &&
                                         <Button onClick={handleClickDeleteResume} type='danger'>Удалить</Button>}
-                                    {tokenInfo?.company &&
-                                        <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
                                 </div>
                             </div>
                             <div className="resume__logo">
@@ -120,12 +124,13 @@ const ResumePage = () => {
                                 ))}
                             </div>
                         </div>
+                        {!tokenInfo?.company &&
                         <div className='resume__views__container'>
                             <h2>Просмотры</h2>
                             {resume?.user?.id === tokenInfo?.user_id && resume?.views?.length > 0 ?
-                                <div className="resume__views">Просмотры: {resume?.views?.map(view => (
+                                <div className="resume__views">{resume?.views?.map(view => (
                                     <div className="resume__view">
-                                        <div><Link className="resume__company__link" to={`/companies/${view?.company__id}`}> {view?.company__title}</Link>: </div>
+                                        <Link className="resume__company__link" to={`/companies/${view?.company__id}`}> {view?.company__title}</Link>:
                                         <div>{view?.count} раз</div>
                                     </div>
                                 ))}
@@ -133,7 +138,7 @@ const ResumePage = () => {
                                 :
                                 <div>Ваше резюме пока не просматривали</div>
                             }
-                        </div>
+                        </div>}
                         <div style={{width: "100%"}}>
                             <Document file={resume?.file}>
                                 <Page pageNumber={1} renderTextLayer={false} width={1000}/>

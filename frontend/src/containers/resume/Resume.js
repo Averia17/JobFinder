@@ -22,7 +22,7 @@ const Resume = ({id, title, city, user, experience, salary, is_favorite}) => {
                     <h2>{title}</h2>
                     {tokenInfo?.company && <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
                 </div>
-                <p>{user?.name} {user?.email} </p>
+                {user?.name && <p>{user?.name}</p>}
                 <p className="resume__field">Location: {city}</p>
                 <p className="resume__field">Work experience: {experience} years</p>
                 {salary && <p className="resume__field">Expected salary : {salary}$</p>}

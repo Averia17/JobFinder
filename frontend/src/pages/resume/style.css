@@ -65,7 +65,7 @@
     display: flex;
 }
 .resume__company__link:hover {
-    color: #2aabd2;
+    color: #0000e6;
 }
 
 .resume__skills__container {
@@ -77,6 +77,16 @@
     display: flex;
     flex-direction: column;
     gap: 0.5vmax;
+}
+
+.resume__title__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resume__title {
+    display: flex;
 }
 
 .resume__header__button {

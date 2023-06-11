@@ -3,7 +3,7 @@ import Input from "../inputs/Input";
 import axios from "axios";
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import LanguageAdditionForm from "./LanguageAdditionForm";
-import {languages} from "./utils";
+import {languages, specializations} from "../../utils/utils";
 import SkillBlock from "./SkillBlock";
 import {useNavigate} from "react-router";
 import ErrorAlert from "../alerts/ErrorAlert";
@@ -153,6 +153,15 @@ const ResumeForm = () => {
                         <div>
                             <label htmlFor='salary'>Ожидаемая зарплата</label>
                             <Input name='salary' type='number' onChange={handleChange}/>
+                        </div>
+                        <div>
+                            <label htmlFor='position'>Специализация</label>
+                            <select name='position' onChange={handleChange}>
+                                <option></option>
+                                {specializations.map(({ items }) => (
+                                    items?.map(({text}) => <option value={text}>{text}</option>)
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div className="column-2">

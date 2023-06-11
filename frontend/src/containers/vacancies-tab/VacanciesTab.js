@@ -3,10 +3,10 @@ import Vacancy from "../vacancy/Vacancy";
 import Tab from "../../components/tabs/Tab";
 import Button from "../../components/buttons/Button";
 
-const VacanciesTab = ({ vacancies, setModalVisible }) => {
+const VacanciesTab = ({ isActive, vacancies, setModalVisible }) => {
     return (
         <Tab>
-            <Button onClick={() => setModalVisible(true)}>Создать новую вакансию</Button>
+            <Button title='Дождитесь пока Ваша компания станет активна' disabled={!isActive} onClick={() => setModalVisible(true)}>Создать новую вакансию</Button>
             {
                 vacancies?.map(vacancy => (
                     <Vacancy key={vacancy.id} {...vacancy} companyMembersPermissions setModalVisible={setModalVisible}/>

@@ -7,6 +7,7 @@ import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFro
 import "./style.css"
 import Filters from "../../containers/filters/VacanciesFilters";
 import ResumesFilters from "../../containers/filters/ResumesFilters";
+import SkillsModal from "../../containers/filters/SkillsModal";
 
 const ResumesPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -17,6 +18,8 @@ const ResumesPage = () => {
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState(undefined);
     const [loading, setLoading] = useState(true);
+    const [isSkillsModalVisible, setSkillsModalVisible] = useState(false);
+    const [selectedSkills, setSelectedSkills] = useState([]);
 
 
     const formatQueryParams = () => {
@@ -45,7 +48,7 @@ const ResumesPage = () => {
     const handleSearch = (e) => {
         setLoading(true)
         e.preventDefault();
-        axios.get(`/api/resumes${formatQueryParams()}`, tokenInfo?.accessToken && {
+        axios.get(`/api/resumes?${formatQueryParams()}`, tokenInfo?.accessToken && {
             headers: {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
@@ -64,19 +67,50 @@ const ResumesPage = () => {
             .then(({data}) => setResumes(data));
     }, [])
 
+    const handleChangeFilters = (event) => {
+        if (event.target.name !== 'skills') {
+            setFilters({
+                ...filters,
+                [event.target.name]: event.target.value,
+            })
+        } else {
+            if (event.target.type === 'checkbox') {
+                if (event.target.checked)
+                    setSelectedSkills([...selectedSkills, event.target.value])
+                else {
+                    selectedSkills.splice(selectedSkills.indexOf(event.target.value), 1);
+                    setSelectedSkills(selectedSkills);
+                }
+            }
+            setFilters({
+                ...filters,
+                skills: selectedSkills
+            })
+        }
+    }
+
+    const changeSkillModalVisibility = () => {
+        setSkillsModalVisible(!isSkillsModalVisible);
+    }
+
     return (
-        <div className="resumes__container">
+        <div className="resumesPage__container">
             {/*{ !tokenInfo?.company &&*/}
             {/*    <button className="submit__button" onClick={linkToCreateResumeForm}>Create resume</button>*/}
             {/*}*/}
             <div className='filters'>
-                <ResumesFilters filters={filters} setFilters={setFilters} setSearch={setSearch} handleSearch={handleSearch}/>
+                <ResumesFilters changeSkillModalVisibility={changeSkillModalVisibility}
+                                handleChangeFilters={handleChangeFilters} handleSearch={handleSearch}/>
             </div>
-            {
-                resumes.map(resume => (
-                    <Resume {...resume}/>
-                ))
+            {resumes?.length > 0 ? <div className="resumes__container">
+                {resumes.map(resume => (
+                        <Resume {...resume}/>
+                    ))}</div>
+                :
+                <div className='resumes__container resumes__notFound'>Резюме не найдены</div>
             }
+            <SkillsModal isActive={isSkillsModalVisible} hideModal={changeSkillModalVisibility}
+                         handleChangeFilters={handleChangeFilters} selectedSkills={selectedSkills} />
         </div>
     );
 };

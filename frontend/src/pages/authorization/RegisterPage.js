@@ -43,12 +43,11 @@ const RegisterPage = () => {
         } else {
             axios.post('/api/companies/', {email, password, ...companyData})
                 .then(({ data }) => {
-                    const companyId = data?.id;
                     axios.post('/login/', { email, password })
                         .then(({ data }) => {
                             localStorage.setItem('access_token', data.access);
                             localStorage.setItem('refresh_token', data.refresh);
-                            navigate(`/companies/${companyId}`);
+                            navigate(`/company`);
                             window.location.reload();
                         })
 
