@@ -5,6 +5,7 @@ import './style.css'
 import {useGetInfoFromToken} from "../../hooks/useGetInfoFromToken/useGetInfoFromToken";
 import VacanciesFilters from "../../containers/filters/VacanciesFilters";
 import {useLocation} from "react-router-dom";
+import {CircularProgress} from "@mui/material";
 
 const VacanciesPage = () => {
     const { state } = useLocation();
@@ -33,8 +34,7 @@ const VacanciesPage = () => {
         })
             .then(({data}) => {
                 setVacancies(data)
-            });
-        setLoading(false)
+            }).then(() => setLoading(false));
     }, [])
 
     useEffect(() => {
@@ -47,8 +47,7 @@ const VacanciesPage = () => {
             })
                 .then(({data}) => {
                     setVacancies(data)
-                });
-            setLoading(false)
+                }).then(() => setLoading(false));
         }
     }, [state])
 
@@ -59,11 +58,10 @@ const VacanciesPage = () => {
             headers: {
                 'Authorization': `Bearer ${tokenInfo?.accessToken}`
             }
-        })
+            })
             .then(({data}) => {
                 setVacancies(data)
-            });
-        setLoading(false)
+            }).then(() => setTimeout(() => setLoading(false)));
     }
 
     return (
@@ -72,13 +70,12 @@ const VacanciesPage = () => {
                 <VacanciesFilters filters={filters} setFilters={setFilters} setSearch={setSearch} handleSearch={handleSearch}/>
             </div>
             <div className='vacancies-container'>
-                { !loading ?
+                { loading ? <div className="loading-spinner"><CircularProgress color="inherit" /></div> :
                     vacancies.length > 0 ?
-                    vacancies.map(vacancy => (
-                        <Vacancy key={vacancy.id} {...vacancy}/>
-                    ))
-                    : <div> There are no vacancies</div>
-                    : <div> Loading...</div>
+                        vacancies.map(vacancy => (
+                            <Vacancy key={vacancy.id} {...vacancy}/>
+                        ))
+                        : <div>Найдено 0 вакансий</div>
                 }
             </div>
         </div>

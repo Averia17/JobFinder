@@ -12,4 +12,9 @@
     display: flex;
     flex-direction: column;
     padding: 1vmax;
+    width: 45vmax;
+}
+.loading-spinner {
+    display: flex;
+    justify-content: center;
 }

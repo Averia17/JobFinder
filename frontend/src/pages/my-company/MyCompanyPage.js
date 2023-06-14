@@ -10,6 +10,7 @@ import {useSearchParams} from "react-router-dom";
 import InfoTab from "../../containers/info-tab/InfoTab";
 import VacancyModal from "../../components/pages/my-company/vacancy-form/VacancyModal";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
+import {CircularProgress} from "@mui/material";
 
 const MyCompanyPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -18,14 +19,16 @@ const MyCompanyPage = () => {
     const [isDeleteModalVisible, setDeleteModalVisible] = useState(!!searchParams.get('manager'));
     const [isVacancyModalVisible, setVacancyModalVisible] = useState(false);
     const [companyError, setCompanyError] = useState(undefined);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true)
         axios.get(`/api/companies/my`, {
-            headers: { Authorization: `Bearer ${tokenInfo.accessToken}` }
-        }).then(({ data }) => setCompanyInfo(data))
+            headers: {Authorization: `Bearer ${tokenInfo.accessToken}`}
+        }).then(({data}) => setCompanyInfo(data)).then(() => setTimeout(() => setLoading(false), 0))
     }, [tokenInfo.company])
 
-    const { id, title, vacancies, is_active } = companyInfo;
+    const {id, title, vacancies, is_active} = companyInfo;
 
     const tabs = {
         vacancies: <VacanciesTab isActive={is_active} vacancies={vacancies} setModalVisible={setVacancyModalVisible}/>,
@@ -59,7 +62,7 @@ const MyCompanyPage = () => {
     const handleConfirmDeleteManager = () => {
         let managerId = searchParams.get('manager');
         axios.delete(`/api/managers/${managerId}/`, {
-            headers: { Authorization: `Bearer ${tokenInfo.accessToken}`}
+            headers: {Authorization: `Bearer ${tokenInfo.accessToken}`}
         }).then(() => {
             searchParams.delete('manager');
             setDeleteModalVisible(false);
@@ -69,33 +72,39 @@ const MyCompanyPage = () => {
     const handleLogoChange = event => {
         if (event.target.files) {
             axios.patch(`/api/companies/${companyInfo.id}/`, {
-            image: event.target.files[0]
-        }, {
-            headers: {
-                Authorization: `Bearer ${tokenInfo.accessToken}`,
-                "Content-Type": "multipart/form-data"}
-        }).then(({data}) => {
+                image: event.target.files[0]
+            }, {
+                headers: {
+                    Authorization: `Bearer ${tokenInfo.accessToken}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            }).then(({data}) => {
                 setCompanyInfo({...companyInfo, image: data.image});
             })
         }
     };
     return (
         <div key={id} className='myCompany__container'>
-            {companyInfo?.image && <div className="logo__container"><img src={companyInfo?.image} alt=""/></div>}
-            {tokenInfo?.is_director && <div className="upload-logo__container">
-                <label htmlFor="formId" className="upload-logo__button">
-                     <input onChange={handleLogoChange}  name="" type="file" id="formId" hidden />
-                      Загрузить аватар компании
-                 </label>
-            </div>}
-            <h1>{title}</h1>
-            {!is_active && <p className='myCompany__notActive'>Ваша компания не активна</p>}
-            <Navbar isDirector={tokenInfo?.is_director} setCurrentTab={setCurrentTab}/>
-            {tokenInfo?.company && renderTab()}
-            <ConfirmModal isActive={isDeleteModalVisible} handleClickHideModal={handleClickHideModal}
-                          handleConfirm={handleConfirmDeleteManager} title='Вы уверены, что хотите удалить этого менеджера?'/>
-            <VacancyModal isActive={isVacancyModalVisible} handleClickHideModal={handleClickHideVacancyModal}/>
-            {companyError && <ErrorAlert error={companyError} setError={setCompanyError}/>}
+            {!loading ? <>
+                    {companyInfo?.image && <div className="logo__container"><img src={companyInfo?.image} alt=""/></div>}
+                    {tokenInfo?.is_director && <div className="upload-logo__container">
+                        <label htmlFor="formId" className="upload-logo__button">
+                            <input onChange={handleLogoChange} name="" type="file" id="formId" hidden/>
+                            Загрузить аватар компании
+                        </label>
+                    </div>}
+                    <h1>{title}</h1>
+                    {!is_active && <p className='myCompany__notActive'>Ваша компания не активна</p>}
+                    <Navbar isDirector={tokenInfo?.is_director} setCurrentTab={setCurrentTab}/>
+                    {tokenInfo?.company && renderTab()}
+                    <ConfirmModal isActive={isDeleteModalVisible} handleClickHideModal={handleClickHideModal}
+                                  handleConfirm={handleConfirmDeleteManager}
+                                  title='Вы уверены, что хотите удалить этого менеджера?'/>
+                    <VacancyModal isActive={isVacancyModalVisible} handleClickHideModal={handleClickHideVacancyModal}/>
+                    {companyError && <ErrorAlert error={companyError} setError={setCompanyError}/>}
+                </>
+                : <div className="loading-spinner"><CircularProgress color="inherit"/></div>
+            }
         </div>
     );
 };

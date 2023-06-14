@@ -9,6 +9,7 @@ import ViewsTab from "../../components/pages/my-company/vacancy/ViewsTab";
 import FavoritesResumesTab from "../../containers/favorites/favorites-resumes-tab/FavoritesResumesTab";
 import FavoritesVacanciesTab from "../../containers/favorites/favorites-vacancies-tab/FavoritesVacanciesTab";
 import Navbar from "../../containers/favorites/navbar/Navbar";
+import {CircularProgress} from "@mui/material";
 
 const FavoritesPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -36,8 +37,7 @@ const FavoritesPage = () => {
         })
             .then(({data}) => {
                 setVacancies(data)
-            });
-        setLoading(false)
+            }).then(() => setTimeout(() => setLoading(false)));
     }, [])
 
     useEffect(() => {
@@ -49,8 +49,7 @@ const FavoritesPage = () => {
             })
                 .then(({data}) => {
                     setResumes(data)
-                });
-            setLoading(false)
+                }).then(() => setTimeout(() => setLoading(false)));
         }
     }, [])
 
@@ -65,7 +64,7 @@ const FavoritesPage = () => {
                             </>
                             :
                             <FavoritesVacanciesTab vacancies={vacancies}/>
-                    : <div> Загрузка...</div>
+                    : <div className="loading-spinner"><CircularProgress color="inherit" /></div>
                 }
             </div>
         </div>

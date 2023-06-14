@@ -55,7 +55,7 @@ const Response = (props) => {
     }
     return (
         <div className='responseBlock__container' onClick={handleLinkToResumes}>
-            <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h2>{props?.vacancy?.title}</h2></Link>
+            <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h2 className="responseBlock__container__company__name">{props?.vacancy?.title}</h2></Link>
             {!tokenInfo?.company && <p>{props?.vacancy?.company}</p>}
             {(props?.user?.name || props?.user?.email) && tokenInfo?.company && <p>{props?.user?.name} {props?.user?.email}</p>}
             <p style={{ color: `${status === "Отказ" && "red" || status === "Приглашение" && "green"}`}}>{status}</p>

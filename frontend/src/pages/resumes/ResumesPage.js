@@ -8,6 +8,7 @@ import "./style.css"
 import Filters from "../../containers/filters/VacanciesFilters";
 import ResumesFilters from "../../containers/filters/ResumesFilters";
 import SkillsModal from "../../containers/filters/SkillsModal";
+import {CircularProgress} from "@mui/material";
 
 const ResumesPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -41,8 +42,7 @@ const ResumesPage = () => {
         })
             .then(({data}) => {
                 setResumes(data)
-            });
-        setLoading(false)
+            }).then(() => setTimeout(() => setLoading(false)));
     }, [])
 
     const handleSearch = (e) => {
@@ -55,8 +55,7 @@ const ResumesPage = () => {
         })
             .then(({data}) => {
                 setResumes(data)
-            });
-        setLoading(false)
+            }).then(() => setTimeout(() => setLoading(false)));
     }
 
     useEffect(() => {
@@ -102,13 +101,17 @@ const ResumesPage = () => {
                 <ResumesFilters changeSkillModalVisibility={changeSkillModalVisibility}
                                 handleChangeFilters={handleChangeFilters} handleSearch={handleSearch}/>
             </div>
-            {resumes?.length > 0 ? <div className="resumes__container">
-                {resumes.map(resume => (
-                        <Resume {...resume}/>
-                    ))}</div>
-                :
-                <div className='resumes__container resumes__notFound'>Резюме не найдены</div>
+            <div className="resumes__container">
+            { !loading ?
+                resumes?.length > 0 ? <div>
+                        {resumes.map(resume => (
+                            <Resume {...resume}/>
+                        ))}</div>
+                    :
+                    <div className='resumes__container resumes__notFound'>Резюме не найдены</div>
+                :  <div className="loading-spinner"><CircularProgress color="inherit" /></div>
             }
+            </div>
             <SkillsModal isActive={isSkillsModalVisible} hideModal={changeSkillModalVisibility}
                          handleChangeFilters={handleChangeFilters} selectedSkills={selectedSkills} />
         </div>

@@ -11,6 +11,7 @@ import Button from "../../components/buttons/Button";
 import FavoriteButton from "../../components/buttons/FavoriteButton";
 import SkillBlock from "../../components/resume-form/SkillBlock";
 import marked from "marked";
+import {CircularProgress} from "@mui/material";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -35,14 +36,13 @@ const ResumePage = () => {
             .then(({data}) => {
                 setResume(data)
                 setResumeFavorite(data?.is_favorite)
-            });
-        setLoading(false)
+            }).then(() => setTimeout(() => setLoading(false), 0));
     }, [])
 
     const handleClickDeleteResume = () => {
         axios.delete(`/api/resumes/${resume?.id}/`, {
             headers: {Authorization: `Bearer ${tokenInfo.accessToken}`}
-        }).then(() => window.location.reload()).catch(() => setError('Error deleting vacancy'))
+        }).then(() => window.location.reload()).catch(() => setError('Не удаётся удалить резюме'))
     }
     const handleClickChangeFavoriteStatus = (event) => {
         event.stopPropagation();
@@ -158,7 +158,7 @@ const ResumePage = () => {
                         <div> У вас нет резюме</div>
                         <Button className="submit__button" onClick={linkToCreateResumeForm}>Создать резюме</Button>
                     </>
-                : <div> Загрузка...</div>
+                :  <div className="loading-spinner"><CircularProgress color="inherit" /></div>
             }
         </div>
     );

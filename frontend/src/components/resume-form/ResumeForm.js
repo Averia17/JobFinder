@@ -138,10 +138,6 @@ const ResumeForm = () => {
                             <Input name='city' type='text' onChange={handleChange} required/>
                         </div>
                         <div>
-                            <label htmlFor='position'>Позиция</label>
-                            <Input name='position' type='text' onChange={handleChange}/>
-                        </div>
-                        <div>
                             <label htmlFor='experience'>Опыт работы</label>
                             <Input name='experience' type='number' step='0.1' onChange={handleChange}/>
                         </div>

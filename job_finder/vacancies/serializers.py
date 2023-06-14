@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.db.models import Count
 from rest_framework.fields import (
     BooleanField,
@@ -81,10 +83,9 @@ class VacancyDetailSerializer(VacancySerializer):
         self.fields["experience_option"] = CharField(source="get_experience_option_display")
         res = super().to_representation(instance)
         res["statistics"] = {
-            "count_views": instance.views.count(),
+            "count_views": instance.views.distinct("user").count(),
             "count_responses": instance.responses.count(),
-            "count_viewed_responses": instance.responses.filter(status=VacancyResponse.viewed).count(),
-            "count_reject_responses": instance.responses.filter(status=VacancyResponse.reject).count(),
+            "count_invite_responses": instance.responses.filter(status=VacancyResponse.invite).count(),
         }
         user = self.context["request"].user
         if user.is_authenticated:
@@ -99,9 +100,10 @@ class VacancyDetailSerializer(VacancySerializer):
                 vacancy_views = instance.views.order_by("-created__date")
                 chart_data = vacancy_views.values("created__date").annotate(count=Count("created__date"))
                 results = vacancy_views.values(
-                    "user__id", "user__name", "user__email", "created__date").annotate(count=Count("user__id"))
-                res.update({"views": {"chart_data": chart_data, "results": results}})
-                res["views"] = instance.views.values(
-                    "user__id", "user__name", "user__email" # created__date
-                ).annotate(count=Count("user__id"))
+                    "user__id", "user__name", "user__email", "created__date"
+                ).exclude(user=user).annotate(count=Count("user__id"))
+                grouped_results = defaultdict(list)
+                for result in results:
+                    grouped_results[str(result.pop("created__date"))].append(result)
+                res.update({"views": {"chart_data": chart_data, "results": grouped_results}})
         return res

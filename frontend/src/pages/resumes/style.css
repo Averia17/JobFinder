@@ -16,7 +16,6 @@
 
 .filters {
     display: flex;
-    align-items: center;
     flex-direction: column;
     width: 20vmax;
     margin: 1vmax 0;
@@ -24,7 +23,6 @@
 
 .resumes__container {
     display: flex;
-    align-items: center;
     flex-direction: column;
     padding: 1vmax;
     gap: 1vmax;

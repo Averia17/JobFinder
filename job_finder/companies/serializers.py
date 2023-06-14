@@ -30,7 +30,7 @@ class CompanyDetailSerializer(ModelSerializer):
     def get_vacancies(self, obj):
         vacancies = obj.vacancies
         user = self.context["request"].user
-        if user and user.is_authenticated and user.is_manager:
+        if user and user.is_authenticated and user.is_manager and not user.is_director:
             vacancies = user.companymanager.vacancies
         vacancies = vacancies.annotate(
             count_new_responses=Count(
