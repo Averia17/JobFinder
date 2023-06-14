@@ -82,11 +82,9 @@ class VacancyDetailSerializer(VacancySerializer):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
         self.fields["experience_option"] = CharField(source="get_experience_option_display")
         res = super().to_representation(instance)
-        res["statistics"] = {
-            "count_views": instance.views.distinct("user").count(),
-            "count_responses": instance.responses.count(),
-            "count_invite_responses": instance.responses.filter(status=VacancyResponse.invite).count(),
-        }
+        res["statistics"] = {}
+        for status, _ in VacancyResponse.VACANCY_RESPONSE_STATUS:
+            res["statistics"][f"count_{status.lower()}_responses"] = instance.responses.filter(status=status).count()
         user = self.context["request"].user
         if user.is_authenticated:
             if res.get("is_responded"):
@@ -100,7 +98,7 @@ class VacancyDetailSerializer(VacancySerializer):
                 vacancy_views = instance.views.order_by("-created__date")
                 chart_data = vacancy_views.values("created__date").annotate(count=Count("created__date"))
                 results = vacancy_views.values(
-                    "user__id", "user__name", "user__email", "created__date"
+                    "user__id", "user__name", "user__email", "user__resume", "created__date"
                 ).exclude(user=user).annotate(count=Count("user__id"))
                 grouped_results = defaultdict(list)
                 for result in results:
