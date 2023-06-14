@@ -10,6 +10,7 @@ import cancelIcon from '../../assets/cancel-button.png'
 import {useNavigate} from "react-router";
 import dayjs from "dayjs";
 import axios from "axios";
+import {formatDate} from "../../services/services";
 
 
 const Response = (props) => {
@@ -59,7 +60,7 @@ const Response = (props) => {
             {!tokenInfo?.company && <p>{props?.vacancy?.company}</p>}
             {(props?.user?.name || props?.user?.email) && tokenInfo?.company && <p>{props?.user?.name} {props?.user?.email}</p>}
             <p style={{ color: `${status === "Отказ" && "red" || status === "Приглашение" && "green"}`}}>{status}</p>
-            <p>{props?.created && dayjs(props?.created).format("DD.MM.YYYY")}</p>
+            <p>{props?.created && formatDate(props?.created)}</p>
             <div className="messages_icon">
                 {props?.count_new_messages > 0 && <div className="count__new__notification_messages">{props?.count_new_messages}</div>}
                 <ImageButton src={messageIcon} onClick={handleClick}/>
