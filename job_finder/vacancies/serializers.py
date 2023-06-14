@@ -8,6 +8,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from companies.models import CompanyManager
+from responses.models import VacancyResponse
 from responses.serializers import VacancyResponseSerializer
 from .models import Vacancy
 
@@ -79,6 +80,12 @@ class VacancyDetailSerializer(VacancySerializer):
         self.fields["employment_type"] = CharField(source="get_employment_type_display")
         self.fields["experience_option"] = CharField(source="get_experience_option_display")
         res = super().to_representation(instance)
+        res["statistics"] = {
+            "count_views": instance.views.count(),
+            "count_responses": instance.responses.count(),
+            "count_viewed_responses": instance.responses.filter(status=VacancyResponse.viewed).count(),
+            "count_reject_responses": instance.responses.filter(status=VacancyResponse.reject).count(),
+        }
         user = self.context["request"].user
         if user.is_authenticated:
             if res.get("is_responded"):
