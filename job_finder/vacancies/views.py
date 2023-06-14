@@ -14,6 +14,8 @@ from vacancies.permissions import IsOwnerManagerOrDirector
 from vacancies.serializers import VacancyDetailSerializer, VacancySerializer
 from views.models import VacancyView
 
+from users.models import User
+
 
 class VacancyViewSet(ModelViewSet):
     queryset = Vacancy.objects.all().select_related("company")
@@ -49,6 +51,9 @@ class VacancyViewSet(ModelViewSet):
         user = self.request.user
         queryset = super().get_queryset()
         if not user.is_anonymous:
+            # TODO: privacy issue, all users can get responses if query param user_id passed
+            if user_id := self.request.query_params.get("user_id"):
+                user = User.objects.filter(id=user_id).first() or user
             return queryset.annotate(
                 is_responded=Exists(user.responses.filter(vacancy_id=OuterRef("id"))),
                 is_favorite=Exists(
