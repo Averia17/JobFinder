@@ -49,11 +49,18 @@ const Response = (props) => {
                     'Authorization': `Bearer ${tokenInfo?.accessToken}`
                 }
             })
-            navigate(`/resumes?user=${props?.user?.id}`)
+            navigate(`/resumes/${props?.user?.resume}`)
         } else
             navigate(`/vacancies/${props?.vacancy?.id}`)
 
     }
+
+    // const navigateToUserResume = () => {
+    //     if (props?.user__resume) {
+    //         navigate(`/resumes/${props?.user__resume}`);
+    //     }
+    // }
+
     return (
         <div className='responseBlock__container' onClick={handleLinkToResumes}>
             <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h2 className="responseBlock__container__company__name">{props?.vacancy?.title}</h2></Link>

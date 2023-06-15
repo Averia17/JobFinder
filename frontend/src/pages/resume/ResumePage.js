@@ -37,7 +37,7 @@ const ResumePage = () => {
             .then(({data}) => {
                 setResume(data)
                 setResumeFavorite(data?.is_favorite)
-            }).then(() => setTimeout(() => setLoading(false), 0));
+            }).then(() => setTimeout(() => setLoading(false), 0)).catch(() => setTimeout(() => setLoading(false), 0));
     }, [])
 
     const handleClickDeleteResume = () => {
