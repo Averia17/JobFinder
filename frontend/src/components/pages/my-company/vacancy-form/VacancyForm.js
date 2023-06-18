@@ -11,7 +11,7 @@ import './style.css'
 import SimpleMDE from "react-simplemde-editor";
 
 const VacancyForm = () => {
-    const {accessToken} = useGetInfoFromToken();
+    const tokenInfo = useGetInfoFromToken();
     const navigate = useNavigate();
     const [vacancy, setVacancy] = useState({});
     const [defaultVacancy, setDefaultVacancy] = useState({});
@@ -32,7 +32,7 @@ const VacancyForm = () => {
 
     useEffect(() => {
         axios.get('/api/managers', {
-            headers: {Authorization: `Bearer ${accessToken}`}
+            headers: {Authorization: `Bearer ${tokenInfo?.accessToken}`}
         }).then(({data}) => setManagers(data));
     }, [])
 
@@ -48,13 +48,13 @@ const VacancyForm = () => {
         event.preventDefault();
         if (vacancyId) {
             axios.patch(`/api/vacancies/${vacancyId}/`, {...vacancy}, {
-                headers: {Authorization: `Bearer ${accessToken}`}
+                headers: {Authorization: `Bearer ${tokenInfo?.accessToken}`}
             }).then(() => {
                 navigate(`/vacancies/${vacancyId}`)
             }).catch(()=>{setError("Error updating vacancy")})
         } else {
             axios.post(`/api/vacancies/`, {...vacancy}, {
-                headers: {Authorization: `Bearer ${accessToken}`}
+                headers: {Authorization: `Bearer ${tokenInfo?.accessToken}`}
             }).then(({data}) => {
                 navigate(`/vacancies/${data.id}`)
             }).catch(()=>{setError("Error creating vacancy")})
@@ -66,6 +66,7 @@ const VacancyForm = () => {
             description: text,
         })
     };
+
     return (
         <div className='vacancy__form'>
             <form onSubmit={handleSubmit}>
@@ -89,7 +90,7 @@ const VacancyForm = () => {
                     <Input name='max_salary' defaultValue={defaultVacancy?.max_salary} type='number'
                            onChange={handleChange}/>
                 </div>
-                {!vacancyId && <div>
+                {!vacancyId && tokenInfo?.is_director && <div>
                     <p>Менеджер</p>
                     <select name='manager' onChange={handleChange} required>
                         <option value=""></option>

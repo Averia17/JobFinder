@@ -13,7 +13,7 @@ import axios from "axios";
 import {formatDate} from "../../services/services";
 
 
-const Response = (props) => {
+const   Response = (props) => {
     const {id, status} = props;
     const navigate = useNavigate();
     const tokenInfo = useGetInfoFromToken();

@@ -88,7 +88,7 @@ const VacancyPage = () => {
         })
     }
 
-    const handleClickChangeFavoriteStatus = (event) => {
+    const handleClickChangeFavoriteStatus = () => {
         axios.post('/api/favorite_vacancies/', {vacancy: id}, {
             headers: {Authorization: `Bearer ${tokenInfo?.accessToken}`}
         }).then(() => setVacancyFavorite(!isVacancyFavorite))
@@ -106,20 +106,21 @@ const VacancyPage = () => {
         setRejectModalVisible(false);
     }
 
+
     const handleConfirmAccept = () => {
-        axios.post(`/api/responses/${responseId}/messages/`, {text: acceptMessage}, {
+        axios.post(`/api/responses/${searchParams.get('responseId')}/messages/`, {text: acceptMessage}, {
             headers: {
                 Authorization: `Bearer ${tokenInfo?.accessToken}`
             }
-        }).then(() => {
+        }).then(() => axios.patch(`/api/responses/${searchParams.get('responseId')}/`, {status: "INVITE"}, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }
+        })).then(() => {
             searchParams.delete('responseId');
             setSearchParams(searchParams);
             setAcceptModalVisible(false)
-        }).then(() => axios.patch(`/api/responses/${responseId}/`, {status: "INVITE"}, {
-            headers: {
-                Authorization: `Bearer ${tokenInfo?.accessToken}`
-            }
-        })).catch(({response}) => {
+        }).catch(({response}) => {
                 const error = response.data
                 let message = "Message cannot be sent";
                 if(typeof error === 'object'  && "error" in error)
@@ -131,19 +132,19 @@ const VacancyPage = () => {
     }
 
     const handleConfirmReject = () => {
-        axios.post(`/api/responses/${responseId}/messages/`, {text: rejectMessage}, {
+        axios.post(`/api/responses/${searchParams.get('responseId')}/messages/`, {text: rejectMessage}, {
             headers: {
                 Authorization: `Bearer ${tokenInfo?.accessToken}`
             }
-        }).then(() => {
+        }).then(() => axios.patch(`/api/responses/${searchParams.get('responseId')}/`, {status: "REJECT"}, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.accessToken}`
+            }
+        })).then(() => {
             searchParams.delete('responseId');
             setSearchParams(searchParams);
             setRejectModalVisible(false)
-        }).then(() => axios.patch(`/api/responses/${responseId}/`, {status: "REJECT"}, {
-            headers: {
-                Authorization: `Bearer ${tokenInfo?.accessToken}`
-            }
-        })).catch(({response}) => {
+        }).catch(({response}) => {
                 const error = response.data
                 let message = "Message cannot be sent";
                 if(typeof error === 'object'  && "error" in error)
