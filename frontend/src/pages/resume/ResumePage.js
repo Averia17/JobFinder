@@ -112,7 +112,7 @@ const ResumePage = () => {
                         </div>
                         <div className='resume__info'>
                             <h1>{resume.title}</h1>
-                            <h4>Зарплатные ожидания: {resume?.salary}$</h4>
+                            <h4>Зарплатные ожидания: {resume?.salary} руб.</h4>
                             <div>Опыт работы: {experience} {experience> 4 || experience === 0 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
                             {resume?.education && <div>Образование: {resume?.education}</div>}
                             {resume?.description && <div className="resume__parsed_description">
