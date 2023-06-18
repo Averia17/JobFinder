@@ -10,6 +10,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import {formatDate} from "../../services/services";
 
 ChartJS.register(
     CategoryScale,
@@ -30,22 +31,23 @@ export const options = {
     },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Просмотры',
-            data: labels.map((_, i) => i),
-            borderColor: '#0000e6',
-            backgroundColor: '#6666ff',
-        },
-    ],
-};
+const LineChart = ({ chartData }) => {
+    const labels = chartData?.reverse().map(({ created__date }) => formatDate(created__date));
 
-const Chart = () => {
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Просмотры',
+                data: chartData?.map(({ count }) => count),
+                borderColor: '#0000e6',
+                backgroundColor: '#6666ff',
+            },
+        ],
+    };
+
     return <Line options={options} data={data} />;
 }
 
-export default Chart;
+export default LineChart;

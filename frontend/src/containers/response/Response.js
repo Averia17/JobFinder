@@ -10,6 +10,7 @@ import cancelIcon from '../../assets/cancel-button.png'
 import {useNavigate} from "react-router";
 import dayjs from "dayjs";
 import axios from "axios";
+import {formatDate} from "../../services/services";
 
 
 const Response = (props) => {
@@ -48,18 +49,25 @@ const Response = (props) => {
                     'Authorization': `Bearer ${tokenInfo?.accessToken}`
                 }
             })
-            navigate(`/resumes?user=${props?.user?.id}`)
+            navigate(`/resumes/${props?.user?.resume}`)
         } else
             navigate(`/vacancies/${props?.vacancy?.id}`)
 
     }
+
+    // const navigateToUserResume = () => {
+    //     if (props?.user__resume) {
+    //         navigate(`/resumes/${props?.user__resume}`);
+    //     }
+    // }
+
     return (
         <div className='responseBlock__container' onClick={handleLinkToResumes}>
             <Link to={{pathname: `/vacancies/${props?.vacancy?.id}`}}><h2 className="responseBlock__container__company__name">{props?.vacancy?.title}</h2></Link>
             {!tokenInfo?.company && <p>{props?.vacancy?.company}</p>}
             {(props?.user?.name || props?.user?.email) && tokenInfo?.company && <p>{props?.user?.name} {props?.user?.email}</p>}
             <p style={{ color: `${status === "Отказ" && "red" || status === "Приглашение" && "green"}`}}>{status}</p>
-            <p>{props?.created && dayjs(props?.created).format("DD.MM.YYYY")}</p>
+            <p>{props?.created && formatDate(props?.created)}</p>
             <div className="messages_icon">
                 {props?.count_new_messages > 0 && <div className="count__new__notification_messages">{props?.count_new_messages}</div>}
                 <ImageButton src={messageIcon} onClick={handleClick}/>

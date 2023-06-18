@@ -5,7 +5,7 @@
     align-items: center;
     font-size: 1vmax;
 }
-.vacancyPage__container > div {
+.vacancyPage__container > div:not(.chat__container, .modal) {
     width: 50vmax;
     padding: 2vmax;
 

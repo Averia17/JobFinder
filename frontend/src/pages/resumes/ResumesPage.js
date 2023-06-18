@@ -9,6 +9,7 @@ import Filters from "../../containers/filters/VacanciesFilters";
 import ResumesFilters from "../../containers/filters/ResumesFilters";
 import SkillsModal from "../../containers/filters/SkillsModal";
 import {CircularProgress} from "@mui/material";
+import VacanciesModal from "../../containers/resume/VacanciesModal";
 
 const ResumesPage = () => {
     const tokenInfo = useGetInfoFromToken();
@@ -20,7 +21,9 @@ const ResumesPage = () => {
     const [search, setSearch] = useState(undefined);
     const [loading, setLoading] = useState(true);
     const [isSkillsModalVisible, setSkillsModalVisible] = useState(false);
+    const [isVacanciesModalVisible, setVacanciesModalVisible] = useState(false);
     const [selectedSkills, setSelectedSkills] = useState([]);
+    const [inviteUserId, setInviteUserId] = useState(undefined);
 
 
     const formatQueryParams = () => {
@@ -92,6 +95,10 @@ const ResumesPage = () => {
         setSkillsModalVisible(!isSkillsModalVisible);
     }
 
+    const hideVacanciesModal = () => {
+        setVacanciesModalVisible(false);
+    }
+
     return (
         <div className="resumesPage__container">
             {/*{ !tokenInfo?.company &&*/}
@@ -105,7 +112,9 @@ const ResumesPage = () => {
             { !loading ?
                 resumes?.length > 0 ? <div>
                         {resumes.map(resume => (
-                            <Resume {...resume}/>
+                            <Resume setVacanciesModalVisible={setVacanciesModalVisible}
+                                    setInviteUserId={setInviteUserId}
+                                    {...resume}/>
                         ))}</div>
                     :
                     <div className='resumes__container resumes__notFound'>Резюме не найдены</div>
@@ -114,6 +123,7 @@ const ResumesPage = () => {
             </div>
             <SkillsModal isActive={isSkillsModalVisible} hideModal={changeSkillModalVisibility}
                          handleChangeFilters={handleChangeFilters} selectedSkills={selectedSkills} />
+            <VacanciesModal isActive={isVacanciesModalVisible} hideModal={hideVacanciesModal} userId={inviteUserId} />
         </div>
     );
 };

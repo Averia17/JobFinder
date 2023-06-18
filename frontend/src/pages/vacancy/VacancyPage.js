@@ -48,8 +48,9 @@ const VacancyPage = () => {
                 setRejectModalVisible={setRejectModalVisible}
                 setChatModalVisible={setChatModalVisible}
                 setResponseStatus={setResponseStatus}
-                responses={formattedResponses}/>,
-        views: <ViewsTab views={vacancyInfo?.views}/>,
+                responses={formattedResponses}
+                statistics={vacancyInfo?.statistics}/>,
+        views: <ViewsTab groupedViews={vacancyInfo?.views?.results} chartData={vacancyInfo?.views?.chart_data}/>,
     }
 
     const [currentTab, setCurrentTab] = useState('responses');

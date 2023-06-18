@@ -12,6 +12,7 @@ import FavoriteButton from "../../components/buttons/FavoriteButton";
 import SkillBlock from "../../components/resume-form/SkillBlock";
 import marked from "marked";
 import {CircularProgress} from "@mui/material";
+import {formatExperience, formatViewsCountString} from "../../services/services";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -36,7 +37,7 @@ const ResumePage = () => {
             .then(({data}) => {
                 setResume(data)
                 setResumeFavorite(data?.is_favorite)
-            }).then(() => setTimeout(() => setLoading(false), 0));
+            }).then(() => setTimeout(() => setLoading(false), 0)).catch(() => setTimeout(() => setLoading(false), 0));
     }, [])
 
     const handleClickDeleteResume = () => {
@@ -71,12 +72,6 @@ const ResumePage = () => {
 
     const experience = +resume?.experience;
 
-    const formatViewsCountString = () => {
-        let countOfViews = resume?.views?.length;
-        const lastNumberOfViewsCount = +countOfViews?.toString().charAt(countOfViews.length - 1);
-        return lastNumberOfViewsCount >= 2 && lastNumberOfViewsCount <= 4 && 'a';
-    }
-
     return (
         <div className="resumePage__container">
             {!loading ?
@@ -90,10 +85,12 @@ const ResumePage = () => {
                                         <h4>{resume.user?.phone}</h4>
                                     </div>
                                     {tokenInfo?.company &&
-                                        <FavoriteButton onClick={handleClickChangeFavoriteStatus} is_favorite={isResumeFavorite}/>}
+                                        <FavoriteButton onClick={handleClickChangeFavoriteStatus}
+                                                        is_favorite={isResumeFavorite}/>}
                                 </div>
                                 <h4>{resume.city}</h4>
-                                {!tokenInfo?.company && <h4>Ваше резюме было просмотрено {resume?.views?.length} раз{formatViewsCountString()}</h4>}
+                                {!tokenInfo?.company && <h4>Ваше резюме было просмотрено {resume?.views?.length} раз
+                                    {formatViewsCountString(resume?.views?.length)}</h4>}
                                 <div className='resume__header__button'>
                                     {resume?.user?.id === tokenInfo?.user_id &&
                                         <Button onClick={handleClickDeleteResume} type='danger'>Удалить</Button>}
@@ -113,7 +110,7 @@ const ResumePage = () => {
                         <div className='resume__info'>
                             <h1>{resume.title}</h1>
                             <h4>Зарплатные ожидания: {resume?.salary} руб.</h4>
-                            <div>Опыт работы: {experience} {experience> 4 || experience === 0 ? 'лет' : experience === 1 ? 'год' : 'года'}</div>
+                            <div>Опыт работы: {experience} {formatExperience(experience)}</div>
                             {resume?.education && <div>Образование: {resume?.education}</div>}
                             {resume?.description && <div className="resume__parsed_description">
                                 О себе:
