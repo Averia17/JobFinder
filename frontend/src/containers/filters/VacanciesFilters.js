@@ -70,7 +70,7 @@ const VacanciesFilters = ({filters, setFilters, setSearch, handleSearch}) => {
                 </select>
             </div>
             <div className="filter__container">
-                <label className="filter__label" htmlFor='salary'>Ожидаемая зарплата, руб.</label>
+                <label className="filter__label" htmlFor='salary'>Ожидаемая зарплата, BYN</label>
                 <Input className="filter__input" name='salary' type='number' step='0.1' onChange={handleChangeFilters}/>
             </div>
             <input className="filter__submit" type="submit" value="Найти"/>

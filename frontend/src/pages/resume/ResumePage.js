@@ -13,6 +13,7 @@ import SkillBlock from "../../components/resume-form/SkillBlock";
 import marked from "marked";
 import {CircularProgress} from "@mui/material";
 import {formatExperience, formatViewsCountString} from "../../services/services";
+import LineChart from "../../components/chart/LineChart";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -109,7 +110,7 @@ const ResumePage = () => {
                         </div>
                         <div className='resume__info'>
                             <h1>{resume.title}</h1>
-                            <h4>Зарплатные ожидания: {resume?.salary} руб.</h4>
+                            <h4>Зарплатные ожидания: {resume?.salary} BYN</h4>
                             <div>Опыт работы: {experience} {formatExperience(experience)}</div>
                             {resume?.education && <div>Образование: {resume?.education}</div>}
                             {resume?.description && <div className="resume__parsed_description">
@@ -129,6 +130,7 @@ const ResumePage = () => {
                         {!tokenInfo?.company &&
                         <div className='resume__views__container'>
                             <h2>Просмотры</h2>
+                            {resume?.chartData?.length > 0 && <LineChart chartData={resume?.chartData} />}
                             {resume?.user?.id === tokenInfo?.user_id && resume?.views?.length > 0 ?
                                 <div className="resume__views">{resume?.views?.map(view => (
                                     <div className="resume__view">

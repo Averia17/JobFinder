@@ -51,7 +51,7 @@ const Resume = (props) => {
             {user?.name && <p>{user?.name}</p>}
             <p className="resume__field">Расположение: {city}</p>
             <p className="resume__field">Опыт работы: {+experience} {formatExperience(+experience)}</p>
-            {salary && <p className="resume__field">Ожидаемая зарплата : {salary}$</p>}
+            {salary && <p className="resume__field">Ожидаемая зарплата : {salary} BYN</p>}
             {
                 tokenInfo?.company && <Button onClick={showVacanciesModal}
                                               disabled={is_responded}

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {languageLevels, languages} from "../../utils/utils";
 import Input from "../inputs/Input";
+import Button from "../buttons/Button";
 
 const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ language, selectedLanguages, setSelectedLanguages, languagesForms, setLanguagesForms, setNewLanguage }) {
     const [languageLevel, setLanguageLevel] = useState('A1');
@@ -21,7 +22,7 @@ const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ languag
     }
 
     return (
-        <div key={language}>
+        <div className='addLanguageForm__container' key={language}>
             <Input type='text' value={language}/>
             <select name='languageLevel' onChange={(event) => setLanguageLevel(event.currentTarget.value)}
                     defaultValue='A1'>
@@ -31,7 +32,7 @@ const LanguageAdditionForm = React.memo(function LanguageAdditionForm ({ languag
                     ))
                 }
             </select>
-            <button type='button' onClick={handleClickDeleteLanguage}>Удалить</button>
+            <Button onClick={handleClickDeleteLanguage}>Удалить</Button>
         </div>
     );
 });

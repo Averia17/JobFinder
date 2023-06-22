@@ -9,6 +9,7 @@ import {useNavigate} from "react-router";
 import ErrorAlert from "../alerts/ErrorAlert";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
+import Button from "../buttons/Button";
 
 
 const ResumeForm = () => {
@@ -147,7 +148,7 @@ const ResumeForm = () => {
                             <Input name='education' type='text' onChange={handleChange}/>
                         </div>
                         <div>
-                            <label htmlFor='salary'>Ожидаемая зарплата</label>
+                            <label htmlFor='salary'>Ожидаемая зарплата, BYN</label>
                             <Input name='salary' type='number' onChange={handleChange}/>
                         </div>
                         <div>
@@ -174,13 +175,13 @@ const ResumeForm = () => {
                                 </select>}
                             {languagesForms.length > 0 && renderLanguagesForms()}
                             {availableLanguages.length > 0 &&
-                                <button type='button' onClick={handleClickAddLanguage}>Добавить язык</button>}
+                                <Button type='button' onClick={handleClickAddLanguage}>Добавить язык</Button>}
                         </div>
                         <div>
                             <div>Навыки</div>
                             <div>
                                 <Input type='text' value={skill} onChange={handleChangeSkill}></Input>
-                                <button onClick={handleAddSkill} type='button'>Add</button>
+                                <Button type='button' onClick={handleAddSkill}>Добавить</Button>
                             </div>
 
                             <div className='skills' style={{display: 'flex'}}>

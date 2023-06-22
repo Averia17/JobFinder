@@ -10,11 +10,11 @@ import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 export const renderSalaryIfExists = (min_salary, max_salary,) => {
     if (min_salary && max_salary) {
-        return <div className='salary'>{min_salary} - {max_salary}$</div>
+        return <div className='salary'>{min_salary} - {max_salary} BYN</div>
     } else if (min_salary && !max_salary) {
-        return <div className='salary'>от {min_salary}$</div>
+        return <div className='salary'>от {min_salary} BYN</div>
     } else if (!min_salary && max_salary) {
-        return <div className='salary'>до {max_salary}$</div>
+        return <div className='salary'>до {max_salary} BYN</div>
     }
 }
 

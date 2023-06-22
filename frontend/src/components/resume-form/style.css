@@ -62,10 +62,21 @@
     height: 100%;
 }
 
+.column-2 button, .column-1 button {
+    padding: 0.1vmax;
+    margin-top: 0.5vmax;
+}
+
 .skills {
     gap: 0.1vmax;
 }
 
-/*.column-2 div {*/
-/*    width: 40%;*/
-/*}*/
+.addLanguageForm__container {
+    box-shadow: 0 0 10px #e6e6ff;
+    padding: 1vmax;
+    gap: 0.5vmax;
+}
+
+.addLanguageForm__container button {
+    padding: 0.1vmax;
+}
